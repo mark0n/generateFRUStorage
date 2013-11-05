@@ -12,6 +12,8 @@
 #include "boardInfoArea.hpp"
 #include "productInfoArea.hpp"
 #include "multiRecordArea.hpp"
+#include "amcChannelDescriptor.hpp"
+#include "amcLinkDescriptor.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -52,13 +54,21 @@ int main() {
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
   std::vector<uint8_t> multiRecord1Payload = {0x5a, 0x31, 0x00, 0x16, 0x00, 0x22};
-  std::vector<uint8_t> multiRecord2Payload = {0x5a, 0x31, 0x00, 0x19, 0x00, 0x00, 0x80, 0x03,
-    0xa4, 0x98, 0xf3, 0xa4, 0xfc, 0xff, 0xe4, 0xff, 0xff, 0x00, 0x2f, 0x00, 0x00, 0xfd, 0x01, 0x23,
-    0x00, 0x00, 0xfd, 0x02, 0x21, 0x00, 0x00, 0xfd, 0x00, 0x2f, 0x10, 0x00, 0xfd, 0x01, 0x23, 0x10,
-    0x00, 0xfd, 0x02, 0x21, 0x10, 0x00, 0xfd};
-  std::vector<uint8_t> multiRecord3Payload = {0x5a, 0x31, 0x00, 0x30, 0x01, 0x03, 0x3f, 0x05, 0x00, 0x00, 0x00, 0x02, 0x08};
   mra.addRecord(0xc0, multiRecord1Payload);
-  mra.addRecord(0xc0, multiRecord2Payload);
+  
+  std::list<amcChannelDescriptor> chDescrs;
+  const int ch0Ports[] = {0, 31, 31, 31};
+  chDescrs.push_back(amcChannelDescriptor(ch0Ports));
+  const int ch1Ports[] = {4, 31, 31, 31};
+  chDescrs.push_back(amcChannelDescriptor(ch1Ports));
+  std::list<amcLinkDescriptor> lnkDescrs;
+  struct amcLinkDesignator lnkDesignator0 = {0, true, false, false, false};
+  lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator0, AMC2Ethernet, 0, 0, 0));
+  struct amcLinkDesignator lnkDesignator1 = {1, true, false, false, false};
+  lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, 0, 0, 2));
+  mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
+  
+  std::vector<uint8_t> multiRecord3Payload = {0x5a, 0x31, 0x00, 0x30, 0x01, 0x03, 0x3f, 0x05, 0x00, 0x00, 0x00, 0x02, 0x08};
   mra.addRecord(0xc0, multiRecord3Payload);
 
   std::cout << "COMMON-HEADER AREA:" << std::endl;

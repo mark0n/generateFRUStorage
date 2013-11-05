@@ -15,6 +15,7 @@ struct multiRecordHeader {
 };
 
 class multiRecord {
+protected :
   std::vector<uint8_t> headerRawData;
   struct multiRecordHeader *header;
   std::vector<uint8_t> payload;
@@ -29,9 +30,9 @@ public :
   uint8_t getRecordLength();
   uint8_t getChecksum();
   uint8_t getHeaderChecksum();
-  std::vector<uint8_t> getBinaryData();
-  void printData();
-  int size();
+  virtual std::vector<uint8_t> getBinaryData();
+  virtual void printData();
+  virtual int size();
 };
 
 #endif /* MULTIRECORD_HPP */

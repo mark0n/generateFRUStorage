@@ -40,9 +40,8 @@ std::vector<uint8_t> multiRecord::getBinaryData() {
   updateRecordChecksum();
   updateHeaderChecksum();
   
-  std::vector<uint8_t> rawData;
-  rawData.assign(headerRawData.begin(), headerRawData.end());
-  rawData.insert(rawData.end(), payload.begin(), payload.end());
+  std::vector<uint8_t> rawData(headerRawData.begin(), headerRawData.end());
+  std::copy(payload.begin(), payload.end(), std::back_inserter(rawData));
   return rawData;
 };
 

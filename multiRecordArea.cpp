@@ -10,6 +10,15 @@ void multiRecordArea::addRecord(uint8_t typeId, std::vector<uint8_t> payload) {
   records.push_back(newRecord);
 };
 
+void multiRecordArea::addAMCPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs) {
+  amcPtPConnectivityRecord *newRecord = new amcPtPConnectivityRecord(chDescrs, lnkDescrs);
+  newRecord->setEndOfList(true);
+  if(!records.empty()) {
+    records.back()->setEndOfList(false);
+  }
+  records.push_back(newRecord);
+};
+
 std::vector<uint8_t> multiRecordArea::getBinaryData() {
   std::list<multiRecord *>::iterator li;
   std::vector<uint8_t> rawData;
