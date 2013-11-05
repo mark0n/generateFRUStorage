@@ -1,22 +1,27 @@
 #include "multiRecordArea.hpp"
 #include <iostream>
 
-void multiRecordArea::addRecord(uint8_t typeId, std::vector<uint8_t> payload) {
-  multiRecord *newRecord = new multiRecord(typeId, payload);
-  newRecord->setEndOfList(true);
+void multiRecordArea::addRecord(multiRecord *record) {
+  record->setEndOfList(true);
   if(!records.empty()) {
     records.back()->setEndOfList(false);
   }
-  records.push_back(newRecord);
+  records.push_back(record);
+}
+
+void multiRecordArea::addRecord(uint8_t typeId, std::vector<uint8_t> payload) {
+  multiRecord *newRecord = new multiRecord(typeId, payload);
+  addRecord(newRecord);
 };
 
 void multiRecordArea::addAMCPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs) {
   amcPtPConnectivityRecord *newRecord = new amcPtPConnectivityRecord(chDescrs, lnkDescrs);
-  newRecord->setEndOfList(true);
-  if(!records.empty()) {
-    records.back()->setEndOfList(false);
-  }
-  records.push_back(newRecord);
+  addRecord(newRecord);
+};
+
+void multiRecordArea::addModuleCurrentRequirementsRecord(double currentDraw) {
+  moduleCurrentRequirementsRecord *newRecord = new moduleCurrentRequirementsRecord(currentDraw);
+  addRecord(newRecord);
 };
 
 std::vector<uint8_t> multiRecordArea::getBinaryData() {

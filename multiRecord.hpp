@@ -4,6 +4,11 @@
 #include <cstdint>
 #include <vector>
 
+#define RECORD_TYPE_OEM 0xc0
+#define PICMG_MANUFACTURER_ID_MSB 0x00
+#define PICMG_MANUFACTURER_ID_MID 0x31
+#define PICMG_MANUFACTURER_ID_LSB 0x5a
+
 struct multiRecordHeader {
   uint8_t recordTypeId;
   uint8_t recordFormatVersion : 4;

@@ -53,8 +53,7 @@ int main() {
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  std::vector<uint8_t> multiRecord1Payload = {0x5a, 0x31, 0x00, 0x16, 0x00, 0x22};
-  mra.addRecord(0xc0, multiRecord1Payload);
+  mra.addModuleCurrentRequirementsRecord(1.0); //FIXME: use correct current for FGPDB
   
   std::list<amcChannelDescriptor> chDescrs;
   const int ch0Ports[] = {0, 31, 31, 31};
@@ -62,9 +61,9 @@ int main() {
   const int ch1Ports[] = {4, 31, 31, 31};
   chDescrs.push_back(amcChannelDescriptor(ch1Ports));
   std::list<amcLinkDescriptor> lnkDescrs;
-  struct amcLinkDesignator lnkDesignator0 = {0, true, false, false, false};
+  struct amcLinkDesignator lnkDesignator0 = {0, {true, false, false, false}};
   lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator0, AMC2Ethernet, 0, 0, 0));
-  struct amcLinkDesignator lnkDesignator1 = {1, true, false, false, false};
+  struct amcLinkDesignator lnkDesignator1 = {1, {true, false, false, false}};
   lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, 0, 0, 2));
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
   

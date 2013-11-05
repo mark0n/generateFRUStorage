@@ -4,11 +4,7 @@
 #include <algorithm>
 #include <functional>
 
-#define RECORD_TYPE_OEM 0xc0
-#define PICMG_MANUFACTURER_ID_MSB 0x00
-#define PICMG_MANUFACTURER_ID_MID 0x31
-#define PICMG_MANUFACTURER_ID_LSB 0x5a
-#define PICMG_RECORD_ID 0x19
+#define AMC_PTP_CONNECTIVITY_RECORD_PICMG_RECORD_ID 0x19
 #define AMC_PTP_CONNECTIVITY_RECORD_FORMAT_VERSION 0x00
 #define AMC_PTP_CONNECTIVITY_RECORD_TYPE 0x80
 
@@ -28,7 +24,7 @@ amcPtPConnectivityRecord::amcPtPConnectivityRecord(std::list<amcChannelDescripto
   ptPConnRecHeader->manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   ptPConnRecHeader->manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
   ptPConnRecHeader->manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
-  ptPConnRecHeader->picmgRecordId = PICMG_RECORD_ID;
+  ptPConnRecHeader->picmgRecordId = AMC_PTP_CONNECTIVITY_RECORD_PICMG_RECORD_ID;
   ptPConnRecHeader->recordFormatVersion = AMC_PTP_CONNECTIVITY_RECORD_FORMAT_VERSION;
   ptPConnRecHeader->oemGuidCount = 0;
   recordType = AMC_PTP_CONNECTIVITY_RECORD_TYPE;
