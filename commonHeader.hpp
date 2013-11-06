@@ -21,7 +21,6 @@ class commonHeader {
 public :
   commonHeader();
   uint8_t getFormatVersion();
-  void setFormatVersion(uint8_t version);
   uint8_t getInternalUseAreaOffset(); // in multiples of 8 bytes
   void setInternalUseAreaOffset(uint8_t offset); // in multiples of 8 bytes
   uint8_t getChassisInfoAreaOffset(); // in multiples of 8 bytes
