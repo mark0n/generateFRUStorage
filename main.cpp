@@ -53,7 +53,7 @@ int main() {
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  mra.addModuleCurrentRequirementsRecord(1.0); //FIXME: use correct current for FGPDB
+  mra.addModuleCurrentRequirementsRecord(2.0);
   
   std::list<amcChannelDescriptor> chDescrs;
   const int ch0Ports[] = {0, 31, 31, 31};
