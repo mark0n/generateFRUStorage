@@ -8,7 +8,7 @@
 boardInfoArea::boardInfoArea() : rawData(13) {
   data = (struct boardInfoAreaData *)rawData.data();
   data->formatVersion = 1;
-  data->areaLength = 1;
+  data->areaLength = 2;
 }
 
 time_t minutesToPosixTime(int minutesSince1996) {
