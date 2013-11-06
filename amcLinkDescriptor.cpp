@@ -1,7 +1,7 @@
 #include "amcLinkDescriptor.hpp"
 #include <iostream>
 
-amcLinkDescriptor::amcLinkDescriptor(amcLinkDesignator lnkDesignator, amcLinkType lnkType, int amcLinkTypeExtension, int linkGroupingId, int amcAsymmetricMatch) : rawData(amcLnkDescrDataSize) {
+amcLinkDescriptor::amcLinkDescriptor(amcLinkDesignator lnkDesignator, amcLinkType lnkType, int amcLinkTypeExtension, int linkGroupingId, int amcAsymmetricMatch) : rawData(sizeof(struct amcLnkDescrData)) {
   data = (struct amcLnkDescrData *)rawData.data();
   data->amcLinkDesignator = lnkDesignator.laneFlag[3] << 11 | lnkDesignator.laneFlag[2] << 10 | lnkDesignator.laneFlag[1] << 9 | lnkDesignator.laneFlag[0] << 8 | lnkDesignator.channelId;
   data->amcLinkType = lnkType;
@@ -12,7 +12,7 @@ amcLinkDescriptor::amcLinkDescriptor(amcLinkDesignator lnkDesignator, amcLinkTyp
 }
 
 std::vector<uint8_t> amcLinkDescriptor::getBinaryData() const {
-  return rawData;
+  return std::vector<uint8_t>(rawData.cbegin(), rawData.cbegin() + amcLnkDescrDataSize);
 }
 
 void amcLinkDescriptor::printData() const {
@@ -27,5 +27,5 @@ void amcLinkDescriptor::printData() const {
 }
 
 int amcLinkDescriptor::size() const {
-  return rawData.size();
+  return amcLnkDescrDataSize;
 }
