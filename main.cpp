@@ -18,6 +18,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
+#include <boost/date_time/posix_time/posix_time.hpp>
 
 #define EEPROM_SIZE 2048
 
@@ -31,7 +32,7 @@ int main() {
   ch.setBoardAreaOffset(ch.size() / 8);
 
   bia.setLanguageCode(25);
-  bia.setMfgDateTime(1341171180);
+  bia.setMfgDateTime(boost::posix_time::ptime(boost::posix_time::second_clock::universal_time()));
   bia.setManufacturer("Facility for Rare Isotope Beams");
   bia.setProductName("FRIB General Purpose Digital Board");
   bia.setSerialNumber("testBoardSerialNumber");

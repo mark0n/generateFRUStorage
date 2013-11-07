@@ -6,9 +6,10 @@ set(CMAKE_CXX_COMPILER "clang++")
 
 enable_testing()
 
-find_package(Boost COMPONENTS unit_test_framework)
+find_package(Boost COMPONENTS date_time unit_test_framework)
 
 add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea checksum.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
+target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
 
 add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp commonHeader.cpp checksum.cpp)
 target_link_libraries(testGenerateFRUStorage ${Boost_LIBRARIES})

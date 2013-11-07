@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "varLengthField.hpp"
 
 struct boardInfoAreaData {
@@ -21,14 +22,15 @@ class boardInfoArea {
   varLengthField serialNumber;
   varLengthField partNumber;
   varLengthField fruFileId;
+  static const boost::posix_time::ptime epoch;
 public :
   boardInfoArea();
   uint8_t getFormatVersion();
   uint8_t getBoardAreaLength(); // in multiples of 8 bytes
   uint8_t getLanguageCode();
   void setLanguageCode(uint8_t lang);
-  time_t getMfgDateTime();
-  void setMfgDateTime(const time_t posixTime);
+  boost::posix_time::ptime getMfgDateTime();
+  void setMfgDateTime(const boost::posix_time::ptime time);
   std::string getManufacturer();
   void setManufacturer(std::string str);
   std::string getProductName();
