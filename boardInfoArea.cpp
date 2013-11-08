@@ -62,9 +62,7 @@ std::vector<uint8_t> boardInfoArea::getBinaryData() {
   rawData.insert(rawData.end(), 0xC1);
 
   std::vector<uint8_t> padVec;
-  if(rawData.size() % 8 != 0) {
-    padVec.resize(8 - rawData.size() % 8);
-  }
+  padVec.resize(8 - rawData.size() % 8); // if the size is a multiple of 8 we have to add 8 bytes since the last byte gets overwritten by the checksum
   rawData.insert(rawData.end(), padVec.begin(), padVec.end());
  
   data = (struct boardInfoAreaData *)rawData.data();
