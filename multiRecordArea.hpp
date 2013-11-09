@@ -13,8 +13,8 @@
 typedef int channelDescriptorHandle;
 
 class multiRecordArea {
-  std::list<multiRecord *> records;
-  void addRecord(multiRecord *record);
+  std::list<multiRecord> records;
+  void addRecord(multiRecord record);
 public :
   void addRecord(uint8_t typeId, std::vector<uint8_t> payload);
   void addModuleCurrentRequirementsRecord(double current);
