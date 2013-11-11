@@ -25,3 +25,8 @@ void varLengthField::setString(const std::string str) {
 std::vector<uint8_t> varLengthField::getBinaryData() {
   return rawData;
 }
+
+int varLengthField::size()
+{
+  return rawData.size();
+}

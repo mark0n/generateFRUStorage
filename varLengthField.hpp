@@ -22,6 +22,7 @@ public:
   std::string getString();
   void setString(std::string str);
   std::vector<uint8_t> getBinaryData();
+  int size();
 };
 
 #endif /* VARLENGTHFIELD_HPP */

@@ -15,14 +15,14 @@ struct boardInfoAreaData {
 };
 
 class boardInfoArea {
-  std::vector<uint8_t> rawData;
-  struct boardInfoAreaData *data;
+  struct boardInfoAreaData data;
   varLengthField manufacturer;
   varLengthField productName;
   varLengthField serialNumber;
   varLengthField partNumber;
   varLengthField fruFileId;
   static const boost::posix_time::ptime epoch;
+  void updateAreaLength();
 public :
   boardInfoArea();
   uint8_t getFormatVersion();
