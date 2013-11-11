@@ -42,7 +42,7 @@ std::string boardInfoArea::getFRUFileId() { return fruFileId.getString(); };
 void boardInfoArea::setFRUFileId(std::string str) { fruFileId.setString(str); };
 
 uint8_t boardInfoArea::getChecksum() {
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData.back();
 }
 
@@ -67,13 +67,13 @@ std::vector<uint8_t> boardInfoArea::getBinaryData() {
  
   data = (struct boardInfoAreaData *)rawData.data();
   data->areaLength = rawData.size() / 8;
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData;
 }
 
 void boardInfoArea::printData() {
   data = (struct boardInfoAreaData *)rawData.data(); 
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   std::cout << "Board Area Format Version: " << std::dec << (unsigned int)data->formatVersion << std::endl;
   std::cout << "Board Area Length: " << (unsigned int)data->areaLength << std::endl;
   std::cout << "Language Code: " << (unsigned int)data->languageCode << std::endl;

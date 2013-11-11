@@ -21,7 +21,7 @@ void multiRecord::updateRecordChecksum() {
 };
 
 void multiRecord::updateHeaderChecksum() {
-  updateAreaChecksum(headerRawData);
+  updateAreaChecksum(headerRawData.begin(), headerRawData.end());
 };
 
 uint8_t multiRecord::getFormatVersion() { return header->recordFormatVersion; };

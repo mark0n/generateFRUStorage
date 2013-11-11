@@ -20,17 +20,17 @@ uint8_t commonHeader::getMultiRecordAreaOffset() { return data->multiRecordAreaO
 void commonHeader::setMultiRecordAreaOffset(uint8_t offset) { data->multiRecordAreaOffset = offset; }
 
 uint8_t commonHeader::getChecksum() {
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData.back();
 }
 
 std::vector<uint8_t> commonHeader::getBinaryData() {
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData;
 }
 
 void commonHeader::printData() {
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   std::cout << "Common Header Format Version: " << std::dec << (unsigned int)data->formatVersion << std::endl;
   std::cout << "Internal Use Area Starting Offset: 0x" << std::hex << (unsigned int)data->internalUseAreaOffset << std::endl;
   std::cout << "Chassis Info Area Starting Offset: 0x" << std::hex << (unsigned int)data->chassisInfoAreaOffset << std::endl;

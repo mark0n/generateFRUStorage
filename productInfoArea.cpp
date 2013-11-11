@@ -29,7 +29,7 @@ std::string productInfoArea::getFRUFileId() { return fruFileId.getString(); };
 void productInfoArea::setFRUFileId(std::string str) { fruFileId.setString(str); };
 
 uint8_t productInfoArea::getChecksum() {
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData.back();
 }
 
@@ -60,13 +60,13 @@ std::vector<uint8_t> productInfoArea::getBinaryData() {
  
   data = (struct productInfoAreaData *)rawData.data();
   data->areaLength = rawData.size() / 8;
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData;
 }
 
 void productInfoArea::printData() {
   data = (struct productInfoAreaData *)rawData.data(); 
-  updateAreaChecksum(rawData);
+  updateAreaChecksum(rawData.begin(), rawData.end());
   std::cout << "Product Area Format Version: " << std::dec << (unsigned int)data->formatVersion << std::endl;
   std::cout << "Product Area Length: " << (unsigned int)data->areaLength << std::endl;
   std::cout << "Language Code: " << (unsigned int)data->languageCode << std::endl;
