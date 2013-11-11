@@ -30,6 +30,15 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetBinaryData )
   std::vector<uint8_t> manResult = { 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x3c };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResult != manResult )
+  {
+    std::cout << "should be: ";
+    std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+    std::cout << "is:        ";
+    std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+  }
 }
 
 BOOST_AUTO_TEST_CASE( boardInfoAreaSetLanguageCode )
@@ -40,6 +49,15 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetLanguageCode )
   std::vector<uint8_t> manResult = { 0x01, 0x02, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x23 };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResult != manResult )
+  {
+    std::cout << "should be: ";
+    std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+    std::cout << "is:        ";
+    std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+  }
 }
 
 BOOST_AUTO_TEST_CASE( boardInfoAreaSetMfgDateTime )
@@ -51,6 +69,15 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetMfgDateTime )
   std::vector<uint8_t> manResult = { 0x01, 0x02, 0x00, 0x4d, 0x41, 0x8f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x1f };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResult != manResult )
+  {
+    std::cout << "should be: ";
+    std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+    std::cout << "is:        ";
+    std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+  }
 }
 
 BOOST_AUTO_TEST_CASE( boardInfoAreaSetManufacturerName )
@@ -62,6 +89,15 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetManufacturerName )
   std::vector<uint8_t> manResult = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x11, 'M', 'a', 'n', 'u', 'f', 'a', 'c', 't', 'u', 'r', 'e', 'r', ' ', 'N', 'a', 'm', 'e', 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0xdb };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResult != manResult )
+  {
+    std::cout << "should be: ";
+    std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+    std::cout << "is:        ";
+    std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+  }
 }
 
 BOOST_AUTO_TEST_CASE( boardInfoAreaSetProductName )
@@ -75,8 +111,10 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetProductName )
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )
   {
+    std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
+    std::cout << "is:        ";
     std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
   }
@@ -93,8 +131,10 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetSerialNumber )
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )
   {
+    std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
+    std::cout << "is:        ";
     std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
   }
@@ -111,8 +151,10 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetBoardPartNumber )
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )
   {
+    std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
+    std::cout << "is:        ";
     std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
   }
@@ -129,8 +171,10 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetFRUFileId )
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )
   {
+    std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
+    std::cout << "is:        ";
     std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
     std::cout << std::endl;
   }
