@@ -13,13 +13,11 @@ template<class InputIterator> void updateAreaChecksum(InputIterator begin, Input
     throw std::out_of_range("Cannot update checksum of empty area.");
 
   uint8_t sum = 0;
-  InputIterator prev;
-  for(InputIterator i = begin; i != end; i++)
+  for(InputIterator i = begin; i != (end - 1); i++)
   {
     sum += *i;
-    prev = i;
   }
-  *prev = -sum & 0xff;
+  *(end - 1) = -sum & 0xff;
 };
 
 #endif /* CHECKSUM_HPP */
