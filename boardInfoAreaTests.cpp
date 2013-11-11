@@ -20,7 +20,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetMethods )
   BOOST_CHECK_EQUAL( bia.getSerialNumber(), "" );
   BOOST_CHECK_EQUAL( bia.getPartNumber(), "" );
   BOOST_CHECK_EQUAL( bia.getFRUFileId(), "" );
-  BOOST_CHECK_EQUAL( bia.getChecksum(), 0xfd );
+  BOOST_CHECK_EQUAL( bia.getChecksum(), 0x3c );
   BOOST_CHECK_EQUAL( bia.size(), 16 );
 }
 
