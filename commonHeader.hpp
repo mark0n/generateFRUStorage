@@ -16,8 +16,7 @@ struct commonHeaderData {
 };
 
 class commonHeader {
-  std::vector<uint8_t> rawData;
-  struct commonHeaderData *data;
+  struct commonHeaderData data;
 public :
   commonHeader();
   uint8_t getFormatVersion();
