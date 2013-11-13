@@ -1,11 +1,8 @@
 #ifndef CHECKSUM_HPP
 #define CHECKSUM_HPP
 
-#include <vector>
-#include <cstdint>
 #include <stdexcept>
-
-uint8_t calcChecksum(std::vector<uint8_t>& vec);
+#include <iterator>
 
 template<class InputIterator> void updateAreaChecksum(InputIterator begin, InputIterator end)
 {
@@ -19,5 +16,15 @@ template<class InputIterator> void updateAreaChecksum(InputIterator begin, Input
   }
   *(end - 1) = -sum & 0xff;
 };
+
+template<class InputIterator> typename std::iterator_traits<InputIterator>::value_type calcChecksum(InputIterator cbegin, InputIterator cend)
+{
+  typename std::iterator_traits<InputIterator>::value_type sum = 0;
+  for(InputIterator i = cbegin; i != cend; i++)
+  {
+    sum += *i;
+  }
+  return sum;
+}
 
 #endif /* CHECKSUM_HPP */

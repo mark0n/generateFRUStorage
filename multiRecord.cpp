@@ -17,7 +17,7 @@ multiRecord::multiRecord(uint8_t typeId, std::vector<uint8_t> payload) : headerR
 };
 
 void multiRecord::updateRecordChecksum() {
-  header->recordChecksum = -calcChecksum(payload);
+  header->recordChecksum = -calcChecksum(payload.cbegin(), payload.cend()) & 0xff;
 };
 
 void multiRecord::updateHeaderChecksum() {

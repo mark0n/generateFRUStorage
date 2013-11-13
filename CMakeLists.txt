@@ -8,10 +8,10 @@ enable_testing()
 
 find_package(Boost COMPONENTS date_time unit_test_framework)
 
-add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea checksum.cpp varLengthLangCodeField.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
+add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea varLengthLangCodeField.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
 
-add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp commonHeader.cpp boardInfoArea.cpp checksum.cpp varLengthLangCodeField.cpp varLengthField.cpp)
+add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp commonHeader.cpp boardInfoArea.cpp varLengthLangCodeField.cpp varLengthField.cpp)
 target_link_libraries(testGenerateFRUStorage ${Boost_LIBRARIES})
 
 function(get_tests parent_tests target)
@@ -35,4 +35,4 @@ function(add_boost_tests target)
         endforeach()
 endfunction()
 
-add_boost_tests(testGenerateFRUStorage SOURCES testGenerateFRUStorage.cpp varLengthLangCodeFieldTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp)
+add_boost_tests(testGenerateFRUStorage SOURCES testGenerateFRUStorage.cpp checksumTests.cpp varLengthLangCodeFieldTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp)
