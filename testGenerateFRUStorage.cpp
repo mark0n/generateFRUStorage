@@ -13,6 +13,6 @@ std::vector<uint8_t> applyMask(std::vector<uint8_t> data, std::vector<uint8_t> m
   return data;
 }
 
-#include "varLengthFieldTests.cpp"
+#include "varLengthLangCodeFieldTests.cpp"
 #include "commonHeaderTests.cpp"
 #include "boardInfoAreaTests.cpp"

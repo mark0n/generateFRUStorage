@@ -35,4 +35,4 @@ function(add_boost_tests target)
         endforeach()
 endfunction()
 
-add_boost_tests(testGenerateFRUStorage SOURCES testGenerateFRUStorage.cpp varLengthLangCodeField.cpp varLengthField.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp)
+add_boost_tests(testGenerateFRUStorage SOURCES testGenerateFRUStorage.cpp varLengthLangCodeFieldTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp)
