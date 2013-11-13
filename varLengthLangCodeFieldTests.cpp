@@ -63,6 +63,15 @@ BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetStringEmpty )
   }
 }
 
+BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetStringMaxLength )
+{
+  varLengthLangCodeField vlf;
+  std::string longString( 63, 'X' );
+  vlf.setString( longString );
+  BOOST_CHECK_EQUAL( vlf.getString().size() , 63);
+  BOOST_CHECK_EQUAL( vlf.size(), 64 );
+}
+
 BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldTooLong )
 {
   varLengthLangCodeField vlf;
