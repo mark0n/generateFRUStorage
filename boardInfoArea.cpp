@@ -11,6 +11,7 @@ boardInfoArea::boardInfoArea() {
   data.formatVersion = 1;
   data.formatVersionPad = 0;
   data.areaLength = 2;
+  data.languageCode = 0;
   data.mfgDateTime[0] = 0;
   data.mfgDateTime[1] = 0;
   data.mfgDateTime[2] = 0;
