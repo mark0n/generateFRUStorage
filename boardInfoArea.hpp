@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include "varLengthField.hpp"
+#include "varLengthLangCodeField.hpp"
 
 struct boardInfoAreaData {
   uint8_t formatVersion : 4;
@@ -16,11 +16,11 @@ struct boardInfoAreaData {
 
 class boardInfoArea {
   struct boardInfoAreaData data;
-  varLengthField manufacturer;
-  varLengthField productName;
-  varLengthField serialNumber;
-  varLengthField partNumber;
-  varLengthField fruFileId;
+  varLengthLangCodeField manufacturer;
+  varLengthLangCodeField productName;
+  varLengthLangCodeField serialNumber;
+  varLengthLangCodeField partNumber;
+  varLengthLangCodeField fruFileId;
   static const boost::posix_time::ptime epoch;
   void updateAreaLength();
 public :

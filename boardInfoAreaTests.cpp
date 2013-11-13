@@ -20,17 +20,19 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetMethods )
   BOOST_CHECK_EQUAL( bia.getSerialNumber(), "" );
   BOOST_CHECK_EQUAL( bia.getPartNumber(), "" );
   BOOST_CHECK_EQUAL( bia.getFRUFileId(), "" );
-  BOOST_CHECK_EQUAL( bia.getChecksum(), 0x3c );
+  BOOST_CHECK_EQUAL( bia.getChecksum(), 0x7c );
   BOOST_CHECK_EQUAL( bia.size(), 16 );
 }
 
 BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetBinaryData )
 {
   boardInfoArea bia;
-  std::vector<uint8_t> manResult = { 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x3c };
+  std::vector<uint8_t> manResult =   { 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x7c };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -46,10 +48,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetLanguageCode )
   boardInfoArea bia;
   bia.setLanguageCode( 25 );
   BOOST_CHECK( bia.getLanguageCode() == 25 );
-  std::vector<uint8_t> manResult = { 0x01, 0x02, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x23 };
+  std::vector<uint8_t> manResult =   { 0x01, 0x02, 0x19, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x63 };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -66,10 +70,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetMfgDateTime )
   boost::posix_time::ptime dt(boost::posix_time::time_from_string("2013-11-06 16:45:00.000"));
   bia.setMfgDateTime( dt );
   BOOST_CHECK( bia.getMfgDateTime() == dt );
-  std::vector<uint8_t> manResult = { 0x01, 0x02, 0x00, 0x4d, 0x41, 0x8f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x1f };
+  std::vector<uint8_t> manResult =   { 0x01, 0x02, 0x00, 0x4d, 0x41, 0x8f, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x5f };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0x3f, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -86,10 +92,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetManufacturerName )
   std::string manufacturerName("Manufacturer Name");
   bia.setManufacturer( manufacturerName );
   BOOST_CHECK( bia.getManufacturer() == manufacturerName );
-  std::vector<uint8_t> manResult = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x11, 'M', 'a', 'n', 'u', 'f', 'a', 'c', 't', 'u', 'r', 'e', 'r', ' ', 'N', 'a', 'm', 'e', 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0xdb };
+  std::vector<uint8_t> manResult =   { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x11, 'M',  'a',  'n',  'u',  'f',  'a',  'c',  't',  'u',  'r',  'e',  'r',  ' ',  'N',  'a',  'm',  'e',  0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0xdb };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff,        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0x3f, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -106,10 +114,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetProductName )
   std::string productName("Product Name");
   bia.setProductName( productName );
   BOOST_CHECK( bia.getProductName() == productName );
-  std::vector<uint8_t> manResult = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0c, 'P', 'r', 'o', 'd', 'u', 'c', 't', ' ', 'N', 'a', 'm', 'e', 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xec };
+  std::vector<uint8_t> manResult =   { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0c, 'P',  'r',  'o',  'd',  'u',  'c',  't',  ' ',  'N',  'a',  'm',  'e',  0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xec };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff,        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -126,10 +136,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetSerialNumber )
   std::string serialNumber("Serial Number");
   bia.setSerialNumber( serialNumber );
   BOOST_CHECK( bia.getSerialNumber() == serialNumber );
-  std::vector<uint8_t> manResult = { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0d, 'S', 'e', 'r', 'i', 'a', 'l', ' ', 'N', 'u', 'm', 'b', 'e', 'r', 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84 };
+  std::vector<uint8_t> manResult =   { 0x01, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0d, 'S',  'e',  'r',  'i',  'a',  'l',  ' ',  'N',  'u',  'm',  'b',  'e',  'r',  0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x84 };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0xff,        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -146,10 +158,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetBoardPartNumber )
   std::string partNumber("Part Number");
   bia.setPartNumber( partNumber );
   BOOST_CHECK( bia.getPartNumber() == partNumber );
-  std::vector<uint8_t> manResult = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0b, 'P', 'a', 'r', 't', ' ', 'N', 'u', 'm', 'b', 'e', 'r', 0x00, 0xc1, 0x50 };
+  std::vector<uint8_t> manResult =   { 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0b, 'P',  'a',  'r',  't',  ' ',  'N',  'u',  'm',  'b',  'e',  'r',  0x00, 0xc1, 0x50 };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0xff,        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
@@ -166,10 +180,12 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetFRUFileId )
   std::string fruFileId("FRU File Id");
   bia.setFRUFileId( fruFileId );
   BOOST_CHECK( bia.getFRUFileId() == fruFileId );
-  std::vector<uint8_t> manResult = { 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0b, 'F', 'R', 'U', ' ', 'F', 'i', 'l', 'e', ' ', 'I', 'd', 0xc1, 0x16 };
+  std::vector<uint8_t> manResult =   { 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc0 + 0x0b, 'F',  'R',  'U',  ' ',  'F',  'i',  'l',  'e',  ' ',  'I',  'd',  0xc1, 0x16 };
+  std::vector<uint8_t> compareMask = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0x3f, 0x3f, 0x3f, 0x3f, 0xff,        0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
   std::vector<uint8_t> autoResult = bia.getBinaryData();
-  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
-  if( autoResult != manResult )
+  std::vector<uint8_t> autoResultMasked = applyMask(autoResult, compareMask);
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResultMasked.cbegin(), autoResultMasked.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResultMasked != manResult )
   {
     std::cout << "should be: ";
     std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));

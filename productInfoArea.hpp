@@ -1,7 +1,7 @@
 #ifndef PRODUCTINFOAREA_HPP
 #define PRODUCTINFOAREA_HPP
 
-#include "varLengthField.hpp"
+#include "varLengthLangCodeField.hpp"
 #include <cstdint>
 #include <vector>
 
@@ -15,13 +15,13 @@ struct productInfoAreaData {
 class productInfoArea {
   std::vector<uint8_t> rawData;
   struct productInfoAreaData *data;
-  varLengthField manufacturer;
-  varLengthField productName;
-  varLengthField partNumber;
-  varLengthField version;
-  varLengthField serialNumber;
-  varLengthField assertTag;
-  varLengthField fruFileId;
+  varLengthLangCodeField manufacturer;
+  varLengthLangCodeField productName;
+  varLengthLangCodeField partNumber;
+  varLengthLangCodeField version;
+  varLengthLangCodeField serialNumber;
+  varLengthLangCodeField assertTag;
+  varLengthLangCodeField fruFileId;
 public :
   productInfoArea();
   uint8_t getFormatVersion();
