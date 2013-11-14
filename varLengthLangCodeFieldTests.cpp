@@ -4,13 +4,13 @@
 
 BOOST_AUTO_TEST_SUITE( varLengthLangCodeFieldTests )
 
-BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldDefaultConstructorGetString )
+BOOST_AUTO_TEST_CASE( defaultConstructorGetString )
 {
   varLengthLangCodeField vlf;
   BOOST_CHECK_EQUAL( vlf.getString(), std::string() );
 }
 
-BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldDefaultConstructorGetBinaryData )
+BOOST_AUTO_TEST_CASE( defaultConstructorGetBinaryData )
 {
   varLengthLangCodeField vlf;
   std::vector<uint8_t> manResult = { 0x00 };
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldDefaultConstructorGetBinaryData )
   }
 }
 
-BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetString )
+BOOST_AUTO_TEST_CASE( setString )
 {
   varLengthLangCodeField vlf;
   vlf.setString("Test string");
@@ -47,7 +47,7 @@ BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetString )
   }
 }
 
-BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetStringEmpty )
+BOOST_AUTO_TEST_CASE( setStringEmpty )
 {
   varLengthLangCodeField vlf;
   vlf.setString("");
@@ -65,7 +65,7 @@ BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetStringEmpty )
   }
 }
 
-BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetStringMaxLength )
+BOOST_AUTO_TEST_CASE( setStringMaxLength )
 {
   varLengthLangCodeField vlf;
   std::string longString( 63, 'X' );
@@ -74,7 +74,7 @@ BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldSetStringMaxLength )
   BOOST_CHECK_EQUAL( vlf.size(), 64 );
 }
 
-BOOST_AUTO_TEST_CASE( varLengthLangCodeFieldTooLong )
+BOOST_AUTO_TEST_CASE( tooLong )
 {
   varLengthLangCodeField vlf;
   std::string tooLong( 64, 'X' );

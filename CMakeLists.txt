@@ -36,4 +36,4 @@ function(add_boost_tests target)
         endforeach()
 endfunction()
 
-add_boost_tests(testGenerateFRUStorage)
+# add_boost_tests(testGenerateFRUStorage)

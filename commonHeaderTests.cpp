@@ -3,12 +3,12 @@
 
 BOOST_AUTO_TEST_SUITE( commonHeaderTests )
 
-BOOST_AUTO_TEST_CASE( commonHeaderConstructor )
+BOOST_AUTO_TEST_CASE( constructor )
 {
   commonHeader ch;
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderDefaultConstructorGetMethods )
+BOOST_AUTO_TEST_CASE( defaultConstructorGetMethods )
 {
   commonHeader ch;
   BOOST_CHECK_EQUAL( ch.getFormatVersion(), 1 );
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_CASE( commonHeaderDefaultConstructorGetMethods )
   BOOST_CHECK_EQUAL( ch.size(), 8 );
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderDefaultConstructorGetBinaryData )
+BOOST_AUTO_TEST_CASE( defaultConstructorGetBinaryData )
 {
   commonHeader ch;
   std::vector<uint8_t> manResult = { 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff };
@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( commonHeaderDefaultConstructorGetBinaryData )
   BOOST_CHECK( autoResult == manResult );
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderSetInternalUseAreaOffset )
+BOOST_AUTO_TEST_CASE( setInternalUseAreaOffset )
 {
   commonHeader ch;
   ch.setInternalUseAreaOffset( 0xd3 );
@@ -39,7 +39,7 @@ BOOST_AUTO_TEST_CASE( commonHeaderSetInternalUseAreaOffset )
   BOOST_CHECK( autoResult == manResult );
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderSetChassisInfoAreaOffset )
+BOOST_AUTO_TEST_CASE( setChassisInfoAreaOffset )
 {
   commonHeader ch;
   ch.setChassisInfoAreaOffset( 0xd3 );
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( commonHeaderSetChassisInfoAreaOffset )
   BOOST_CHECK( autoResult == manResult );
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderSetBoardAreaOffset )
+BOOST_AUTO_TEST_CASE( setBoardAreaOffset )
 {
   commonHeader ch;
   ch.setBoardAreaOffset( 0xd3 );
@@ -59,7 +59,7 @@ BOOST_AUTO_TEST_CASE( commonHeaderSetBoardAreaOffset )
   BOOST_CHECK( autoResult == manResult );
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderSetProductInfoAreaOffset )
+BOOST_AUTO_TEST_CASE( setProductInfoAreaOffset )
 {
   commonHeader ch;
   ch.setProductInfoAreaOffset( 0xd3 );
@@ -69,7 +69,7 @@ BOOST_AUTO_TEST_CASE( commonHeaderSetProductInfoAreaOffset )
   BOOST_CHECK( autoResult == manResult );
 }
 
-BOOST_AUTO_TEST_CASE( commonHeaderSetMultiRecordAreaOffset )
+BOOST_AUTO_TEST_CASE( setMultiRecordAreaOffset )
 {
   commonHeader ch;
   ch.setMultiRecordAreaOffset( 0xd3 );

@@ -5,12 +5,12 @@
 
 BOOST_AUTO_TEST_SUITE( boardInfoAreaTests )
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaConstructor )
+BOOST_AUTO_TEST_CASE( constructor )
 {
   boardInfoArea bia;
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetMethods )
+BOOST_AUTO_TEST_CASE( defaultConstructorGetMethods )
 {
   boardInfoArea bia;
   BOOST_CHECK_EQUAL( bia.getFormatVersion(), 1 );
@@ -26,7 +26,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetMethods )
   BOOST_CHECK_EQUAL( bia.size(), 16 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetBinaryData )
+BOOST_AUTO_TEST_CASE( defaultConstructorGetBinaryData )
 {
   boardInfoArea bia;
   std::vector<uint8_t> manResult =   { 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xc1, 0x00, 0x00, 0x00, 0x7c };
@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaDefaultConstructorGetBinaryData )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetLanguageCode )
+BOOST_AUTO_TEST_CASE( setLanguageCode )
 {
   boardInfoArea bia;
   bia.setLanguageCode( 25 );
@@ -66,7 +66,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetLanguageCode )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetMfgDateTime )
+BOOST_AUTO_TEST_CASE( setMfgDateTime )
 {
   boardInfoArea bia;
   boost::posix_time::ptime dt(boost::posix_time::time_from_string("2013-11-06 16:45:00.000"));
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetMfgDateTime )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetManufacturerName )
+BOOST_AUTO_TEST_CASE( setManufacturerName )
 {
   boardInfoArea bia;
   std::string manufacturerName("Manufacturer Name");
@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetManufacturerName )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetProductName )
+BOOST_AUTO_TEST_CASE( setProductName )
 {
   boardInfoArea bia;
   std::string productName("Product Name");
@@ -132,7 +132,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetProductName )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetSerialNumber )
+BOOST_AUTO_TEST_CASE( setSerialNumber )
 {
   boardInfoArea bia;
   std::string serialNumber("Serial Number");
@@ -154,7 +154,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetSerialNumber )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetBoardPartNumber )
+BOOST_AUTO_TEST_CASE( setBoardPartNumber )
 {
   boardInfoArea bia;
   std::string partNumber("Part Number");
@@ -176,7 +176,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetBoardPartNumber )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSetFRUFileId )
+BOOST_AUTO_TEST_CASE( setFRUFileId )
 {
   boardInfoArea bia;
   std::string fruFileId("FRU File Id");
@@ -198,70 +198,70 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSetFRUFileId )
   }
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaBinarySize16 )
+BOOST_AUTO_TEST_CASE( binarySize16 )
 {
   boardInfoArea bia;
   bia.setManufacturer( "XXX" );
   BOOST_CHECK_EQUAL( bia.getBinaryData().size(), 16 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSize16 )
+BOOST_AUTO_TEST_CASE( size16 )
 {
   boardInfoArea bia;
   bia.setManufacturer( "XXX" );
   BOOST_CHECK_EQUAL( bia.size(), 16 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaLength16 )
+BOOST_AUTO_TEST_CASE( length16 )
 {
   boardInfoArea bia;
   bia.setManufacturer( "XXX" );
   BOOST_CHECK_EQUAL( 8 * bia.getBoardAreaLength(), 16 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaBinarySize24 )
+BOOST_AUTO_TEST_CASE( binarySize24 )
 {
   boardInfoArea bia;
   bia.setManufacturer( "XXXX" );
   BOOST_CHECK_EQUAL( bia.getBinaryData().size(), 24 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSize24 )
+BOOST_AUTO_TEST_CASE( size24 )
 {
   boardInfoArea bia;
   bia.setManufacturer( "XXXX" );
   BOOST_CHECK_EQUAL( bia.size(), 24 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaLength24 )
+BOOST_AUTO_TEST_CASE( length24 )
 {
   boardInfoArea bia;
   bia.setManufacturer( "XXXX" );
   BOOST_CHECK_EQUAL( 8 * bia.getBoardAreaLength(), 24 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaBinarySize80 )
+BOOST_AUTO_TEST_CASE( binarySize80 )
 {
   boardInfoArea bia;
   bia.setManufacturer( std::string( 63, 'X' ) );
   BOOST_CHECK_EQUAL( bia.getBinaryData().size(), 80 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSize80 )
+BOOST_AUTO_TEST_CASE( size80 )
 {
   boardInfoArea bia;
   bia.setManufacturer( std::string( 63, 'X' ) );
   BOOST_CHECK_EQUAL( bia.size(), 80 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaLength80 )
+BOOST_AUTO_TEST_CASE( length80 )
 {
   boardInfoArea bia;
   bia.setManufacturer( std::string( 63, 'X' ) );
   BOOST_CHECK_EQUAL( 8 * bia.getBoardAreaLength(), 80 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaBinarySizeMaximum )
+BOOST_AUTO_TEST_CASE( binarySizeMaximum )
 {
   boardInfoArea bia;
   bia.setManufacturer( std::string( 63, 'X' ) );
@@ -271,7 +271,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaBinarySizeMaximum )
   BOOST_CHECK_EQUAL( bia.getBinaryData().size(), 248 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaSizeMaximum )
+BOOST_AUTO_TEST_CASE( sizeMaximum )
 {
   boardInfoArea bia;
   bia.setManufacturer( std::string( 63, 'X' ) );
@@ -281,7 +281,7 @@ BOOST_AUTO_TEST_CASE( boardInfoAreaSizeMaximum )
   BOOST_CHECK_EQUAL( bia.size(), 248 );
 }
 
-BOOST_AUTO_TEST_CASE( boardInfoAreaLengthMaximum )
+BOOST_AUTO_TEST_CASE( lengthMaximum )
 {
   boardInfoArea bia;
   bia.setManufacturer( std::string( 63, 'X' ) );
