@@ -1,4 +1,6 @@
 #include "boardInfoArea.hpp"
+#include "testUtils.hpp"
+#include <boost/test/unit_test.hpp>
 #include <boost/date_time/posix_time/posix_time.hpp>
 
 BOOST_AUTO_TEST_SUITE( boardInfoAreaTests )
