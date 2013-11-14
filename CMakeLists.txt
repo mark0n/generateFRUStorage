@@ -32,7 +32,7 @@ endfunction()
 function(add_boost_tests target)
         get_tests(tests ${target})
         foreach(test ${tests})
-                add_test(NAME ${target}-${test} COMMAND ${target} --run-test=${test})
+                add_test(NAME ${target}-${test} COMMAND ${target} --run_test=${test})
         endforeach()
 endfunction()
 
