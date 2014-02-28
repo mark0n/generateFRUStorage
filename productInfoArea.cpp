@@ -23,8 +23,8 @@ std::string productInfoArea::getVersion() { return version.getString(); };
 void productInfoArea::setVersion(std::string str) { version.setString(str); };
 std::string productInfoArea::getSerialNumber() { return serialNumber.getString(); };
 void productInfoArea::setSerialNumber(std::string str) { serialNumber.setString(str); };
-std::string productInfoArea::getAssertTag() { return assertTag.getString(); };
-void productInfoArea::setAssertTag(std::string str) { assertTag.setString(str); };
+std::string productInfoArea::getAssetTag() { return assetTag.getString(); };
+void productInfoArea::setAssetTag(std::string str) { assetTag.setString(str); };
 std::string productInfoArea::getFRUFileId() { return fruFileId.getString(); };
 void productInfoArea::setFRUFileId(std::string str) { fruFileId.setString(str); };
 
@@ -39,7 +39,7 @@ std::vector<uint8_t> productInfoArea::getBinaryData() {
   std::vector<uint8_t> partNumberVec = partNumber.getBinaryData();
   std::vector<uint8_t> versionVec = version.getBinaryData();
   std::vector<uint8_t> serialNumberVec = serialNumber.getBinaryData();
-  std::vector<uint8_t> assertTagVec = assertTag.getBinaryData();
+  std::vector<uint8_t> assetTagVec = assetTag.getBinaryData();
   std::vector<uint8_t> fruFileIdVec = fruFileId.getBinaryData();
 
   rawData.resize(sizeof(*data));
@@ -48,7 +48,7 @@ std::vector<uint8_t> productInfoArea::getBinaryData() {
   rawData.insert(rawData.end(), partNumberVec.begin(), partNumberVec.end());
   rawData.insert(rawData.end(), versionVec.begin(), versionVec.end());
   rawData.insert(rawData.end(), serialNumberVec.begin(), serialNumberVec.end());
-  rawData.insert(rawData.end(), assertTagVec.begin(), assertTagVec.end());
+  rawData.insert(rawData.end(), assetTagVec.begin(), assetTagVec.end());
   rawData.insert(rawData.end(), fruFileIdVec.begin(), fruFileIdVec.end());
   rawData.insert(rawData.end(), 0xC1);
 

@@ -20,7 +20,7 @@ class productInfoArea {
   varLengthLangCodeField partNumber;
   varLengthLangCodeField version;
   varLengthLangCodeField serialNumber;
-  varLengthLangCodeField assertTag;
+  varLengthLangCodeField assetTag;
   varLengthLangCodeField fruFileId;
 public :
   productInfoArea();
@@ -38,8 +38,8 @@ public :
   void setVersion(std::string str);
   std::string getSerialNumber();
   void setSerialNumber(std::string str);
-  std::string getAssertTag();
-  void setAssertTag(std::string str);
+  std::string getAssetTag();
+  void setAssetTag(std::string str);
   std::string getFRUFileId();
   void setFRUFileId(std::string str);
   uint8_t getChecksum();
