@@ -13,8 +13,7 @@ struct productInfoAreaData {
 };
 
 class productInfoArea {
-  std::vector<uint8_t> rawData;
-  struct productInfoAreaData *data;
+  struct productInfoAreaData data;
   varLengthLangCodeField manufacturer;
   varLengthLangCodeField productName;
   varLengthLangCodeField partNumber;
