@@ -24,6 +24,7 @@ class productInfoArea {
   varLengthLangCodeField fruFileId;
 public :
   productInfoArea();
+  void updateAreaLength();
   uint8_t getFormatVersion();
   uint8_t getProductAreaLength(); // in multiples of 8 bytes
   uint8_t getLanguageCode();

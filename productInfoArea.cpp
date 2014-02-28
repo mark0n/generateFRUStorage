@@ -5,11 +5,23 @@
 productInfoArea::productInfoArea() : rawData(13) {
   data = (struct productInfoAreaData *)rawData.data();
   data->formatVersion = 1;
-  data->areaLength = 1;
+  data->areaLength = 2;
+  data->languageCode = 0;
+}
+
+void productInfoArea::updateAreaLength()
+{
+  data = (struct productInfoAreaData *)rawData.data();
+  int length = sizeof(*data) + manufacturer.size() + productName.size() + partNumber.size() + version.size() + serialNumber.size() + assetTag.size() + fruFileId.size() + 2;
+  if( length % 8 ) {
+    data->areaLength = length / 8 + 1;
+  } else {
+    data->areaLength = length / 8;
+  }
 }
 
 uint8_t productInfoArea::getFormatVersion() { data = (struct productInfoAreaData *)rawData.data(); return data->formatVersion; };
-uint8_t productInfoArea::getProductAreaLength() { data = (struct productInfoAreaData *)rawData.data(); return data->areaLength; };
+uint8_t productInfoArea::getProductAreaLength() { updateAreaLength(); return data->areaLength; };
 uint8_t productInfoArea::getLanguageCode() { data = (struct productInfoAreaData *)rawData.data(); return data->languageCode; };
 void productInfoArea::setLanguageCode(uint8_t lang) { data = (struct productInfoAreaData *)rawData.data(); data->languageCode = lang; };
 std::string productInfoArea::getManufacturer() { return manufacturer.getString(); };
@@ -28,11 +40,11 @@ std::string productInfoArea::getFRUFileId() { return fruFileId.getString(); };
 void productInfoArea::setFRUFileId(std::string str) { fruFileId.setString(str); };
 
 uint8_t productInfoArea::getChecksum() {
-  updateAreaChecksum(rawData.begin(), rawData.end());
-  return rawData.back();
+  return getBinaryData().back();
 }
 
 std::vector<uint8_t> productInfoArea::getBinaryData() {
+  updateAreaLength();
   std::vector<uint8_t> manufacturerVec = manufacturer.getBinaryData();
   std::vector<uint8_t> productNameVec = productName.getBinaryData();
   std::vector<uint8_t> partNumberVec = partNumber.getBinaryData();
@@ -50,15 +62,9 @@ std::vector<uint8_t> productInfoArea::getBinaryData() {
   rawData.insert(rawData.end(), assetTagVec.begin(), assetTagVec.end());
   rawData.insert(rawData.end(), fruFileIdVec.begin(), fruFileIdVec.end());
   rawData.insert(rawData.end(), 0xC1);
-
-  std::vector<uint8_t> padVec;
-  if(rawData.size() % 8 != 0) {
-    padVec.resize(8 - rawData.size() % 8);
-  }
-  rawData.insert(rawData.end(), padVec.begin(), padVec.end());
- 
   data = (struct productInfoAreaData *)rawData.data();
-  data->areaLength = rawData.size() / 8;
+  rawData.resize(8 * data->areaLength, 0); // fill rest of vector with zeros (padding)
+ 
   updateAreaChecksum(rawData.begin(), rawData.end());
   return rawData;
 }
