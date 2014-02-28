@@ -81,7 +81,6 @@ std::vector<uint8_t> boardInfoArea::getBinaryData() {
 }
 
 void boardInfoArea::printData() {
-  updateAreaChecksum( (uint8_t *)&data, (uint8_t *)(&data + 1) );
   std::cout << "Board Area Format Version: " << std::dec << (unsigned int)data.formatVersion << std::endl;
   std::cout << "Board Area Length: " << (unsigned int)data.areaLength << std::endl;
   std::cout << "Language Code: " << (unsigned int)data.languageCode << std::endl;
