@@ -1,7 +1,6 @@
 #include "productInfoArea.hpp"
 #include "checksum.hpp"
 #include <iostream>
-#include <ctime>
 
 productInfoArea::productInfoArea() : rawData(13) {
   data = (struct productInfoAreaData *)rawData.data();
