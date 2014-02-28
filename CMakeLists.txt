@@ -12,7 +12,7 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea varLengthLangCodeField.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
 
-add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp testUtils.cpp checksumTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp varLengthLangCodeFieldTests.cpp commonHeader.cpp boardInfoArea.cpp varLengthLangCodeField.cpp varLengthField.cpp)
+add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp testUtils.cpp checksumTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp productInfoAreaTests.cpp varLengthLangCodeFieldTests.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea.cpp varLengthLangCodeField.cpp varLengthField.cpp)
 target_link_libraries(testGenerateFRUStorage ${Boost_LIBRARIES})
 
 function(get_tests parent_tests target)
