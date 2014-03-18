@@ -45,7 +45,22 @@ else(SRECCAT_FOUND)
   message(WARNING "srec_cat not found, skipping generation of hex file")
 endif(SRECCAT_FOUND)
 
-add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp testUtils.cpp checksumTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp productInfoAreaTests.cpp varLengthLangCodeFieldTests.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea.cpp varLengthLangCodeField.cpp varLengthField.cpp)
+set(TEST_COMPONENTS
+  testGenerateFRUStorage.cpp
+  testUtils.cpp 
+  checksumTests.cpp
+  commonHeaderTests.cpp
+  boardInfoAreaTests.cpp
+  productInfoAreaTests.cpp
+  varLengthLangCodeFieldTests.cpp
+  commonHeader.cpp
+  boardInfoArea.cpp
+  productInfoArea.cpp
+  varLengthLangCodeField.cpp
+  varLengthField.cpp
+)
+
+add_executable(testGenerateFRUStorage ${TEST_COMPONENTS})
 target_link_libraries(testGenerateFRUStorage ${Boost_LIBRARIES})
 
 function(get_tests parent_tests target)
