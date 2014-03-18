@@ -1,8 +1,14 @@
 #include "multiRecord.hpp"
 #include "checksum.hpp"
 #include <iostream>
+#include <sstream>
 
 multiRecord::multiRecord(uint8_t typeId, std::vector<uint8_t> payload) : headerRawData(sizeof(*header)) {
+  if(payload.size() > UINT8_MAX) {
+    std::stringstream ss;
+    ss << "Payload data exceeds allowed length of " << UINT8_MAX << " bytes!";
+    throw std::runtime_error(ss.str());
+  }
   header = (struct multiRecordHeader *)headerRawData.data();
   header->recordTypeId = typeId;
   header->recordFormatVersion = 2;
