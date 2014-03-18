@@ -37,6 +37,7 @@ int main() {
   bia.setProductName("FRIB General Purpose Digital Board");
   bia.setSerialNumber("testBoardSerialNumber");
   bia.setPartNumber("testBoardPartNumber");
+  bia.setFRUFileId("testFRUFileId");
 
   assert(ch.size() % 8 == 0);
   assert(bia.size() % 8 == 0);
@@ -48,6 +49,8 @@ int main() {
   pia.setPartNumber("testProductPartNumber");
   pia.setVersion("testProductVersion");
   pia.setSerialNumber("testProductSerialNumber");
+  pia.setAssetTag("testAssetTag");
+  pia.setFRUFileId("testFRUFileId");
 
   assert(ch.size() % 8 == 0);
   assert(bia.size() % 8 == 0);
