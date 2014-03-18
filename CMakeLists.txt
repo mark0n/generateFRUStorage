@@ -9,8 +9,41 @@ enable_testing()
 find_package(Boost COMPONENTS date_time unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
+find_package(Sreccat)
+
 add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea varLengthLangCodeField.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
+
+add_custom_command(
+  OUTPUT fru_data.bin
+  COMMAND ./generateFRUStorage
+  DEPENDS generateFRUStorage
+  COMMENT "Generating binary FRU data file"
+  VERBATIM
+)
+
+add_custom_target(
+  binFile ALL
+  DEPENDS fru_data.bin
+)
+
+if(SRECCAT_FOUND)
+  add_custom_command(
+    DEPENDS fru_data.bin
+    OUTPUT fru_data.hex
+    COMMAND srec_cat fru_data.bin -binary -output fru_data.hex -intel
+    COMMENT "Converting FRU data file to Intel hex format"
+    VERBATIM
+  )
+
+  add_custom_target(
+    hexFile ALL
+    DEPENDS fru_data.hex
+  )
+else(SRECCAT_FOUND)
+  message(WARNING "srec_cat not found, skipping generation of hex file")
+endif(SRECCAT_FOUND)
 
 add_executable(testGenerateFRUStorage testGenerateFRUStorage.cpp testUtils.cpp checksumTests.cpp commonHeaderTests.cpp boardInfoAreaTests.cpp productInfoAreaTests.cpp varLengthLangCodeFieldTests.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea.cpp varLengthLangCodeField.cpp varLengthField.cpp)
 target_link_libraries(testGenerateFRUStorage ${Boost_LIBRARIES})
