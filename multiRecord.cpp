@@ -2,12 +2,6 @@
 #include "checksum.hpp"
 #include <iostream>
 
-multiRecord::multiRecord() : headerRawData(sizeof(*header)) {
-  header = (struct multiRecordHeader *)headerRawData.data();
-  header->recordFormatVersion = 2;
-  header->recordLength = 0;
-};
-
 multiRecord::multiRecord(uint8_t typeId, std::vector<uint8_t> payload) : headerRawData(sizeof(*header)) {
   header = (struct multiRecordHeader *)headerRawData.data();
   header->recordTypeId = typeId;

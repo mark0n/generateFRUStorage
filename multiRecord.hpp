@@ -27,7 +27,6 @@ protected :
   void updateRecordChecksum();
   void updateHeaderChecksum();
 public :
-  multiRecord();
   multiRecord(uint8_t typeId, std::vector<uint8_t> payload);
   uint8_t getFormatVersion();
   uint8_t getEndOfList();
