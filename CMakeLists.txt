@@ -52,10 +52,12 @@ set(TEST_COMPONENTS
   commonHeaderTests.cpp
   boardInfoAreaTests.cpp
   productInfoAreaTests.cpp
+  multiRecordTests.cpp
   varLengthLangCodeFieldTests.cpp
   commonHeader.cpp
   boardInfoArea.cpp
   productInfoArea.cpp
+  multiRecord.cpp
   varLengthLangCodeField.cpp
   varLengthField.cpp
 )
