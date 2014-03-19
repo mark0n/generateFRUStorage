@@ -5,6 +5,7 @@
 #include "amcChannelDescriptor.hpp"
 #include "amcLinkDescriptor.hpp"
 #include <list>
+#include <cstdint>
 
 struct amcPtPConnectivityRecordHeader {
   uint8_t manufacturerId[3];

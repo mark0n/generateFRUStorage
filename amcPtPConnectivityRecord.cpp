@@ -3,27 +3,32 @@
 #include <iostream>
 #include <algorithm>
 #include <functional>
+#include <sstream>
 
-#define AMC_PTP_CONNECTIVITY_RECORD_PICMG_RECORD_ID 0x19
-#define AMC_PTP_CONNECTIVITY_RECORD_FORMAT_VERSION 0x00
-#define AMC_PTP_CONNECTIVITY_RECORD_TYPE 0x80
+const uint8_t amcPtPConnectivityRecordPICMGRecordId = 0x19;
+const uint8_t amcPtPConnectivityRecordFormatVersion = 0x00;
+const uint8_t amcPtPConnectivityRecordType = 0x80;
 
 amcPtPConnectivityRecord::amcPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())
 {
-  if(chDescrs.size() > 255) {
-    throw std::length_error("list chDescrs exceeds maximum allowed length of 255 entries");
+  if(chDescrs.size() > UINT8_MAX) {
+    std::stringstream ss;
+    ss << "list chDescrs exceeds maximum allowed length of " << UINT8_MAX << " entries";
+    throw std::length_error( ss.str() );
   }
-  if(lnkDescrs.size() > 255) {
-    throw std::length_error("list lnkDescrs exceeds maximum allowed length of 255 entries");
+  if(lnkDescrs.size() > UINT8_MAX) {
+    std::stringstream ss;
+    ss << "list lnkDescrs exceeds maximum allowed length of " << UINT8_MAX << " entries";
+    throw std::length_error( ss.str() );
   }
 
-  recordType = AMC_PTP_CONNECTIVITY_RECORD_TYPE;
+  recordType = amcPtPConnectivityRecordType;
   ptPConnRecHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   ptPConnRecHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
   ptPConnRecHeader.manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
-  ptPConnRecHeader.picmgRecordId = AMC_PTP_CONNECTIVITY_RECORD_PICMG_RECORD_ID;
-  ptPConnRecHeader.recordFormatVersion = AMC_PTP_CONNECTIVITY_RECORD_FORMAT_VERSION;
+  ptPConnRecHeader.picmgRecordId = amcPtPConnectivityRecordPICMGRecordId;
+  ptPConnRecHeader.recordFormatVersion = amcPtPConnectivityRecordFormatVersion;
   ptPConnRecHeader.oemGuidCount = 0;
 
   amcChannelDescriptors = chDescrs;
@@ -40,8 +45,10 @@ void amcPtPConnectivityRecord::updateRecordLength()
   for(std::list<amcLinkDescriptor>::const_iterator li = amcLinkDescriptors.cbegin(); li != amcLinkDescriptors.cend(); li++) {
     payloadSize += li->size();
   }
-  if(payloadSize > 255) {
-    throw std::length_error("record length exceeds maximum allowed length of 255 bytes");
+  if(payloadSize > UINT8_MAX) {
+    std::stringstream ss;
+    ss << "Record length exceeds maximum allowed length of " << UINT8_MAX << " bytes!";
+    throw std::length_error( ss.str() );
   }
   header.recordLength = payloadSize;
 }
