@@ -31,12 +31,12 @@ std::vector<uint8_t> moduleCurrentRequirementsRecord::getBinaryData() {
 void moduleCurrentRequirementsRecord::printData() {
   updateRecordChecksum();
   updateHeaderChecksum();
-  std::cout << "Record Type ID: 0x" << std::hex << (unsigned int)header->recordTypeId << std::endl;
-  std::cout << "End of list: " << std::boolalpha << (bool)header->endOfList << std::endl;
-  std::cout << "Record format version: " << std::dec << (unsigned int)header->recordFormatVersion << std::endl;
-  std::cout << "Record length: " << std::dec << (unsigned int)header->recordLength << std::endl;
-  std::cout << "Record checksum: 0x" << std::hex << (unsigned int)header->recordChecksum << std::endl;
-  std::cout << "Header checksum: 0x" << std::hex << (unsigned int)header->headerChecksum << std::endl;
+  std::cout << "Record Type ID: 0x" << std::hex << (unsigned int)header.recordTypeId << std::endl;
+  std::cout << "End of list: " << std::boolalpha << (bool)header.endOfList << std::endl;
+  std::cout << "Record format version: " << std::dec << (unsigned int)header.recordFormatVersion << std::endl;
+  std::cout << "Record length: " << std::dec << (unsigned int)header.recordLength << std::endl;
+  std::cout << "Record checksum: 0x" << std::hex << (unsigned int)header.recordChecksum << std::endl;
+  std::cout << "Header checksum: 0x" << std::hex << (unsigned int)header.headerChecksum << std::endl;
   const unsigned int manId = data.manufacturerId[2] << 16 | data.manufacturerId[1] << 8 | data.manufacturerId[0];
   std::cout << "Manufacturer ID: 0x" << std::hex << manId << std::endl;
   std::cout << "PICMG Record ID: 0x" << std::hex << (unsigned int)data.picmgRecordId << std::endl;
