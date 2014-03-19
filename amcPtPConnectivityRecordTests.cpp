@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE( oneChannelDescriptorGetBinaryData )
   }
 }
 
-BOOST_AUTO_TEST_CASE( oneinkDesignatorGetBinaryData )
+BOOST_AUTO_TEST_CASE( oneLinkDesignatorGetBinaryData )
 {
   std::list<amcChannelDescriptor> acl;
   std::list<amcLinkDescriptor> ald;
