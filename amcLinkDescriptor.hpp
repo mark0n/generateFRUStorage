@@ -30,8 +30,7 @@ enum amcLinkType {
 };
 
 class amcLinkDescriptor {
-  std::vector<uint8_t> rawData;
-  struct amcLnkDescrData *data;
+  struct amcLnkDescrData data;
 public :
   amcLinkDescriptor(struct amcLinkDesignator, amcLinkType lnkType, int amcLinkTypeExtension, int linkGroupingId, int amcSymmetricMatch);
   std::vector<uint8_t> getBinaryData() const;
