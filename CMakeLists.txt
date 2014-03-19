@@ -54,12 +54,16 @@ set(TEST_COMPONENTS
   productInfoAreaTests.cpp
   multiRecordTests.cpp
   moduleCurrentRequirementsRecordTests.cpp
+  amcPtPConnectivityRecordTests.cpp
   varLengthLangCodeFieldTests.cpp
   commonHeader.cpp
   boardInfoArea.cpp
   productInfoArea.cpp
   multiRecord.cpp
   moduleCurrentRequirementsRecord.cpp
+  amcChannelDescriptor.cpp
+  amcLinkDescriptor.cpp
+  amcPtPConnectivityRecord.cpp
   varLengthLangCodeField.cpp
   varLengthField.cpp
 )
