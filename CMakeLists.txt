@@ -53,11 +53,13 @@ set(TEST_COMPONENTS
   boardInfoAreaTests.cpp
   productInfoAreaTests.cpp
   multiRecordTests.cpp
+  moduleCurrentRequirementsRecordTests.cpp
   varLengthLangCodeFieldTests.cpp
   commonHeader.cpp
   boardInfoArea.cpp
   productInfoArea.cpp
   multiRecord.cpp
+  moduleCurrentRequirementsRecord.cpp
   varLengthLangCodeField.cpp
   varLengthField.cpp
 )
