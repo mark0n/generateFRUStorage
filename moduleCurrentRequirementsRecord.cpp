@@ -4,8 +4,8 @@
 #include <iostream>
 #include <iomanip>
 
-#define MODULE_PWR_DESCRIPTOR_PICMG_RECORD_ID 0x16
-#define MODULE_PWR_RECORD_FORMAT_VERSION 0
+const uint8_t modulePwrDescriptorPICMGRecordId = 0x16;
+const uint8_t modulePwrRecordFormatVersion = 0;
 
 moduleCurrentRequirementsRecord::moduleCurrentRequirementsRecord(double currentDraw) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>(sizeof(struct payloadFormat)))
@@ -13,8 +13,8 @@ moduleCurrentRequirementsRecord::moduleCurrentRequirementsRecord(double currentD
   data.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   data.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
   data.manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
-  data.picmgRecordId = MODULE_PWR_DESCRIPTOR_PICMG_RECORD_ID;
-  data.recordFormatVersion = MODULE_PWR_RECORD_FORMAT_VERSION;
+  data.picmgRecordId = modulePwrDescriptorPICMGRecordId;
+  data.recordFormatVersion = modulePwrRecordFormatVersion;
   
   if(currentDraw < 0 || currentDraw > 80.0 / 12.0) {
     throw std::invalid_argument("currentDraw invalid, payload current must be between 0 and 6.67 Ampere (cf. REQ 4.4b)");
