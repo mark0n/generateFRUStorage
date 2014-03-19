@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 project(generateFRUStorage)
 
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11 -g")
-set(CMAKE_CXX_COMPILER "clang++")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+# set(CMAKE_CXX_COMPILER "clang++")
 
 enable_testing()
 
@@ -92,3 +92,9 @@ function(add_boost_tests target)
 endfunction()
 
 add_boost_tests(testGenerateFRUStorage)
+
+if(CMAKE_BUILD_TYPE MATCHES Debug)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -W -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function -Wunused -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings -fprofile-arcs -ftest-coverage")
+  include(CodeCoverage)
+  setup_target_for_coverage(testGenerateFRUStorage_coverage testGenerateFRUStorage coverage)
+endif(CMAKE_BUILD_TYPE MATCHES Debug)
