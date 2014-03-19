@@ -55,6 +55,7 @@ set(TEST_COMPONENTS
   multiRecordTests.cpp
   moduleCurrentRequirementsRecordTests.cpp
   amcPtPConnectivityRecordTests.cpp
+  amcLinkDescriptorTests.cpp
   varLengthLangCodeFieldTests.cpp
   commonHeader.cpp
   boardInfoArea.cpp
