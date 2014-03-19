@@ -1,0 +1,56 @@
+#include "amcChannelDescriptor.hpp"
+#include "testUtils.hpp"
+#include <boost/test/unit_test.hpp>
+
+BOOST_AUTO_TEST_SUITE( amcChannelDescriptorTests )
+
+BOOST_AUTO_TEST_CASE( constructorNullPtr )
+{
+  amcChannelDescriptor acd( nullptr );
+}
+
+BOOST_AUTO_TEST_CASE( notEnoughPortNumbers )
+{
+  const int ports[] = { 0x01, 0x02, 0x03 };
+  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::out_of_range );
+}
+
+BOOST_AUTO_TEST_CASE( tooManyPortNumbers )
+{
+  const int ports[] = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::out_of_range );
+}
+
+BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
+{
+  const int ports[] = { 0x01, 0x02, 0x03, 0x04 };
+  amcChannelDescriptor acd( ports );
+  std::vector<uint8_t> manResult = { 0x41, 0x0c, 0xf2 };
+  std::vector<uint8_t> autoResult = acd.getBinaryData();
+  BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
+  if( autoResult != manResult )
+  {
+    std::cout << "should be: ";
+    std::copy(manResult.cbegin(), manResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+    std::cout << "is:        ";
+    std::copy(autoResult.cbegin(), autoResult.cend(), std::ostream_iterator<int>(std::cout << std::hex, " "));
+    std::cout << std::endl;
+  }
+}
+
+BOOST_AUTO_TEST_CASE( binarySize )
+{
+  const int ports[] = { 0x01, 0x02, 0x03, 0x04 };
+  amcChannelDescriptor acd( ports );
+  BOOST_CHECK_EQUAL( acd.getBinaryData().size(), 3 );
+}
+
+BOOST_AUTO_TEST_CASE( size )
+{
+  const int ports[] = { 0x01, 0x02, 0x03, 0x04 };
+  amcChannelDescriptor acd( ports );
+  BOOST_CHECK_EQUAL( acd.size(), 3 );
+}
+
+BOOST_AUTO_TEST_SUITE_END()
