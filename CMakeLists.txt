@@ -52,6 +52,7 @@ set(TEST_COMPONENTS
   commonHeaderTests.cpp
   boardInfoAreaTests.cpp
   productInfoAreaTests.cpp
+  multiRecordAreaTests.cpp
   multiRecordTests.cpp
   moduleCurrentRequirementsRecordTests.cpp
   amcPtPConnectivityRecordTests.cpp
@@ -61,6 +62,7 @@ set(TEST_COMPONENTS
   commonHeader.cpp
   boardInfoArea.cpp
   productInfoArea.cpp
+  multiRecordArea.cpp
   multiRecord.cpp
   moduleCurrentRequirementsRecord.cpp
   amcChannelDescriptor.cpp
