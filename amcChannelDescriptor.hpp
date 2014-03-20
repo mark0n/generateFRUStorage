@@ -12,27 +12,12 @@ struct amcChDescrData {
   uint32_t pad : 4;
 };
 
+const int amcChDescrDataSize = 3;
+
 class amcChannelDescriptor {
-  std::vector<uint8_t> rawData;
-  amcChDescrData *data;
-//   std::vector<uint8_t> headerRawData;
-//   struct multiRecordHeader *header;
-//   std::vector<uint8_t> payload;
-//   void updateRecordChecksum();
-//   void updateHeaderChecksum();
+  amcChDescrData data;
 public :
   amcChannelDescriptor(const std::vector<int> port);
-//   std::list<amcChannelDescriptor> amcChannelDescriptors;
-//   multiRecord();
-//   void amcPtPConnectivityRecord();
-//   addAMCChannelDescriptor(int lanePortNo[4]);
-//   multiRecord(uint8_t typeId, std::vector<uint8_t> payload);
-//   uint8_t getFormatVersion();
-//   uint8_t getEndOfList();
-//   void setEndOfList(bool endOfList);
-//   uint8_t getRecordLength();
-//   uint8_t getChecksum();
-//   uint8_t getHeaderChecksum();
   std::vector<uint8_t> getBinaryData() const;
   void printData() const;
   int size() const;
