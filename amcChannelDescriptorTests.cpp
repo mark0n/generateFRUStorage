@@ -4,26 +4,21 @@
 
 BOOST_AUTO_TEST_SUITE( amcChannelDescriptorTests )
 
-BOOST_AUTO_TEST_CASE( constructorNullPtr )
-{
-  amcChannelDescriptor acd( nullptr );
-}
-
 BOOST_AUTO_TEST_CASE( notEnoughPortNumbers )
 {
-  const int ports[] = { 0x01, 0x02, 0x03 };
-  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::out_of_range );
+  const std::vector<int> ports = { 0x01, 0x02, 0x03 };
+  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::runtime_error );
 }
 
 BOOST_AUTO_TEST_CASE( tooManyPortNumbers )
 {
-  const int ports[] = { 0x01, 0x02, 0x03, 0x04, 0x05 };
-  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::out_of_range );
+  const std::vector<int> ports = { 0x01, 0x02, 0x03, 0x04, 0x05 };
+  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::runtime_error );
 }
 
 BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
 {
-  const int ports[] = { 0x01, 0x02, 0x03, 0x04 };
+  const std::vector<int> ports = { 0x01, 0x02, 0x03, 0x04 };
   amcChannelDescriptor acd( ports );
   std::vector<uint8_t> manResult = { 0x41, 0x0c, 0xf2 };
   std::vector<uint8_t> autoResult = acd.getBinaryData();
@@ -41,14 +36,14 @@ BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
 
 BOOST_AUTO_TEST_CASE( binarySize )
 {
-  const int ports[] = { 0x01, 0x02, 0x03, 0x04 };
+  const std::vector<int> ports = { 0x01, 0x02, 0x03, 0x04 };
   amcChannelDescriptor acd( ports );
   BOOST_CHECK_EQUAL( acd.getBinaryData().size(), 3 );
 }
 
 BOOST_AUTO_TEST_CASE( size )
 {
-  const int ports[] = { 0x01, 0x02, 0x03, 0x04 };
+  const std::vector<int> ports = { 0x01, 0x02, 0x03, 0x04 };
   amcChannelDescriptor acd( ports );
   BOOST_CHECK_EQUAL( acd.size(), 3 );
 }

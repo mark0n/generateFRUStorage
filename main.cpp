@@ -60,9 +60,9 @@ int main() {
   mra.addModuleCurrentRequirementsRecord(2.0);
   
   std::list<amcChannelDescriptor> chDescrs;
-  const int ch0Ports[] = {0, 31, 31, 31};
+  const std::vector<int> ch0Ports = {0, 31, 31, 31};
   chDescrs.push_back(amcChannelDescriptor(ch0Ports));
-  const int ch1Ports[] = {4, 31, 31, 31};
+  const std::vector<int> ch1Ports = {4, 31, 31, 31};
   chDescrs.push_back(amcChannelDescriptor(ch1Ports));
   std::list<amcLinkDescriptor> lnkDescrs;
   struct amcLinkDesignator lnkDesignator0 = {0, {true, false, false, false}};

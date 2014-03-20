@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 BOOST_AUTO_TEST_CASE( oneChannelDescriptorGetBinaryData )
 {
   std::list<amcChannelDescriptor> acl;
-  const int ports[] = {1, 2, 3, 4};
+  const std::vector<int> ports = {1, 2, 3, 4};
   acl.push_back( amcChannelDescriptor(ports) );
   std::list<amcLinkDescriptor> ald;
   amcPtPConnectivityRecord apcr( acl, ald );
@@ -73,11 +73,11 @@ BOOST_AUTO_TEST_CASE( oneLinkDesignatorGetBinaryData )
 BOOST_AUTO_TEST_CASE( multipleEntriesGetBinaryData )
 {
   std::list<amcChannelDescriptor> acl;
-  const int ports1[] = {1, 2, 3, 4};
+  const std::vector<int> ports1 = {1, 2, 3, 4};
   acl.push_back( amcChannelDescriptor(ports1) );
-  const int ports2[] = {5, 6, 7, 8};
+  const std::vector<int> ports2 = {5, 6, 7, 8};
   acl.push_back( amcChannelDescriptor(ports2) );
-  const int ports3[] = {9, 10, 11, 12};
+  const std::vector<int> ports3 = {9, 10, 11, 12};
   acl.push_back( amcChannelDescriptor(ports3) );
   std::list<amcLinkDescriptor> ald;
   struct amcLinkDesignator lnkDesignator1 = {0x5a, {false, true, false, true}};
@@ -102,11 +102,11 @@ BOOST_AUTO_TEST_CASE( multipleEntriesGetBinaryData )
 BOOST_AUTO_TEST_CASE( binarySize )
 {
   std::list<amcChannelDescriptor> acl;
-  const int ports1[] = {1, 2, 3, 4};
+  const std::vector<int> ports1 = {1, 2, 3, 4};
   acl.push_back( amcChannelDescriptor(ports1) );
-  const int ports2[] = {5, 6, 7, 8};
+  const std::vector<int> ports2 = {5, 6, 7, 8};
   acl.push_back( amcChannelDescriptor(ports2) );
-  const int ports3[] = {9, 10, 11, 12};
+  const std::vector<int> ports3 = {9, 10, 11, 12};
   acl.push_back( amcChannelDescriptor(ports3) );
   std::list<amcLinkDescriptor> ald;
   struct amcLinkDesignator lnkDesignator1 = {0x5a, {false, true, false, true}};
@@ -120,11 +120,11 @@ BOOST_AUTO_TEST_CASE( binarySize )
 BOOST_AUTO_TEST_CASE( size )
 {
   std::list<amcChannelDescriptor> acl;
-  const int ports1[] = {1, 2, 3, 4};
+  const std::vector<int> ports1 = {1, 2, 3, 4};
   acl.push_back( amcChannelDescriptor(ports1) );
-  const int ports2[] = {5, 6, 7, 8};
+  const std::vector<int> ports2 = {5, 6, 7, 8};
   acl.push_back( amcChannelDescriptor(ports2) );
-  const int ports3[] = {9, 10, 11, 12};
+  const std::vector<int> ports3 = {9, 10, 11, 12};
   acl.push_back( amcChannelDescriptor(ports3) );
   std::list<amcLinkDescriptor> ald;
   struct amcLinkDesignator lnkDesignator1 = {0x5a, {false, true, false, true}};

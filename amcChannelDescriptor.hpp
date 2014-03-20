@@ -21,7 +21,7 @@ class amcChannelDescriptor {
 //   void updateRecordChecksum();
 //   void updateHeaderChecksum();
 public :
-  amcChannelDescriptor(const int port[4]);
+  amcChannelDescriptor(const std::vector<int> port);
 //   std::list<amcChannelDescriptor> amcChannelDescriptors;
 //   multiRecord();
 //   void amcPtPConnectivityRecord();

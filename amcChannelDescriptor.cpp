@@ -2,8 +2,11 @@
 #include <stdexcept>
 #include <iostream>
 
-amcChannelDescriptor::amcChannelDescriptor(const int port[4]) : rawData(4) {
+amcChannelDescriptor::amcChannelDescriptor(const std::vector<int> port) : rawData(4) {
   data = (struct amcChDescrData *)rawData.data();
+  if( port.size() != 4 ) {
+    throw std::runtime_error("Invalid number of entries in port vector.");
+  }
   for(int lane = 0; lane < 4; lane++) {
     if(port[lane] < 0 || port[lane] > 31) {
       throw std::out_of_range("port number out of valid range");
