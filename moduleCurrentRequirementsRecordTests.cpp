@@ -9,6 +9,16 @@ BOOST_AUTO_TEST_CASE( constructor )
   moduleCurrentRequirementsRecord mcrr(1);
 }
 
+BOOST_AUTO_TEST_CASE( currentTooLow )
+{
+  BOOST_CHECK_THROW( moduleCurrentRequirementsRecord mcrr( -0.1 ), std::invalid_argument )
+}
+
+BOOST_AUTO_TEST_CASE( currentTooHigh )
+{
+  BOOST_CHECK_THROW( moduleCurrentRequirementsRecord mcrr( 6.7 ), std::invalid_argument )
+}
+
 BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
 {
   moduleCurrentRequirementsRecord mcrr(1);
