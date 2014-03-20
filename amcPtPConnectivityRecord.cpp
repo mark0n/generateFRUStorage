@@ -33,6 +33,21 @@ amcPtPConnectivityRecord::amcPtPConnectivityRecord(std::list<amcChannelDescripto
 
   amcChannelDescriptors = chDescrs;
   amcLinkDescriptors = lnkDescrs;
+  
+  updateRecordLength();
+  payload = std::vector<uint8_t>( (uint8_t *)&ptPConnRecHeader, (uint8_t *)(&ptPConnRecHeader + 1) );
+  payload.push_back( recordType );
+  payload.push_back( amcChannelDescriptors.size() );
+  
+  for(std::list<amcChannelDescriptor>::const_iterator li = amcChannelDescriptors.begin(); li != amcChannelDescriptors.end(); li++) {
+    std::vector<uint8_t> chDescriptor = li->getBinaryData();
+    std::copy(chDescriptor.begin(), chDescriptor.end(), std::back_inserter(payload));
+  }
+  
+  for(std::list<amcLinkDescriptor>::const_iterator li = amcLinkDescriptors.begin(); li != amcLinkDescriptors.end(); li++) {
+    std::vector<uint8_t> lnkDescriptor = li->getBinaryData();
+    std::copy(lnkDescriptor.begin(), lnkDescriptor.end(), std::back_inserter(payload));
+  }
 }
 
 void amcPtPConnectivityRecord::updateRecordLength()
@@ -62,21 +77,6 @@ void amcPtPConnectivityRecord::addAMCChannelDescriptor( int lanePortNo[4] ) {
 }
 
 std::vector<uint8_t> amcPtPConnectivityRecord::getBinaryData() {
-  updateRecordLength();
-  payload = std::vector<uint8_t>( (uint8_t *)&ptPConnRecHeader, (uint8_t *)(&ptPConnRecHeader + 1) );
-  payload.push_back( recordType );
-  payload.push_back( amcChannelDescriptors.size() );
-  
-  for(std::list<amcChannelDescriptor>::const_iterator li = amcChannelDescriptors.begin(); li != amcChannelDescriptors.end(); li++) {
-    std::vector<uint8_t> chDescriptor = li->getBinaryData();
-    std::copy(chDescriptor.begin(), chDescriptor.end(), std::back_inserter(payload));
-  }
-  
-  for(std::list<amcLinkDescriptor>::const_iterator li = amcLinkDescriptors.begin(); li != amcLinkDescriptors.end(); li++) {
-    std::vector<uint8_t> lnkDescriptor = li->getBinaryData();
-    std::copy(lnkDescriptor.begin(), lnkDescriptor.end(), std::back_inserter(payload));
-  }
-  
   return multiRecord::getBinaryData();
 }
 
