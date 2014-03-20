@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <vector>
+#include <bitset>
 
 struct amcLnkDescrData {
   uint32_t amcLinkDesignator : 12;
@@ -17,7 +18,7 @@ const int amcLnkDescrDataSize = 5;
 
 struct amcLinkDesignator {
   uint8_t channelId;
-  bool laneFlag[4];
+  std::bitset<4> laneFlag;
 };
 
 enum amcLinkType {

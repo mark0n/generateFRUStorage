@@ -6,13 +6,13 @@ BOOST_AUTO_TEST_SUITE( amcLinkDescriptorTests )
 
 BOOST_AUTO_TEST_CASE( constructorEmpty )
 {
-  struct amcLinkDesignator lnkDesignator = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator = { 0x5a, std::bitset<4>( "1010" ) };
   amcLinkDescriptor ald(lnkDesignator, AMC1PCIe, 2, 0xac, 1);
 }
 
 BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 {
-  struct amcLinkDesignator lnkDesignator = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator = { 0x5a, std::bitset<4>( "1010" ) };
   amcLinkDescriptor ald(lnkDesignator, AMC1PCIe, 2, 0xac, 1);
   std::vector<uint8_t> manResult = { 0x5a, 0x2a, 0x20, 0xac, 0xfd };
   std::vector<uint8_t> autoResult = ald.getBinaryData();
@@ -30,14 +30,14 @@ BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 
 BOOST_AUTO_TEST_CASE( binarySize )
 {
-  struct amcLinkDesignator lnkDesignator = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator = { 0x5a, std::bitset<4>( "1010" ) };
   amcLinkDescriptor ald(lnkDesignator, AMC1PCIe, 2, 0xac, 1);
   BOOST_CHECK_EQUAL( ald.getBinaryData().size(), 5 );
 }
 
 BOOST_AUTO_TEST_CASE( size )
 {
-  struct amcLinkDesignator lnkDesignator = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator = { 0x5a, std::bitset<4>( "1010" ) };
   amcLinkDescriptor ald(lnkDesignator, AMC1PCIe, 2, 0xac, 1);
   BOOST_CHECK_EQUAL( ald.size(), 5 );
 }

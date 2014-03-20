@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE( oneLinkDesignatorGetBinaryData )
 {
   std::list<amcChannelDescriptor> acl;
   std::list<amcLinkDescriptor> ald;
-  struct amcLinkDesignator lnkDesignator = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator = {0x5a, std::bitset<4>( "1010" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator, AMC1PCIe, 2, 0xac, 1));
   amcPtPConnectivityRecord apcr( acl, ald );
   std::vector<uint8_t> manResult = { 0xc0, 0x02, 0x0d, 0x8f, 0xa2, 0x5a, 0x31, 0x00, 0x19, 0x00, 0x00, 0x80, 0x00, 0x5a, 0x2a, 0x20, 0xac, 0xfd };
@@ -80,9 +80,9 @@ BOOST_AUTO_TEST_CASE( multipleEntriesGetBinaryData )
   const std::vector<int> ports3 = {9, 10, 11, 12};
   acl.push_back( amcChannelDescriptor(ports3) );
   std::list<amcLinkDescriptor> ald;
-  struct amcLinkDesignator lnkDesignator1 = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator1 = { 0x5a, std::bitset<4>( "1010" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, 2, 0xac, 1));
-  struct amcLinkDesignator lnkDesignator2 = {0x5b, {true, true, false, false}};
+  struct amcLinkDesignator lnkDesignator2 = { 0x5b, std::bitset<4>( "0011" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator2, AMC2Ethernet, 3, 0xdd, 2));
   amcPtPConnectivityRecord apcr( acl, ald );
   std::vector<uint8_t> manResult = { 0xc0, 0x02, 0x1b, 0x53, 0xd0, 0x5a, 0x31, 0x00, 0x19, 0x00, 0x00, 0x80, 0x03, 0x41, 0x0c, 0xf2, 0xc5, 0x1c, 0xf4, 0x49, 0x2d, 0xf6, 0x5a, 0x2a, 0x20, 0xac, 0xfd, 0x5b, 0x53, 0x30, 0xdd, 0xfe };
@@ -109,9 +109,9 @@ BOOST_AUTO_TEST_CASE( binarySize )
   const std::vector<int> ports3 = {9, 10, 11, 12};
   acl.push_back( amcChannelDescriptor(ports3) );
   std::list<amcLinkDescriptor> ald;
-  struct amcLinkDesignator lnkDesignator1 = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator1 = { 0x5a, std::bitset<4>( "1010" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, 2, 0xac, 1));
-  struct amcLinkDesignator lnkDesignator2 = {0x5b, {true, true, false, false}};
+  struct amcLinkDesignator lnkDesignator2 = { 0x5b, std::bitset<4>( "0011" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator2, AMC2Ethernet, 3, 0xdd, 2));
   amcPtPConnectivityRecord apcr( acl, ald );
   BOOST_CHECK_EQUAL( apcr.getBinaryData().size(), 32 );
@@ -127,9 +127,9 @@ BOOST_AUTO_TEST_CASE( size )
   const std::vector<int> ports3 = {9, 10, 11, 12};
   acl.push_back( amcChannelDescriptor(ports3) );
   std::list<amcLinkDescriptor> ald;
-  struct amcLinkDesignator lnkDesignator1 = {0x5a, {false, true, false, true}};
+  struct amcLinkDesignator lnkDesignator1 = { 0x5a, std::bitset<4>( "1010" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, 2, 0xac, 1));
-  struct amcLinkDesignator lnkDesignator2 = {0x5b, {true, true, false, false}};
+  struct amcLinkDesignator lnkDesignator2 = { 0x5b, std::bitset<4>( "0011" ) };
   ald.push_back(amcLinkDescriptor(lnkDesignator2, AMC2Ethernet, 3, 0xdd, 2));
   amcPtPConnectivityRecord apcr( acl, ald );
   BOOST_CHECK_EQUAL( apcr.size(), 32 );
