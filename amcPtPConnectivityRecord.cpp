@@ -68,14 +68,6 @@ void amcPtPConnectivityRecord::updateRecordLength()
   header.recordLength = payloadSize;
 }
 
-void amcPtPConnectivityRecord::addAMCChannelDescriptor( int lanePortNo[4] ) {
-  for(int lane = 0; lane < 4; lane++) {
-    if( lanePortNo[lane] < 0 || lanePortNo[lane] > 31 ) {
-      throw std::out_of_range("lane number out of range");
-    }
-  }
-}
-
 std::vector<uint8_t> amcPtPConnectivityRecord::getBinaryData() {
   return multiRecord::getBinaryData();
 }
