@@ -28,6 +28,42 @@ BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
   }
 }
 
+BOOST_AUTO_TEST_CASE( tooManyChannelDescriptors )
+{
+  std::list<amcChannelDescriptor> acl;
+  std::list<amcLinkDescriptor> ald;
+  const std::vector<int> ports = {1, 2, 3, 4};
+  for( int i = 0; i < 256; i++ )
+  {
+    acl.push_back( amcChannelDescriptor(ports) );
+  }
+  BOOST_CHECK_THROW( amcPtPConnectivityRecord apcr( acl, ald ), std::length_error );
+}  
+
+BOOST_AUTO_TEST_CASE( tooManyLinkDescriptors )
+{
+  std::list<amcChannelDescriptor> acl;
+  std::list<amcLinkDescriptor> ald;
+  struct amcLinkDesignator lnkDesignator = {0x5a, std::bitset<4>( "1010" ) };
+  for( int i = 0; i < 256; i++ )
+  {
+    ald.push_back(amcLinkDescriptor(lnkDesignator, AMC1PCIe, 2, 0xac, 1));
+  }
+  BOOST_CHECK_THROW( amcPtPConnectivityRecord apcr( acl, ald ), std::length_error );
+}  
+
+BOOST_AUTO_TEST_CASE( tooMuchPayload )
+{
+  std::list<amcChannelDescriptor> acl;
+  std::list<amcLinkDescriptor> ald;
+  const std::vector<int> ports = {1, 2, 3, 4};
+  for( int i = 0; i < 83; i++ )
+  {
+    acl.push_back( amcChannelDescriptor(ports) );
+  }
+  BOOST_CHECK_THROW( amcPtPConnectivityRecord apcr( acl, ald ), std::length_error );
+}  
+
 BOOST_AUTO_TEST_CASE( oneChannelDescriptorGetBinaryData )
 {
   std::list<amcChannelDescriptor> acl;

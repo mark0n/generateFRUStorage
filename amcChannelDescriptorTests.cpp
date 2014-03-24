@@ -16,6 +16,18 @@ BOOST_AUTO_TEST_CASE( tooManyPortNumbers )
   BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::runtime_error );
 }
 
+BOOST_AUTO_TEST_CASE( portNumberNegative )
+{
+  const std::vector<int> ports = { 0x01, -10, 0x03, 0x04 };
+  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::out_of_range );
+}
+
+BOOST_AUTO_TEST_CASE( portNumberTooLarge )
+{
+  const std::vector<int> ports = { 0x01, 32, 0x03, 0x04 };
+  BOOST_CHECK_THROW( amcChannelDescriptor acd( ports ), std::out_of_range );
+}
+
 BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
 {
   const std::vector<int> ports = { 0x01, 0x02, 0x03, 0x04 };
