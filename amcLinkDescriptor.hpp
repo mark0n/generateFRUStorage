@@ -30,6 +30,18 @@ enum amcLinkType {
   AMC3Storage = 0x07
 };
 
+enum amcLinkTypeExtension {
+  Gen1NoSpreadSpectrum = 0x00,
+  Gen1SpreadSpectrum = 0x01,
+  Gen2NoSpreadSpectrum = 0x02,
+  Gen2SpreadSpectrum = 0x03
+};
+
+enum asymmetricMatch {
+  PCIePrimaryPort = 0x01, // upstream port (regular device on AMC)
+  PCIeSecondaryPort = 0x02 // downstream port (root complex or PCIe switch on AMC)
+};
+
 class amcLinkDescriptor {
   struct amcLnkDescrData data;
 public :
