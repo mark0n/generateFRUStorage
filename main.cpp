@@ -70,9 +70,6 @@ int main() {
   struct amcLinkDesignator lnkDesignator1 = { 1, std::bitset<4>("0001") };
   lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, Gen1NoSpreadSpectrum, 0, PCIePrimaryPort));
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
-  
-  std::vector<uint8_t> multiRecord3Payload = {0x5a, 0x31, 0x00, 0x30, 0x01, 0x03, 0x3f, 0x05, 0x00, 0x00, 0x00, 0x02, 0x08};
-  mra.addRecord(0xc0, multiRecord3Payload);
 
   std::cout << "COMMON-HEADER AREA:" << std::endl;
   ch.printData();
