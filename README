@@ -1,0 +1,66 @@
+  This program generates the binary content of the IPMI FRU storage area
+  according to
+    - IPMI Platform Management FRU Information Storage Definition v1.0 [1]
+    - PICMG AMC.0 R2.0. Advanced Mezzanine Card Base Specification
+
+  Note: Only a subset of the above specifications is supported. Sending patches
+  is greatly appreciated.
+
+  generateFRUStorage is a pure command-line tool which means it can be used as
+  part of some automatic build/deployment process.
+
+Software requirements:
+  - CMake
+  - C++ compiler (e.g. g++ or clang++)
+  - gcov (optional, only needed to extract code covarage information)
+  - lcov (optional, generates nice code coverage reports)
+  - srecord (optional, only needed if data file needs to be converted into
+    a different format for use with a programmer)
+
+Compiling:
+  Run the following commands to compile the software:
+
+  > mkdir build
+  > cd build
+  > cmake ..
+  > make
+
+Using the tool:
+  The program is automatically executed after the build is finished. This
+  generates the binary FRU data file. Of course you can run it manually as
+  well:
+
+  > ./generateFRUStorage
+
+  In some cases the resulting file can not be flashed into the EEPROM directly.
+  With my Atmel processors I have to convert it into a hex file first:
+
+  > srec_cat fru_data.bin -binary -output fru_data.hex -intel
+
+  For convenience this command is also executed automatically during "make".
+
+Unit tests:
+  All relevant parts of the tool are covered by unit tests which can be run by
+
+  > make test
+
+  To run a subset of tests that match "varLengthLangCodeFieldTests" issue
+
+  > ctest -R varLengthLangCodeFieldTests
+
+Code coverage:
+  To extract useful code coverage information the tool needs to be build
+  without optimization:
+
+  > mkdir build
+  > cmake -DCMAKE_BUILD_TYPE=Debug ..
+  > make testGenerateFRUStorage_coverage
+
+  Coverage data can be found in build/coverage/index.html
+
+Contact:
+  Author: Martin Konrad <konrad at frib.msu.edu>
+
+References:
+  [1] http://www.intel.com/content/www/us/en/servers/ipmi/information-storage-
+      definition.html
