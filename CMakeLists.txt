@@ -1,6 +1,16 @@
 cmake_minimum_required(VERSION 2.8)
 project(generateFRUStorage)
 
+set(generateFRUStorage_VERSION_MAJOR 0)
+set(generateFRUStorage_VERSION_MINOR 1)
+set(generateFRUStorage_VERSION_PATCH 0)
+
+set(VERSION_STRING "${generateFRUStorage_VERSION_MAJOR}.${generateFRUStorage_VERSION_MINOR}.${generateFRUStorage_VERSION_PATCH}")
+
+if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
+  set(VERSION_STRING "${VERSION_STRING}-git")
+endif(EXISTS "${PROJECT_SOURCE_DIR}/.git")
+
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 # set(CMAKE_CXX_COMPILER "clang++")
 
@@ -11,6 +21,16 @@ include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
 find_package(Sreccat)
+
+# configure a header file to pass some of the CMake settings to the source code
+configure_file (
+  "${PROJECT_SOURCE_DIR}/config.h.in"
+  "${PROJECT_BINARY_DIR}/config.h"
+)
+
+# add the binary tree to the search path for include files so that we will find
+# config.h
+include_directories("${PROJECT_BINARY_DIR}")
 
 add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea varLengthLangCodeField.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})

@@ -19,10 +19,24 @@
 #include <stdexcept>
 #include <cassert>
 #include <boost/date_time/posix_time/posix_time.hpp>
+#include <config.h>
+#include <getopt.h>
 
 #define EEPROM_SIZE 2048
 
-int main() {
+int main(int argc, char **argv) {
+  int opt;
+  while((opt = getopt(argc, argv, "V")) != EOF) {
+    switch (opt)
+    {
+      case 'V':
+        std::cout << argv[0] << " " << VERSION_STRING << std::endl;
+        exit(0);
+      default:
+        exit(1);
+    }
+  }
+
   commonHeader ch;
   boardInfoArea bia;
   productInfoArea pia;
