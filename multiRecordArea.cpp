@@ -3,10 +3,10 @@
 
 void multiRecordArea::addRecord(multiRecord record) {
   record.setEndOfList(true);
-  if(!records.empty()) {
-    records.back().setEndOfList(false);
+  if(!m_records.empty()) {
+    m_records.back().setEndOfList(false);
   }
-  records.push_back(record);
+  m_records.push_back(record);
 }
 
 void multiRecordArea::addRecord(uint8_t typeId, std::vector<uint8_t> payload) {
@@ -27,7 +27,7 @@ void multiRecordArea::addModuleCurrentRequirementsRecord(double currentDraw) {
 std::vector<uint8_t> multiRecordArea::getBinaryData() {
   std::list<multiRecord>::iterator li;
   std::vector<uint8_t> rawData;
-  for(li = records.begin(); li != records.end(); li++) {
+  for(li = m_records.begin(); li != m_records.end(); li++) {
     std::vector<uint8_t> recordRawData = li->getBinaryData();
     rawData.insert(rawData.end(), recordRawData.begin(), recordRawData.end());
   }
@@ -36,7 +36,7 @@ std::vector<uint8_t> multiRecordArea::getBinaryData() {
 
 void multiRecordArea::printData() {
   std::list<multiRecord>::iterator li;
-  for(li = records.begin(); li != records.end(); li++) {
+  for(li = m_records.begin(); li != m_records.end(); li++) {
     std::cout << "MULTI RECORD:" << std::endl;
     li->printData();
   }
@@ -45,7 +45,7 @@ void multiRecordArea::printData() {
 int multiRecordArea::size() {
   std::list<multiRecord>::iterator li;
   int sum = 0;
-  for(li = records.begin(); li != records.end(); li++)
+  for(li = m_records.begin(); li != m_records.end(); li++)
     sum += li->size();
   return sum;
 };

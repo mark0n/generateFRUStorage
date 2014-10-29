@@ -24,40 +24,40 @@ amcPtPConnectivityRecord::amcPtPConnectivityRecord(std::list<amcChannelDescripto
   }
 
   recordType = amcPtPConnectivityRecordType;
-  ptPConnRecHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
-  ptPConnRecHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
-  ptPConnRecHeader.manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
-  ptPConnRecHeader.picmgRecordId = amcPtPConnectivityRecordPICMGRecordId;
-  ptPConnRecHeader.recordFormatVersion = amcPtPConnectivityRecordFormatVersion;
-  ptPConnRecHeader.oemGuidCount = 0;
+  m_ptPConnRecHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
+  m_ptPConnRecHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
+  m_ptPConnRecHeader.manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
+  m_ptPConnRecHeader.picmgRecordId = amcPtPConnectivityRecordPICMGRecordId;
+  m_ptPConnRecHeader.recordFormatVersion = amcPtPConnectivityRecordFormatVersion;
+  m_ptPConnRecHeader.oemGuidCount = 0;
 
-  amcChannelDescriptors = chDescrs;
-  amcLinkDescriptors = lnkDescrs;
+  m_amcChannelDescriptors = chDescrs;
+  m_amcLinkDescriptors = lnkDescrs;
   
   updateRecordLength();
-  payload = std::vector<uint8_t>( (uint8_t *)&ptPConnRecHeader, (uint8_t *)(&ptPConnRecHeader + 1) );
-  payload.push_back( recordType );
-  payload.push_back( amcChannelDescriptors.size() );
+  m_payload = std::vector<uint8_t>( (uint8_t *)&m_ptPConnRecHeader, (uint8_t *)(&m_ptPConnRecHeader + 1) );
+  m_payload.push_back( recordType );
+  m_payload.push_back( m_amcChannelDescriptors.size() );
   
-  for(std::list<amcChannelDescriptor>::const_iterator li = amcChannelDescriptors.begin(); li != amcChannelDescriptors.end(); li++) {
+  for(std::list<amcChannelDescriptor>::const_iterator li = m_amcChannelDescriptors.begin(); li != m_amcChannelDescriptors.end(); li++) {
     std::vector<uint8_t> chDescriptor = li->getBinaryData();
-    std::copy(chDescriptor.begin(), chDescriptor.end(), std::back_inserter(payload));
+    std::copy(chDescriptor.begin(), chDescriptor.end(), std::back_inserter(m_payload));
   }
   
-  for(std::list<amcLinkDescriptor>::const_iterator li = amcLinkDescriptors.begin(); li != amcLinkDescriptors.end(); li++) {
+  for(std::list<amcLinkDescriptor>::const_iterator li = m_amcLinkDescriptors.begin(); li != m_amcLinkDescriptors.end(); li++) {
     std::vector<uint8_t> lnkDescriptor = li->getBinaryData();
-    std::copy(lnkDescriptor.begin(), lnkDescriptor.end(), std::back_inserter(payload));
+    std::copy(lnkDescriptor.begin(), lnkDescriptor.end(), std::back_inserter(m_payload));
   }
 }
 
 void amcPtPConnectivityRecord::updateRecordLength()
 {
-  int payloadSize = sizeof(ptPConnRecHeader);
+  int payloadSize = sizeof(m_ptPConnRecHeader);
   payloadSize += 2; // recordType and amcChannelDescriptorCount
-  for(std::list<amcChannelDescriptor>::const_iterator li = amcChannelDescriptors.cbegin(); li != amcChannelDescriptors.cend(); li++) {
+  for(std::list<amcChannelDescriptor>::const_iterator li = m_amcChannelDescriptors.cbegin(); li != m_amcChannelDescriptors.cend(); li++) {
     payloadSize += li->size();
   }
-  for(std::list<amcLinkDescriptor>::const_iterator li = amcLinkDescriptors.cbegin(); li != amcLinkDescriptors.cend(); li++) {
+  for(std::list<amcLinkDescriptor>::const_iterator li = m_amcLinkDescriptors.cbegin(); li != m_amcLinkDescriptors.cend(); li++) {
     payloadSize += li->size();
   }
   if(payloadSize > UINT8_MAX) {
@@ -65,7 +65,7 @@ void amcPtPConnectivityRecord::updateRecordLength()
     ss << "Record length exceeds maximum allowed length of " << UINT8_MAX << " bytes!";
     throw std::length_error( ss.str() );
   }
-  header.recordLength = payloadSize;
+  m_header.recordLength = payloadSize;
 }
 
 std::vector<uint8_t> amcPtPConnectivityRecord::getBinaryData() {
@@ -76,21 +76,21 @@ void amcPtPConnectivityRecord::printData() {
   updateRecordLength();
   updateRecordChecksum();
   updateHeaderChecksum();
-  std::cout << "Record Type ID: 0x" << std::hex << (unsigned int)header.recordTypeId << std::endl;
-  std::cout << "End of list: " << std::boolalpha << (bool)header.endOfList << std::endl;
-  std::cout << "Record format version: " << std::dec << (unsigned int)header.recordFormatVersion << std::endl;
-  std::cout << "Record length: " << std::dec << (unsigned int)header.recordLength << std::endl;
-  std::cout << "Record checksum: 0x" << std::hex << (unsigned int)header.recordChecksum << std::endl;
-  std::cout << "Header checksum: 0x" << std::hex << (unsigned int)header.headerChecksum << std::endl;
-  const unsigned int manId = ptPConnRecHeader.manufacturerId[2] << 16 | ptPConnRecHeader.manufacturerId[1] << 8 | ptPConnRecHeader.manufacturerId[0];
+  std::cout << "Record Type ID: 0x" << std::hex << (unsigned int)m_header.recordTypeId << std::endl;
+  std::cout << "End of list: " << std::boolalpha << (bool)m_header.endOfList << std::endl;
+  std::cout << "Record format version: " << std::dec << (unsigned int)m_header.recordFormatVersion << std::endl;
+  std::cout << "Record length: " << std::dec << (unsigned int)m_header.recordLength << std::endl;
+  std::cout << "Record checksum: 0x" << std::hex << (unsigned int)m_header.recordChecksum << std::endl;
+  std::cout << "Header checksum: 0x" << std::hex << (unsigned int)m_header.headerChecksum << std::endl;
+  const unsigned int manId = m_ptPConnRecHeader.manufacturerId[2] << 16 | m_ptPConnRecHeader.manufacturerId[1] << 8 | m_ptPConnRecHeader.manufacturerId[0];
   std::cout << "Manufacturer ID: 0x" << std::hex << manId << std::endl;
-  std::cout << "PICMG Record ID: 0x" << std::hex << (unsigned int)ptPConnRecHeader.picmgRecordId << std::endl;
-  std::cout << "Record Format Version: " << std::dec << (unsigned int)ptPConnRecHeader.recordFormatVersion << std::endl;
-  std::cout << "OEM GUID Count: " << std::dec << (unsigned int)ptPConnRecHeader.oemGuidCount << std::endl;
+  std::cout << "PICMG Record ID: 0x" << std::hex << (unsigned int)m_ptPConnRecHeader.picmgRecordId << std::endl;
+  std::cout << "Record Format Version: " << std::dec << (unsigned int)m_ptPConnRecHeader.recordFormatVersion << std::endl;
+  std::cout << "OEM GUID Count: " << std::dec << (unsigned int)m_ptPConnRecHeader.oemGuidCount << std::endl;
   std::cout << "AMC Channel Descriptors: { " << std::endl;
   std::list<amcChannelDescriptor>::iterator cdli;
   int i;
-  for(cdli = amcChannelDescriptors.begin(), i = 0; cdli != amcChannelDescriptors.end(); cdli++, i++) {
+  for(cdli = m_amcChannelDescriptors.begin(), i = 0; cdli != m_amcChannelDescriptors.end(); cdli++, i++) {
     std::cout << "AMC channel descriptor #" << std::dec << i << ":" << std::endl;
     cdli->printData();
   }
@@ -98,7 +98,7 @@ void amcPtPConnectivityRecord::printData() {
 
   std::cout << "AMC Link Descriptors: { " << std::endl;
   std::list<amcLinkDescriptor>::iterator ldli;
-  for(ldli = amcLinkDescriptors.begin(), i = 0; ldli != amcLinkDescriptors.end(); ldli++, i++) {
+  for(ldli = m_amcLinkDescriptors.begin(), i = 0; ldli != m_amcLinkDescriptors.end(); ldli++, i++) {
     std::cout << "AMC link descriptor #" << std::dec << i << ":" << std::endl;
     ldli->printData();
   }
@@ -108,5 +108,5 @@ void amcPtPConnectivityRecord::printData() {
 int amcPtPConnectivityRecord::size()
 {
   updateRecordLength();
-  return sizeof(header) + header.recordLength;
+  return sizeof(m_header) + m_header.recordLength;
 };

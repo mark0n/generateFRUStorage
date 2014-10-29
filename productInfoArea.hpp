@@ -13,14 +13,14 @@ struct productInfoAreaData {
 };
 
 class productInfoArea {
-  struct productInfoAreaData data;
-  varLengthLangCodeField manufacturer;
-  varLengthLangCodeField productName;
-  varLengthLangCodeField partNumber;
-  varLengthLangCodeField version;
-  varLengthLangCodeField serialNumber;
-  varLengthLangCodeField assetTag;
-  varLengthLangCodeField fruFileId;
+  struct productInfoAreaData m_data;
+  varLengthLangCodeField m_manufacturer;
+  varLengthLangCodeField m_productName;
+  varLengthLangCodeField m_partNumber;
+  varLengthLangCodeField m_version;
+  varLengthLangCodeField m_serialNumber;
+  varLengthLangCodeField m_assetTag;
+  varLengthLangCodeField m_fruFileId;
 public :
   productInfoArea();
   void updateAreaLength();

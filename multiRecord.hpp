@@ -21,8 +21,8 @@ struct multiRecordHeader {
 
 class multiRecord {
 protected :
-  struct multiRecordHeader header;
-  std::vector<uint8_t> payload;
+  struct multiRecordHeader m_header;
+  std::vector<uint8_t> m_payload;
   void updateRecordChecksum();
   void updateHeaderChecksum();
 public :

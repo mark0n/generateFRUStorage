@@ -11,7 +11,7 @@ struct payloadFormat {
 };
 
 class moduleCurrentRequirementsRecord : public multiRecord {
-  payloadFormat data;
+  payloadFormat m_data;
 public :
   moduleCurrentRequirementsRecord(double currentDraw);
   std::vector<uint8_t> getBinaryData();

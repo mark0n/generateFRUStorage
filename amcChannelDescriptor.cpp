@@ -11,23 +11,23 @@ amcChannelDescriptor::amcChannelDescriptor(const std::vector<int> port) {
       throw std::out_of_range("port number out of valid range");
     }
   }
-  data.portLane0 = port[0];
-  data.portLane1 = port[1];
-  data.portLane2 = port[2];
-  data.portLane3 = port[3];
-  data.pad = 0xf;
+  m_data.portLane0 = port[0];
+  m_data.portLane1 = port[1];
+  m_data.portLane2 = port[2];
+  m_data.portLane3 = port[3];
+  m_data.pad = 0xf;
 }
 
 std::vector<uint8_t> amcChannelDescriptor::getBinaryData() const {
-  std::vector<uint8_t> returnVec( (uint8_t *)&data, ( (uint8_t *)&data ) + amcChDescrDataSize);
+  std::vector<uint8_t> returnVec( (uint8_t *)&m_data, ( (uint8_t *)&m_data ) + amcChDescrDataSize);
   return returnVec;
 }
 
 void amcChannelDescriptor::printData() const {
-  std::cout << "Lane 0 Port Number: " << data.portLane0 << std::endl;
-  std::cout << "Lane 1 Port Number: " << data.portLane1 << std::endl;
-  std::cout << "Lane 2 Port Number: " << data.portLane2 << std::endl;
-  std::cout << "Lane 3 Port Number: " << data.portLane3 << std::endl;
+  std::cout << "Lane 0 Port Number: " << m_data.portLane0 << std::endl;
+  std::cout << "Lane 1 Port Number: " << m_data.portLane1 << std::endl;
+  std::cout << "Lane 2 Port Number: " << m_data.portLane2 << std::endl;
+  std::cout << "Lane 3 Port Number: " << m_data.portLane3 << std::endl;
 }
 
 int amcChannelDescriptor::size() const {

@@ -15,13 +15,13 @@ struct boardInfoAreaData {
 };
 
 class boardInfoArea {
-  struct boardInfoAreaData data;
-  varLengthLangCodeField manufacturer;
-  varLengthLangCodeField productName;
-  varLengthLangCodeField serialNumber;
-  varLengthLangCodeField partNumber;
-  varLengthLangCodeField fruFileId;
-  static const boost::posix_time::ptime epoch;
+  struct boardInfoAreaData m_data;
+  varLengthLangCodeField m_manufacturer;
+  varLengthLangCodeField m_productName;
+  varLengthLangCodeField m_serialNumber;
+  varLengthLangCodeField m_partNumber;
+  varLengthLangCodeField m_fruFileId;
+  static const boost::posix_time::ptime m_epoch;
   void updateAreaLength();
 public :
   boardInfoArea();

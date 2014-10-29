@@ -16,7 +16,7 @@ struct commonHeaderData {
 };
 
 class commonHeader {
-  struct commonHeaderData data;
+  struct commonHeaderData m_data;
 public :
   commonHeader();
   uint8_t getFormatVersion();

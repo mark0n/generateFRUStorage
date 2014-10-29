@@ -15,7 +15,7 @@ struct amcChDescrData {
 const int amcChDescrDataSize = 3;
 
 class amcChannelDescriptor {
-  amcChDescrData data;
+  amcChDescrData m_data;
 public :
   amcChannelDescriptor(const std::vector<int> port);
   std::vector<uint8_t> getBinaryData() const;

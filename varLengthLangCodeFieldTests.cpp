@@ -77,8 +77,8 @@ BOOST_AUTO_TEST_CASE( setStringMaxLength )
 BOOST_AUTO_TEST_CASE( tooLong )
 {
   varLengthLangCodeField vlf;
-  std::string tooLong( 64, 'X' );
-  BOOST_CHECK_THROW( vlf.setString( tooLong ), std::runtime_error);
+  std::string tooLongStr( 64, 'X' );
+  BOOST_CHECK_THROW( vlf.setString( tooLongStr ), std::runtime_error);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

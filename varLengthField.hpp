@@ -14,8 +14,8 @@ struct typeLength {
 
 class varLengthField {
 protected:
-  struct typeLength header;
-  std::vector<uint8_t> payload;
+  struct typeLength m_header;
+  std::vector<uint8_t> m_payload;
 public:
   std::vector<uint8_t> getBinaryData();
   int size();

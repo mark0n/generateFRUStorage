@@ -15,10 +15,10 @@ struct amcPtPConnectivityRecordHeader {
 };
 
 class amcPtPConnectivityRecord : public multiRecord {
-  amcPtPConnectivityRecordHeader ptPConnRecHeader;
+  amcPtPConnectivityRecordHeader m_ptPConnRecHeader;
   uint8_t recordType;
-  std::list<amcChannelDescriptor> amcChannelDescriptors;
-  std::list<amcLinkDescriptor> amcLinkDescriptors;
+  std::list<amcChannelDescriptor> m_amcChannelDescriptors;
+  std::list<amcLinkDescriptor> m_amcLinkDescriptors;
 public :
   amcPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs);
   void updateRecordLength();
