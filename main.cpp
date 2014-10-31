@@ -29,21 +29,54 @@
 
 int main(int argc, char **argv) {
   int opt;
-  while((opt = getopt(argc, argv, "V")) != EOF) {
+  bool debugMode;
+  std::string inFileName;
+  std::string outFileName;
+  while((opt = getopt(argc, argv, "Vdi:o:")) != EOF) {
     switch (opt)
     {
       case 'V':
         std::cout << argv[0] << " " << VERSION_STRING << std::endl;
         exit(0);
+      case 'd':
+        debugMode = true;
+        break;
+      case 'i':
+        inFileName = optarg;
+        break;
+      case 'o':
+        outFileName = optarg;
+        break;
+      case '?':
+        if(optopt == 'i' or optopt == 'o')
+        {
+          std::cerr << "ERROR: Option -" << static_cast<char>(optopt) << " requires an argument!" << std::endl;
+          exit(1);
+        }
+        else
+        {
+          std::cerr << "ERROR: Invalid argument '" << static_cast<char>(opt) << "'!" << std::endl;
+          exit(2);
+        }
       default:
-        exit(1);
+        assert("Error reading arguments.");
     }
+  }
+  if(inFileName.empty())
+  {
+    std::cerr << "ERROR: No input file name specified!" << std::endl;
+    exit(3);
+  }
+  if(outFileName.empty())
+  {
+    std::cerr << "ERROR: No output file name specified!" << std::endl;
+    exit(4);
   }
 
   using boost::property_tree::ptree;
   ptree pt;
 
-  read_json("../FRU_data_FGPDB.json", pt);
+  read_json(inFileName, pt);
 
   commonHeader ch;
   boardInfoArea bia;
@@ -120,17 +153,20 @@ int main(int argc, char **argv) {
 
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
 
-  std::cout << "COMMON-HEADER AREA:" << std::endl;
-  ch.printData();
-  std::cout << std::endl;
-  std::cout << "BOARD-INFO AREA:" << std::endl;
-  bia.printData();
-  std::cout << std::endl;
-  std::cout << "PRODUCT-INFO AREA:" << std::endl;
-  pia.printData();
-  std::cout << std::endl;
-  std::cout << "MULTI-RECORD AREA:" << std::endl;
-  mra.printData();
+  if(debugMode)
+  {
+    std::cout << "COMMON-HEADER AREA:" << std::endl;
+    ch.printData();
+    std::cout << std::endl;
+    std::cout << "BOARD-INFO AREA:" << std::endl;
+    bia.printData();
+    std::cout << std::endl;
+    std::cout << "PRODUCT-INFO AREA:" << std::endl;
+    pia.printData();
+    std::cout << std::endl;
+    std::cout << "MULTI-RECORD AREA:" << std::endl;
+    mra.printData();
+  }
 
   const std::vector<uint8_t> biaVec = bia.getBinaryData();
   const std::vector<uint8_t> chVec = ch.getBinaryData();
@@ -144,7 +180,7 @@ int main(int argc, char **argv) {
   const std::vector<uint8_t> padVec(EEPROM_SIZE - dataLength);
 
   std::ofstream outfile;
-  outfile.open("fru_data.bin", std::ios::binary);
+  outfile.open(outFileName, std::ios::binary);
   outfile.write((char const *)chVec.data(), chVec.size());
   outfile.write((char const *)biaVec.data(), biaVec.size());
   outfile.write((char const *)piaVec.data(), piaVec.size());

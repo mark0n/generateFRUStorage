@@ -36,8 +36,8 @@ add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp pr
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
 
 add_custom_command(
-  OUTPUT fru_data.bin
-  COMMAND ./generateFRUStorage
+  OUTPUT ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
+  COMMAND ./generateFRUStorage -i ${PROJECT_SOURCE_DIR}/FRU_data_FGPDB.json -o ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
   DEPENDS generateFRUStorage
   COMMENT "Generating binary FRU data file"
   VERBATIM
@@ -45,21 +45,21 @@ add_custom_command(
 
 add_custom_target(
   binFile ALL
-  DEPENDS fru_data.bin
+  DEPENDS ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
 )
 
 if(SRECCAT_FOUND)
   add_custom_command(
-    DEPENDS fru_data.bin
-    OUTPUT fru_data.hex
-    COMMAND srec_cat fru_data.bin -binary -output fru_data.hex -intel
+    DEPENDS ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
+    OUTPUT ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.hex
+    COMMAND srec_cat ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin -binary -output ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.hex -intel
     COMMENT "Converting FRU data file to Intel hex format"
     VERBATIM
   )
 
   add_custom_target(
     hexFile ALL
-    DEPENDS fru_data.hex
+    DEPENDS ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.hex
   )
 else(SRECCAT_FOUND)
   message(WARNING "srec_cat not found, skipping generation of hex file")
