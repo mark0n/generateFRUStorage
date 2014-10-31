@@ -1,10 +1,13 @@
-/* This program generates the binary content of the IPMI FRU storage area according to
- * IPMI Platform Management FRU Information Storage Definition v1.0
- * PICMG AMC.0 R2.0. Advanced Mezzanine Card Base Specification
+/* This program generates the binary content of the IPMI FRU storage area
+ * according to IPMI Platform Management FRU Information Storage Definition
+ * v1.0 PICMG AMC.0 R2.0. Advanced Mezzanine Card Base Specification
  * 
- * Note 1: Only a subset of the above specifications is supported. Sending patches and extension is greatly appreciated.
+ * Note 1: Only a subset of the above specifications is supported. Sending
+ * patches and extension is greatly appreciated.
  * 
- * Note 2: This file generates the raw binary data. In many cases the resulting file can not be flashed into the EEPROM directly. With my Atmel processors I have to convert it into a hex file first: 
+ * Note 2: This program generates the raw binary data. In some cases the
+ * resulting file can not be flashed into the EEPROM directly using JTAG. When
+ * using my Atmel programmer I have to convert it into a hex file first:
  * srec_cat fru_data.bin -binary -output fru_data.hex -intel
  */
 
