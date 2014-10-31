@@ -21,6 +21,9 @@
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <config.h>
 #include <getopt.h>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/foreach.hpp>
 
 #define EEPROM_SIZE 2048
 
@@ -37,6 +40,11 @@ int main(int argc, char **argv) {
     }
   }
 
+  using boost::property_tree::ptree;
+  ptree pt;
+
+  read_json("../FRU_data_FGPDB.json", pt);
+
   commonHeader ch;
   boardInfoArea bia;
   productInfoArea pia;
@@ -45,44 +53,71 @@ int main(int argc, char **argv) {
   assert(ch.size() % 8 == 0);
   ch.setBoardAreaOffset(ch.size() / 8);
 
-  bia.setLanguageCode(25);
+  bia.setLanguageCode(pt.get<int>("BoardInfoArea.LanguageCode"));
   bia.setMfgDateTime(boost::posix_time::ptime(boost::posix_time::second_clock::universal_time()));
-  bia.setManufacturer("Facility for Rare Isotope Beams");
-  bia.setProductName("FRIB General Purpose Digital Board");
-  bia.setSerialNumber("testBoardSerialNumber");
-  bia.setPartNumber("testBoardPartNumber");
-  bia.setFRUFileId("testFRUFileId");
+  bia.setManufacturer(pt.get<std::string>("BoardInfoArea.Manufacturer"));
+  bia.setProductName(pt.get<std::string>("BoardInfoArea.ProductName"));
+  bia.setSerialNumber(pt.get<std::string>("BoardInfoArea.SerialNumber"));
+  bia.setPartNumber(pt.get<std::string>("BoardInfoArea.PartNumber"));
+  bia.setFRUFileId(pt.get<std::string>("BoardInfoArea.FRUFileId"));
 
   assert(ch.size() % 8 == 0);
   assert(bia.size() % 8 == 0);
   ch.setProductInfoAreaOffset((ch.size() + bia.size()) / 8);
 
-  pia.setLanguageCode(25);
-  pia.setManufacturer("Facility for Rare Isotope Beams");
-  pia.setProductName("FRIB General Purpose Digital Board");
-  pia.setPartNumber("testProductPartNumber");
-  pia.setVersion("testProductVersion");
-  pia.setSerialNumber("testProductSerialNumber");
-  pia.setAssetTag("testAssetTag");
-  pia.setFRUFileId("testFRUFileId");
+  pia.setLanguageCode(pt.get<int>("ProductInfoArea.LanguageCode"));
+  pia.setManufacturer(pt.get<std::string>("ProductInfoArea.Manufacturer"));
+  pia.setProductName(pt.get<std::string>("ProductInfoArea.ProductName"));
+  pia.setPartNumber(pt.get<std::string>("ProductInfoArea.PartNumber"));
+  pia.setVersion(pt.get<std::string>("ProductInfoArea.Version"));
+  pia.setSerialNumber(pt.get<std::string>("ProductInfoArea.SerialNumber"));
+  pia.setAssetTag(pt.get<std::string>("ProductInfoArea.AssetTag"));
+  pia.setFRUFileId(pt.get<std::string>("ProductInfoArea.FRUFileId"));
 
   assert(ch.size() % 8 == 0);
   assert(bia.size() % 8 == 0);
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  mra.addModuleCurrentRequirementsRecord(2.0);
+  mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
   
   std::list<amcChannelDescriptor> chDescrs;
-  const std::vector<int> ch0Ports = {0, 31, 31, 31};
-  chDescrs.push_back(amcChannelDescriptor(ch0Ports));
-  const std::vector<int> ch1Ports = {4, 31, 31, 31};
-  chDescrs.push_back(amcChannelDescriptor(ch1Ports));
+  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
+  {
+    std::vector<int> ports;
+    for(int i = 0; i < 4; i++)
+    {
+      ports.push_back(v.second.get<int>("Lane" + std::to_string(i) + "PortNumber"));
+    }
+    chDescrs.push_back(amcChannelDescriptor(ports));
+  }
+
   std::list<amcLinkDescriptor> lnkDescrs;
-  struct amcLinkDesignator lnkDesignator0 = { 0, std::bitset<4>("0001") };
-  lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator0, AMC2Ethernet, 0, 0, 0));
-  struct amcLinkDesignator lnkDesignator1 = { 1, std::bitset<4>("0001") };
-  lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator1, AMC1PCIe, Gen1NoSpreadSpectrum, 0, PCIePrimaryPort));
+  uint8_t amcChannelId = 0;
+  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCLinkDescriptors"))
+  {
+    std::bitset<4> lanesIncluded;
+    for(int lane = 0; lane < 4; lane++)
+    {
+      lanesIncluded[lane] = v.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+    }
+    struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
+
+    amcLinkTypeMap lnkTypeMap;
+    amcLinkType lnkType = lnkTypeMap[v.second.get<std::string>("AMCLinkType")];
+
+    amcLinkTypeExtensionMap lnkTypeExtensionMap;
+    amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[v.second.get<std::string>("AMCLinkTypeExtension")];
+
+    asymmetricMatchMap asymMatchMap;
+    asymmetricMatch asymMatch = asymMatchMap[v.second.get<std::string>("AsymmetricMatch")];
+
+    int lnkGroupingId = v.second.get<int>("LinkGroupingID");
+    lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
+
+    amcChannelId++;
+  }
+
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
 
   std::cout << "COMMON-HEADER AREA:" << std::endl;

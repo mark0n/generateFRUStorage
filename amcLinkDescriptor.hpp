@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <bitset>
+#include <map>
 
 struct amcLnkDescrData {
   uint32_t amcLinkDesignator : 12;
@@ -30,6 +31,20 @@ enum amcLinkType {
   AMC3Storage = 0x07
 };
 
+struct amcLinkTypeMap : public std::map<std::string, amcLinkType>
+{
+  amcLinkTypeMap()
+  {
+    this->operator[]("AMC.1 PCI Express") = AMC1PCIe;
+    this->operator[]("AMC.1 PCI Express Advanced Switching 3") = AMC1PCIeAdvancedSwitching3;
+    this->operator[]("AMC.1 PCI Express Advanced Switching 4") = AMC1PCIeAdvancedSwitching4;
+    this->operator[]("AMC.2 Ethernet") = AMC2Ethernet;
+    this->operator[]("AMC.4 Serial RapidIO") = AMC4SerialRapidIO;
+    this->operator[]("AMC.3 Storage") = AMC3Storage;
+  };
+  ~amcLinkTypeMap() {}
+};
+
 enum amcLinkTypeExtension {
   Gen1NoSpreadSpectrum = 0x00,
   Gen1SpreadSpectrum = 0x01,
@@ -37,9 +52,33 @@ enum amcLinkTypeExtension {
   Gen2SpreadSpectrum = 0x03
 };
 
+struct amcLinkTypeExtensionMap : public std::map<std::string, amcLinkTypeExtension>
+{
+  amcLinkTypeExtensionMap()
+  {
+    this->operator[]("Gen 1 non spread spectrum clock") = Gen1NoSpreadSpectrum;
+    this->operator[]("Gen 1 spread spectrum clock") = Gen1SpreadSpectrum;
+    this->operator[]("Gen 2 non spread spectrum clock") = Gen2NoSpreadSpectrum;
+    this->operator[]("Gen 2 spread spectrum clock") = Gen2SpreadSpectrum;
+  };
+  ~amcLinkTypeExtensionMap() {}
+};
+
 enum asymmetricMatch {
-  PCIePrimaryPort = 0x01, // upstream port (regular device on AMC)
-  PCIeSecondaryPort = 0x02 // downstream port (root complex or PCIe switch on AMC)
+  ExactMatch = 0x00, // matches with 00
+  MatchesWith10 = 0x01, // e.g. upstream port (regular device on AMC)
+  MatchesWith01 = 0x02 // e.g. downstream port (root complex or PCIe switch on AMC)
+};
+
+struct asymmetricMatchMap : public std::map<std::string, asymmetricMatch>
+{
+  asymmetricMatchMap()
+  {
+    this->operator[]("Matches with '00b' (exact match)") = ExactMatch;
+    this->operator[]("Matches with '10b'") = MatchesWith10;
+    this->operator[]("Matches with '01b'") = MatchesWith01;
+  };
+  ~asymmetricMatchMap() {}
 };
 
 class amcLinkDescriptor {
