@@ -6,9 +6,11 @@
 #include "amcPtPConnectivityRecord.hpp"
 #include "amcChannelDescriptor.hpp"
 #include "amcLinkDescriptor.hpp"
+#include "interfaceIdentifierBody.hpp"
+#include "uTCAZone3InterfaceCompatibilityRecord.hpp"
 #include <cstdint>
 #include <vector>
-#include <list>
+#include <cstring>
 
 typedef int channelDescriptorHandle;
 
@@ -20,6 +22,7 @@ public :
   void addModuleCurrentRequirementsRecord(double current);
   void addAMCPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs);
   std::vector<uint8_t> getBinaryData();
+  void adduTCAZone3InterfaceCompatibilityRecord(uint8_t interfaceIdentifier, interfaceIdentifierBody body);
   void printData();
   int size();
 };

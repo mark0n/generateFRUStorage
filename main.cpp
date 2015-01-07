@@ -17,38 +17,41 @@
 #include "multiRecordArea.hpp"
 #include "amcChannelDescriptor.hpp"
 #include "amcLinkDescriptor.hpp"
+#include "interfaceIdentifierBody.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-#include <boost/date_time/posix_time/posix_time.hpp>
-#include <config.h>
+#include "boost/date_time/posix_time/posix_time.hpp"
+#include "config.h"
 #include <getopt.h>
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/json_parser.hpp>
-#include <boost/foreach.hpp>
+#include "boost/property_tree/ptree.hpp"
+#include "boost/property_tree/json_parser.hpp"
+#include "boost/foreach.hpp"
+#include <string>
 
 #define EEPROM_SIZE 2048
 
 int main(int argc, char **argv) {
   int opt;
-  bool debugMode;
-  std::string inFileName;
-  std::string outFileName;
+  int boardType;
+  bool debugMode = true;
+  std::string inFileName = "FRU_data_FGPDB2.json";
+  std::string outFileName = "test.bin";
   while((opt = getopt(argc, argv, "Vdi:o:")) != EOF) {
     switch (opt)
     {
       case 'V':
-        std::cout << argv[0] << " " << VERSION_STRING << std::endl;
+        std::cout << argv[1] << " " << VERSION_STRING << std::endl;
         exit(0);
       case 'd':
         debugMode = true;
         break;
       case 'i':
-        inFileName = optarg;
+        //inFileName = optarg;
         break;
       case 'o':
-        outFileName = optarg;
+        //outFileName = optarg;
         break;
       case '?':
         if(optopt == 'i' or optopt == 'o')
@@ -101,6 +104,7 @@ int main(int argc, char **argv) {
   assert(bia.size() % 8 == 0);
   ch.setProductInfoAreaOffset((ch.size() + bia.size()) / 8);
 
+
   pia.setLanguageCode(pt.get<int>("ProductInfoArea.LanguageCode"));
   pia.setManufacturer(pt.get<std::string>("ProductInfoArea.Manufacturer"));
   pia.setProductName(pt.get<std::string>("ProductInfoArea.ProductName"));
@@ -115,7 +119,11 @@ int main(int argc, char **argv) {
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
+  /*double current = (double)(pt.get("MultiRecordArea.CurrentRequirementsRecord.Current", 0));
+  if(current > 0)
+      mra.addModuleCurrentRequirementsRecord(current);*/
+  
+   mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
   
   std::list<amcChannelDescriptor> chDescrs;
   for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
@@ -153,8 +161,51 @@ int main(int argc, char **argv) {
 
     amcChannelId++;
   }
-
+  
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
+  
+  int interfaceIdentifier = 0x00;
+  std::vector<std::string> interfaceBody;
+  interfaceIdentifier = (uint8_t)(pt.get<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
+      switch(interfaceIdentifier)
+    {
+        case 0x00:
+            break;
+        case 0x01:
+        {
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationUniqueIdentifier"));
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.OpaqueInterfaceIdentifierBody"));
+        }
+        break;
+        case 0x02:
+        {
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.InterfaceIdentifierGUID"));
+        }
+        break;
+        case 0x03:
+        {
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.ManufacturerIDIANA"));
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.OEMDefinedInterfaceDesignator"));
+        }
+        break;
+        case 0x04:
+        {
+            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGMTCARepNumber"));
+        }
+        break;
+        default:
+            throw std::out_of_range("Interface Identifier out of valid range");
+            break;
+    }
+  if(interfaceIdentifier>0x00){
+      interfaceIdentifierBody interface(interfaceIdentifier, interfaceBody);
+      if(interfaceBody.size() > 0)
+      {
+          mra.adduTCAZone3InterfaceCompatibilityRecord(interfaceIdentifier, interface);
+      }
+  }
 
   if(debugMode)
   {
