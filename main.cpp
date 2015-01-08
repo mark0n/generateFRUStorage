@@ -18,6 +18,7 @@
 #include "amcChannelDescriptor.hpp"
 #include "amcLinkDescriptor.hpp"
 #include "interfaceIdentifierBody.hpp"
+#include "uTCAZone3InterfaceCompatibilityRecord.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -28,16 +29,19 @@
 #include "boost/property_tree/ptree.hpp"
 #include "boost/property_tree/json_parser.hpp"
 #include "boost/foreach.hpp"
+#include <boost/optional.hpp>
 #include <string>
 
 #define EEPROM_SIZE 2048
 
 int main(int argc, char **argv) {
   int opt;
-  int boardType;
+  ///int boardType;
   bool debugMode = true;
-  std::string inFileName = "FRU_data_FGPDB2.json";
-  std::string outFileName = "test.bin";
+  std::string inFileName; 
+  ///= "FRU_data_FGPDB2.json";
+  std::string outFileName; 
+  ///= "test.bin";
   while((opt = getopt(argc, argv, "Vdi:o:")) != EOF) {
     switch (opt)
     {
@@ -48,10 +52,10 @@ int main(int argc, char **argv) {
         debugMode = true;
         break;
       case 'i':
-        //inFileName = optarg;
+        inFileName = optarg;
         break;
       case 'o':
-        //outFileName = optarg;
+        outFileName = optarg;
         break;
       case '?':
         if(optopt == 'i' or optopt == 'o')
@@ -164,11 +168,13 @@ int main(int argc, char **argv) {
   
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
   
-  int interfaceIdentifier = 0x00;
   std::vector<std::string> interfaceBody;
-  interfaceIdentifier = (uint8_t)(pt.get<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
+  boost::optional<int> interfaceKey = (pt.get_optional<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
+  if(interfaceKey)
+  {
+      uint8_t interfaceIdentifier = interfaceKey.get();
       switch(interfaceIdentifier)
-    {
+      {
         case 0x00:
             break;
         case 0x01:
@@ -198,12 +204,13 @@ int main(int argc, char **argv) {
         default:
             throw std::out_of_range("Interface Identifier out of valid range");
             break;
-    }
-  if(interfaceIdentifier>0x00){
-      interfaceIdentifierBody interface(interfaceIdentifier, interfaceBody);
-      if(interfaceBody.size() > 0)
-      {
-          mra.adduTCAZone3InterfaceCompatibilityRecord(interfaceIdentifier, interface);
+      }
+      if(interfaceIdentifier>0x00){
+        interfaceIdentifierBody interface(interfaceIdentifier, interfaceBody);
+        if(interfaceBody.size() > 0)
+        {
+            mra.adduTCAZone3InterfaceCompatibilityRecord(interfaceIdentifier, interface);
+        }
       }
   }
 
