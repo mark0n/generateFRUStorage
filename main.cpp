@@ -127,7 +127,7 @@ int main(int argc, char **argv) {
   if(current > 0)
       mra.addModuleCurrentRequirementsRecord(current);*/
   
-   mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
+  mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
   
   std::list<amcChannelDescriptor> chDescrs;
   for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
@@ -168,10 +168,10 @@ int main(int argc, char **argv) {
   
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
   
-  std::vector<std::string> interfaceBody;
   boost::optional<int> interfaceKey = (pt.get_optional<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
   if(interfaceKey)
   {
+      std::vector<std::string> interfaceBody;
       uint8_t interfaceIdentifier = interfaceKey.get();
       switch(interfaceIdentifier)
       {
@@ -184,23 +184,23 @@ int main(int argc, char **argv) {
             interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
             interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.OpaqueInterfaceIdentifierBody"));
         }
-        break;
+            break;
         case 0x02:
         {
             interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.InterfaceIdentifierGUID"));
         }
-        break;
+            break;
         case 0x03:
         {
             interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.ManufacturerIDIANA"));
             interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.OEMDefinedInterfaceDesignator"));
         }
-        break;
+            break;
         case 0x04:
         {
             interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGMTCARepNumber"));
         }
-        break;
+            break;
         default:
             throw std::out_of_range("Interface Identifier out of valid range");
             break;

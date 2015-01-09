@@ -23,15 +23,11 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
 
     switch(interfaceIdentifier)
     {
-          case 0x00:
-          {
-              throw std::out_of_range("0x00 is an invalid entry");
-          }
-              break;
           case 0x01:
           {
               if(body.size() == picmgSpecificationInterfaceIdentifierLines)
               {
+                  
                   std::string localBody1 = body[0];
                   int identQuant = 0;
                   for(int j = localBody1.size()-1; j >= 0; j--)
@@ -43,8 +39,8 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
                       m_data1.identifier[identQuant] = (uint8_t)std::stoul(ident, NULL, 16);
                       identQuant++;
                   }
-                  
                   m_data1.major = uint8_t(std::stoi(body[1]));
+                  
                   m_data1.minor = uint8_t(std::stoi(body[2]));
                   
                   std::string localBody2 = body[0];
@@ -89,29 +85,34 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           {
               if(body.size() == interfaceIdentifierOEMLines)
               {
-                  std::string localBody1 = body[0];
-                  int idanaQuant = 0;
-                  for(int j = localBody1.size()-1; j >= 0; j--)
+                  if(body[0].size()==6 && body[1].size()==8)
                   {
-                      std::string idana;
-                      idana.push_back(localBody1[j-1]);
-                      idana.push_back(localBody1[j]);
-                      j--;
-                      m_data3.idana[idanaQuant] = (uint8_t)std::stoul(idana, NULL, 16);
-                      idanaQuant++;
+                    std::string localBody1 = body[0];
+                    int idanaQuant = 0;
+                    for(int j = localBody1.size()-1; j >= 0; j--)
+                    {
+                        std::string idana;
+                        idana.push_back(localBody1[j-1]);
+                        idana.push_back(localBody1[j]);
+                        j--;
+                        m_data3.idana[idanaQuant] = (uint8_t)std::stoul(idana, NULL, 16);
+                        idanaQuant++;
+                    }
+                    std::string localBody2 = body[1];
+                    int desiQuant = 0;
+                    for(int j = localBody2.size()-1; j >= 0; j--)
+                    {
+                        std::string desi;
+                        desi.push_back(localBody2[j-1]);
+                        desi.push_back(localBody2[j]);
+                        j--;
+                        m_data3.designator[desiQuant] = (uint8_t)std::stoul(desi, NULL, 16);
+                        desiQuant++;
+                    }
+                    interfaceIdentifierBodyDataSize = interfaceIdentifierOEMLength;
                   }
-                  std::string localBody2 = body[1];
-                  int desiQuant = 0;
-                  for(int j = localBody2.size()-1; j >= 0; j--)
-                  {
-                      std::string desi;
-                      desi.push_back(localBody2[j-1]);
-                      desi.push_back(localBody2[j]);
-                      j--;
-                      m_data3.designator[desiQuant] = (uint8_t)std::stoul(desi, NULL, 16);
-                      desiQuant++;
-                  }
-                  interfaceIdentifierBodyDataSize = interfaceIdentifierOEMLength;
+                  else
+                      throw std::out_of_range("too large");
               }
               else
                   throw std::out_of_range("number of record entries out of valid range");
