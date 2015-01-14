@@ -27,33 +27,37 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           {
               if(body.size() == picmgSpecificationInterfaceIdentifierLines)
               {
-                  
-                  std::string localBody1 = body[0];
-                  int identQuant = 0;
-                  for(int j = localBody1.size()-1; j >= 0; j--)
+                  if(body[0].size() + body[1].size() + body[2].size() == picmgSpecificationInterfaceIdentifierLeadingLength*2)
                   {
-                      std::string ident;
-                      ident.push_back(localBody1[j-1]);
-                      ident.push_back(localBody1[j]);
-                      j--;
-                      m_data1.identifier[identQuant] = (uint8_t)std::stoul(ident, NULL, 16);
-                      identQuant++;
+                    std::string localBody1 = body[0];
+                    int identQuant = 0;
+                    for(int j = localBody1.size()-1; j >= 0; j--)
+                    {
+                        std::string ident;
+                        ident.push_back(localBody1[j-1]);
+                        ident.push_back(localBody1[j]);
+                        j--;
+                        m_data1.identifier[identQuant] = (uint8_t)std::stoul(ident, NULL, 16);
+                        identQuant++;
+                    }
+                    m_data1.major = uint8_t(std::stoi(body[1]));
+
+                    m_data1.minor = uint8_t(std::stoi(body[2]));
+
+                    std::string localBody2 = body[0];
+                    int opaqueQuant = 0;
+                    for(int j = localBody2.size()-1; j >= 0; j--)
+                    {
+                        std::string opaque;
+                        opaque.push_back(localBody2[j-1]);
+                        opaque.push_back(localBody2[j]);
+                        j--;
+                        m_data1.opaque[opaqueQuant] = (uint)std::stoul(opaque, NULL, 16);
+                        opaqueQuant++;
+                    }
                   }
-                  m_data1.major = uint8_t(std::stoi(body[1]));
-                  
-                  m_data1.minor = uint8_t(std::stoi(body[2]));
-                  
-                  std::string localBody2 = body[0];
-                  int opaqueQuant = 0;
-                  for(int j = localBody2.size()-1; j >= 0; j--)
-                  {
-                      std::string opaque;
-                      opaque.push_back(localBody2[j-1]);
-                      opaque.push_back(localBody2[j]);
-                      j--;
-                      m_data1.opaque[opaqueQuant] = (uint)std::stoul(opaque, NULL, 16);
-                      opaqueQuant++;
-                  }
+                  else
+                      throw std::out_of_range("too large");
                   interfaceIdentifierBodyDataSize = picmgSpecificationInterfaceIdentifierLeadingLength + (uint)ceil(m_data1.opaque.size()/2);
               }
               else
@@ -64,17 +68,22 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           {
               if(body.size() == interfaceIdentifierGUIDLines)
               {
-                  std::string localBody = body[0];
-                  int guidQuant = 0;
-                  for(int j = localBody.size()-1; j >= 0; j--)
+                  if(body[0].size() == interfaceIdentifierGUIDLength*2)
                   {
-                      std::string guid;
-                      guid.push_back(localBody[j-1]);
-                      guid.push_back(localBody[j]);
-                      j--;
-                      m_data2.guid[guidQuant] = (uint8_t)std::stoul(guid, NULL, 16);
-                      guidQuant++;
+                    std::string localBody = body[0];
+                    int guidQuant = 0;
+                    for(int j = localBody.size()-1; j >= 0; j--)
+                    {
+                        std::string guid;
+                        guid.push_back(localBody[j-1]);
+                        guid.push_back(localBody[j]);
+                        j--;
+                        m_data2.guid[guidQuant] = (uint8_t)std::stoul(guid, NULL, 16);
+                        guidQuant++;
+                    }
                   }
+                  else
+                      throw std::out_of_range("too large");
                   interfaceIdentifierBodyDataSize = interfaceIdentifierGUIDLength;
               }
               else
@@ -85,7 +94,7 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           {
               if(body.size() == interfaceIdentifierOEMLines)
               {
-                  if(body[0].size()==6 && body[1].size()==8)
+                  if(body[0].size() + body[1].size() == interfaceIdentifierOEMLength*2)
                   {
                     std::string localBody1 = body[0];
                     int idanaQuant = 0;
@@ -122,17 +131,22 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           {
               if(body.size() == picmgMTCAREPNumberLines )
               {   
-                  std::string localBody = body[0];
-                  int repNumQuant = 0;
-                  for(int j = localBody.size()-1; j >= 0; j--)
+                  if(body[0].size() == picmgMTCAREPNumberLength*2)
                   {
-                      std::string repNum;
-                      repNum.push_back(localBody[j-1]);
-                      repNum.push_back(localBody[j]);
-                      j--;
-                      m_data4.mtcaRepNumber[repNumQuant] = (uint8_t)std::stoul(repNum, NULL, 16);
-                      repNumQuant++;
+                    std::string localBody = body[0];
+                    int repNumQuant = 0;
+                    for(int j = localBody.size()-1; j >= 0; j--)
+                    {
+                        std::string repNum;
+                        repNum.push_back(localBody[j-1]);
+                        repNum.push_back(localBody[j]);
+                        j--;
+                        m_data4.mtcaRepNumber[repNumQuant] = (uint8_t)std::stoul(repNum, NULL, 16);
+                        repNumQuant++;
+                    }
                   }
+                  else
+                      throw std::out_of_range("too large");
                   interfaceIdentifierBodyDataSize = picmgMTCAREPNumberLength;
               }
           }
