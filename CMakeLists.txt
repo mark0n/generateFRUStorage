@@ -45,6 +45,8 @@ set(GENERATEFRUSTORAGE_SRC
   amcChannelDescriptor.cpp
   amcLinkDescriptor.cpp
   moduleCurrentRequirementsRecord.cpp
+  interfaceIdentifierBody.cpp
+  uTCAZone3InterfaceCompatibilityRecord.cpp
 )
 
 add_executable(generateFRUStorage ${GENERATEFRUSTORAGE_SRC})
@@ -105,6 +107,8 @@ set(TEST_COMPONENTS
   amcPtPConnectivityRecord.cpp
   varLengthLangCodeField.cpp
   varLengthField.cpp
+  interfaceIdentifierBody.cpp
+  uTCAZone3InterfaceCompatibilityRecord.cpp
 )
 
 add_executable(testGenerateFRUStorage ${TEST_COMPONENTS})
