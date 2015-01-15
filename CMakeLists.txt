@@ -32,7 +32,22 @@ configure_file (
 # config.h
 include_directories("${PROJECT_BINARY_DIR}")
 
-add_executable(generateFRUStorage main.cpp commonHeader.cpp boardInfoArea.cpp productInfoArea varLengthLangCodeField.cpp varLengthField.cpp multiRecordArea.cpp multiRecord.cpp amcPtPConnectivityRecord.cpp amcChannelDescriptor.cpp amcLinkDescriptor.cpp moduleCurrentRequirementsRecord.cpp)
+set(GENERATEFRUSTORAGE_SRC
+  main.cpp
+  commonHeader.cpp
+  boardInfoArea.cpp
+  productInfoArea.cpp
+  varLengthLangCodeField.cpp
+  varLengthField.cpp
+  multiRecordArea.cpp
+  multiRecord.cpp
+  amcPtPConnectivityRecord.cpp
+  amcChannelDescriptor.cpp
+  amcLinkDescriptor.cpp
+  moduleCurrentRequirementsRecord.cpp
+)
+
+add_executable(generateFRUStorage ${GENERATEFRUSTORAGE_SRC})
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
 
 add_custom_command(
