@@ -1,0 +1,88 @@
+{
+  "BoardInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "SerialNumber": "testBoardSerialNumber",
+    "PartNumber": "testBoardPartNumber",
+    "FRUFileId": "testFRUFileId"
+  },
+  "ProductInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "PartNumber": "testProductPartNumber",
+    "Version": "testProductVersion",
+    "SerialNumber": "testProductSerialNumber",
+    "AssetTag": "testAssetTag",
+    "FRUFileId": "testFRUFileId"
+  },
+  "MultiRecordArea":
+  {
+    "CurrentRequirementsRecord":
+    {
+      "Current": 2.0
+    },
+    "AMCPtPConnectivityRecord":
+    {
+      "AMCChannelDescriptors":
+      [
+        {
+          "Lane0PortNumber": 0,
+          "Lane1PortNumber": 31,
+          "Lane2PortNumber": 31,
+          "Lane3PortNumber": 31
+        },
+        {
+          "Lane0PortNumber": 4,
+          "Lane1PortNumber": 31,
+          "Lane2PortNumber": 31,
+          "Lane3PortNumber": 31
+        }
+      ],
+      "AMCLinkDescriptors":
+      [
+        {
+          "AMCLinkDesignator":
+          {
+            "Lane0Included": true,
+            "Lane1Included": false,
+            "Lane2Included": false,
+            "Lane3Included": false
+          },
+          "AMCLinkType": "AMC.2 Ethernet",
+          "AMCLinkTypeExtension": 0,
+          "AsymmetricMatch": "Matches with '00b' (exact match)",
+          "LinkGroupingID": 0
+        },
+        {
+          "AMCLinkDesignator":
+          {
+            "Lane0Included": true,
+            "Lane1Included": false,
+            "Lane2Included": false,
+            "Lane3Included": false
+          },
+          "AMCLinkType": "AMC.1 PCI Express",
+          "AMCLinkTypeExtension": "Gen 1 non spread spectrum clock",
+          "AsymmetricMatch": "Matches with '10b'",
+          "LinkGroupingID": 0
+        }
+      ]
+    },
+    "uTCAZone3Record":
+    {
+      "InterfaceIdentifier":
+      {
+        "IdentifierNumber": 3
+      },
+      "IdentifierBody":
+      {
+        "ManufacturerIDIANA": "123456",
+        "OEMDefinedInterfaceDesignator": "12345678"
+      }
+    }
+  }
+}
