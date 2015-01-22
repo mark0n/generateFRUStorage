@@ -20,8 +20,7 @@
     "FRUFileId": "testFRUFileId"
   },
   "MultiRecordArea":
-  {
-    
+  { 
    "uTCAZone3Records":
     [
       {
@@ -39,7 +38,7 @@
         "InterfaceIdentifier":
         {
           "IdentifierNumber": 4
-        }
+        },
         "IdentifierBody":
         {
           "PICMGMTCARepNumber": "12345678"

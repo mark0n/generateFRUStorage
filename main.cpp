@@ -123,12 +123,16 @@ int main(int argc, char **argv) {
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  /*double current = (double)(pt.get("MultiRecordArea.CurrentRequirementsRecord.Current", 0));
-  if(current > 0)
-      mra.addModuleCurrentRequirementsRecord(current);*/
+  boost::optional<double> currentRecord = pt.get_optional<double>("MultiRecordArea.CurrentRequirementsRecord.Current");
+  if(currentRecord)
+  {
+      uint8_t current = currentRecord.get();
+      mra.addModuleCurrentRequirementsRecord(current);
+  }
   
-  mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
   
+  boost::optional<ptree&> ptpTest = pt.get_child_optional("MultiRecordArea.AMCPtPConnectivityRecord");
+  if(ptpTest){
   std::list<amcChannelDescriptor> chDescrs;
   for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
   {
@@ -167,38 +171,41 @@ int main(int argc, char **argv) {
   }
   
   mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
+  }
   
-  boost::optional<int> interfaceKey = (pt.get_optional<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
-  if(interfaceKey)
+  boost::optional<ptree&> zone3Test = pt.get_child_optional("MultiRecordArea.uTCAZone3Records");
+  if(zone3Test){
+  //boost::optional<int> interfaceKey = (pt.get_optional<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
+  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.uTCAZone3Records"))
   {
       std::vector<std::string> interfaceBody;
-      uint8_t interfaceIdentifier = interfaceKey.get();
+      uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier.IdentifierNumber");
       switch(interfaceIdentifier)
       {
         case 0x00:
             break;
         case 0x01:
         {
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationUniqueIdentifier"));
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.OpaqueInterfaceIdentifierBody"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationUniqueIdentifier"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OpaqueInterfaceIdentifierBody"));
         }
             break;
         case 0x02:
         {
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.InterfaceIdentifierGUID"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.InterfaceIdentifierGUID"));
         }
             break;
         case 0x03:
         {
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.ManufacturerIDIANA"));
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.OEMDefinedInterfaceDesignator"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.ManufacturerIDIANA"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OEMDefinedInterfaceDesignator"));
         }
             break;
         case 0x04:
         {
-            interfaceBody.push_back(pt.get<std::string>("MultiRecordArea.uTCAZone3Record.IdentifierBody.PICMGMTCARepNumber"));
+            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGMTCARepNumber"));
         }
             break;
         default:
@@ -213,7 +220,7 @@ int main(int argc, char **argv) {
         }
       }
   }
-
+  }
   if(debugMode)
   {
     std::cout << "COMMON-HEADER AREA:" << std::endl;

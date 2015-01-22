@@ -72,17 +72,19 @@
         }
       ]
     },
-    "uTCAZone3Record":
-    {
-      "InterfaceIdentifier":
+    "uTCAZone3Records":
+    [
       {
-        "IdentifierNumber": 3
-      },
-      "IdentifierBody":
-      {
-        "ManufacturerIDIANA": "123456",
-        "OEMDefinedInterfaceDesignator": "12345678"
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 3
+        },
+        "IdentifierBody":
+        {
+          "ManufacturerIDIANA": "123456",
+          "OEMDefinedInterfaceDesignator": "12345678"
+        }
       }
-    }
+    ]
   }
 }
