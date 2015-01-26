@@ -8,6 +8,7 @@
 #include "interfaceIdentifierBody.hpp"
 #include <iostream>
 #include <cmath>
+#include <string>
 
 const uint8_t picmgSpecificationInterfaceIdentifierLeadingLength = 6;
 const uint8_t picmgSpecificationInterfaceIdentifierLines = 4;
@@ -37,28 +38,27 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
                         ident.push_back(localBody1[j-1]);
                         ident.push_back(localBody1[j]);
                         j--;
-                        m_data1.identifier[identQuant] = (uint8_t)std::stoul(ident, NULL, 16);
+                        m_data1.identifier[identQuant] = (uint8_t)std::stoi(ident, NULL, 16);
                         identQuant++;
                     }
-                    m_data1.major = uint8_t(std::stoi(body[1]));
+                    m_data1.major = (uint8_t)std::stoi(body[1], NULL, 16);
 
-                    m_data1.minor = uint8_t(std::stoi(body[2]));
-
-                    std::string localBody2 = body[0];
-                    int opaqueQuant = 0;
+                    m_data1.minor = (uint8_t)std::stoi(body[2], NULL, 16);
+                    
+                    std::string localBody2 = body[3];
                     for(int j = localBody2.size()-1; j >= 0; j--)
                     {
-                        std::string opaque;
-                        opaque.push_back(localBody2[j-1]);
-                        opaque.push_back(localBody2[j]);
+                        std::string opa;
+                        opa.push_back(localBody2[j-1]);
+                        opa.push_back(localBody2[j]);
                         j--;
-                        m_data1.opaque[opaqueQuant] = (uint)std::stoul(opaque, NULL, 16);
-                        opaqueQuant++;
+                        opaque.push_back((uint8_t)std::stoi(opa, NULL, 16));
                     }
                   }
                   else
                       throw std::out_of_range("too large");
-                  interfaceIdentifierBodyDataSize = picmgSpecificationInterfaceIdentifierLeadingLength + (uint)ceil(m_data1.opaque.size()/2);
+                  interfaceIdentifierBodyDataSize = picmgSpecificationInterfaceIdentifierLeadingLength + opaque.size();
+                  
               }
               else
                   throw std::out_of_range("number of record entries out of valid range");
@@ -165,10 +165,9 @@ std::vector<uint8_t> interfaceIdentifierBody::getBinaryData() const {
     {
           case 0x01:
           {
-              return std::vector<uint8_t>( ( uint8_t * )&m_data1, 
-                      ( ( uint8_t * )&m_data1 ) + 
-                      picmgSpecificationInterfaceIdentifierLeadingLength + 
-                      (uint)ceil(m_data1.opaque.size()/2));
+              std::vector<uint8_t>binary( ( uint8_t * )&m_data1, ( ( uint8_t * )&m_data1 ) + picmgSpecificationInterfaceIdentifierLeadingLength);
+              binary.insert(binary.end(), opaque.begin(), opaque.end());
+              return binary;
           }
               break;
           case 0x02:

@@ -14,13 +14,13 @@
 
 struct picmgSpecificationInterfaceIdentifier {
     uint8_t identifier[4] = {0x00};
-    uint8_t major = 0x00;
-    uint8_t minor = 0x00;
-    std::vector<uint8_t> opaque;
+    uint8_t major = 00;
+    uint8_t minor = 00;
+    uint8_t opaque[16] = {0x00};
 };
 
 struct interfaceIdentifierGUID {
-    uint8_t guid[16] = {0x00};
+    uint8_t guid[16] = {0};
 };
 
 struct interfaceIdentifierOEM {
@@ -46,6 +46,7 @@ private:
     struct picmgMTCAREPNumber m_data4;
     uint8_t m_identifier = 0x00;
     int interfaceIdentifierBodyDataSize = 0;
+    int opaqueSize = 0;
 };
 
 #endif	/* INTERFACEIDENTIFIERBODY_HPP */

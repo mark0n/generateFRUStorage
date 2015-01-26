@@ -26,9 +26,32 @@
       {
         "InterfaceIdentifier":
         {
+          "IdentifierNumber": 1
+        },
+          "IdentifierBody":
+        {
+          "PICMGSpecificationUniqueIdentifier": "12345678",
+          "PICMGSpecificationMajorRevisionNumber": "01",
+          "PICMGSpecificationMinorRevisionNumber": "05",
+          "OpaqueInterfaceIdentifierBody": "1234567890"
+        }
+      },
+      {
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 2
+        },
+          "IdentifierBody":
+        {
+          "InterfaceIdentifierGUID": "0123456789ABCDEF0000000000000000"
+        }
+      },
+      {
+        "InterfaceIdentifier":
+        {
           "IdentifierNumber": 3
         },
-        "IdentifierBody":
+          "IdentifierBody":
         {
           "ManufacturerIDIANA": "123456",
           "OEMDefinedInterfaceDesignator": "12345678"
@@ -39,7 +62,7 @@
         {
           "IdentifierNumber": 4
         },
-        "IdentifierBody":
+          "IdentifierBody":
         {
           "PICMGMTCARepNumber": "12345678"
         } 
