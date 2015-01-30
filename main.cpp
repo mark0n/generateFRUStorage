@@ -174,52 +174,54 @@ int main(int argc, char **argv) {
   }
   
   boost::optional<ptree&> zone3Test = pt.get_child_optional("MultiRecordArea.uTCAZone3Records");
-  if(zone3Test){
-  //boost::optional<int> interfaceKey = (pt.get_optional<int>("MultiRecordArea.uTCAZone3Record.InterfaceIdentifier.IdentifierNumber"));
-  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.uTCAZone3Records"))
+  if(zone3Test)
   {
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.uTCAZone3Records"))
+    {
       std::vector<std::string> interfaceBody;
       uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier.IdentifierNumber");
       switch(interfaceIdentifier)
       {
-        case 0x00:
-            break;
-        case 0x01:
+        case 0:
+          break;
+        case 1:
         {
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationUniqueIdentifier"));
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OpaqueInterfaceIdentifierBody"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationUniqueIdentifier"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OpaqueInterfaceIdentifierBody"));
         }
-            break;
-        case 0x02:
+          break;
+        case 2:
         {
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.InterfaceIdentifierGUID"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.InterfaceIdentifierGUID"));
         }
-            break;
-        case 0x03:
+          break;
+        case 3:
         {
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.ManufacturerIDIANA"));
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OEMDefinedInterfaceDesignator"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.ManufacturerIDIANA"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OEMDefinedInterfaceDesignator"));
         }
-            break;
-        case 0x04:
+          break;
+        case 4:
         {
-            interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGMTCARepNumber"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGMTCARepNumber"));
         }
-            break;
+          break;
         default:
-            throw std::out_of_range("Interface Identifier out of valid range");
-            break;
+          throw std::out_of_range("Interface Identifier out of valid range");
+          break;
       }
-      if(interfaceIdentifier>0x00){
+      if(interfaceIdentifier>0)
+      {
         interfaceIdentifierBody interface(interfaceIdentifier, interfaceBody);
+        interfaceIdentifierBody *iib = &interface;
         if(interfaceBody.size() > 0)
         {
-            mra.adduTCAZone3InterfaceCompatibilityRecord(interfaceIdentifier, interface);
+          mra.adduTCAZone3InterfaceCompatibilityRecord(interfaceIdentifier, iib);
         }
       }
-  }
+    }
   }
   if(debugMode)
   {

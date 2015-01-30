@@ -1,4 +1,5 @@
 #include "uTCAZone3InterfaceCompatibilityRecord.hpp"
+#include "interfaceIdentifierBody.hpp"
 #include <stdexcept>
 #include <iostream>
 #include <algorithm>
@@ -8,9 +9,16 @@
 const uint8_t uTCAZone3InterfaceCompatibilityRecordPICMGRecordId = 0x30;
 const uint8_t uTCAZone3InterfaceCompatibilityRecordFormatVersion = 0x01;
 
-uTCAZone3InterfaceCompatibilityRecord::uTCAZone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody body) :
+uTCAZone3InterfaceCompatibilityRecord::uTCAZone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody* body) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())
 {
+  bodySize = body->size();
+  if(bodySize > UINT8_MAX)
+  {
+    std::stringstream ss;
+    ss << "Record length exceeds maximum allowed length of " << UINT8_MAX << " bytes!";
+    throw std::length_error( ss.str() );
+  }
 
   m_interfaceHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   m_interfaceHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
@@ -18,11 +26,13 @@ uTCAZone3InterfaceCompatibilityRecord::uTCAZone3InterfaceCompatibilityRecord(uin
   m_interfaceHeader.picmgRecordId = uTCAZone3InterfaceCompatibilityRecordPICMGRecordId;
   m_interfaceHeader.recordFormatVersion = uTCAZone3InterfaceCompatibilityRecordFormatVersion;
   m_interfaceHeader.interfaceIdentifier = interface;
-  bodySize = body.size();
+
   updateRecordLength();
   m_payload = std::vector<uint8_t>( (uint8_t *)&m_interfaceHeader, (uint8_t *)(&m_interfaceHeader + 1) );
+ 
+  m_interfaceIdentifierBody = body;
   
-  std::vector<uint8_t> interfaceBody = body.getBinaryData();
+  std::vector<uint8_t> interfaceBody = m_interfaceIdentifierBody->getBinaryData();
   std::copy(interfaceBody.begin(), interfaceBody.end(), std::back_inserter(m_payload));
 }
 
@@ -39,11 +49,13 @@ void uTCAZone3InterfaceCompatibilityRecord::updateRecordLength()
   m_header.recordLength = payloadSize;
 }
 
-std::vector<uint8_t> uTCAZone3InterfaceCompatibilityRecord::getBinaryData() {
+std::vector<uint8_t> uTCAZone3InterfaceCompatibilityRecord::getBinaryData() 
+{
   return multiRecord::getBinaryData();
 }
 
-void uTCAZone3InterfaceCompatibilityRecord::printData() {
+void uTCAZone3InterfaceCompatibilityRecord::printData() 
+{
   updateRecordLength();
   updateRecordChecksum();
   updateHeaderChecksum();
@@ -57,6 +69,8 @@ void uTCAZone3InterfaceCompatibilityRecord::printData() {
   std::cout << "Manufacturer ID: 0x" << std::hex << manId << std::endl;
   std::cout << "PICMG Record ID: 0x" << std::hex << (unsigned int)m_interfaceHeader.picmgRecordId << std::endl;
   std::cout << "Record Format Version: " << std::dec << (unsigned int)m_interfaceHeader.recordFormatVersion << std::endl;
+  std::cout << "Type of InterfaceIdentifier: ";
+  m_interfaceIdentifierBody->printData();
 };
 
 int uTCAZone3InterfaceCompatibilityRecord::size()

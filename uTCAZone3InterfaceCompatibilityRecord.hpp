@@ -6,6 +6,7 @@
 #include <list>
 #include <string>
 #include <vector>
+#include <memory>
 
 
 struct uTCAZone3InterfaceCompatibilityRecordHeader {
@@ -16,16 +17,15 @@ struct uTCAZone3InterfaceCompatibilityRecordHeader {
 };
 
 class uTCAZone3InterfaceCompatibilityRecord : public multiRecord {
-  uTCAZone3InterfaceCompatibilityRecordHeader m_interfaceHeader;
-  std::vector<std::string> m_interfaceIdentifierBody;
 public :
-  uTCAZone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody body);
+  uTCAZone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody* body);
   void updateRecordLength();
   std::vector<uint8_t> getBinaryData();
   void printData();
   int size();
-private:
-    int bodySize;
+private :
+  interfaceIdentifierBody* m_interfaceIdentifierBody;
+  uTCAZone3InterfaceCompatibilityRecordHeader m_interfaceHeader;
+  int bodySize;
 };
-
 #endif /* UTCAZONE3INTERFACECOMPATIBILITYRECORD_HPP */

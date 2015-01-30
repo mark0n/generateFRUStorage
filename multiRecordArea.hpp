@@ -22,7 +22,7 @@ public :
   void addModuleCurrentRequirementsRecord(double current);
   void addAMCPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs);
   std::vector<uint8_t> getBinaryData();
-  void adduTCAZone3InterfaceCompatibilityRecord(uint8_t interfaceIdentifier, interfaceIdentifierBody body);
+  void adduTCAZone3InterfaceCompatibilityRecord(uint8_t interfaceIdentifier, interfaceIdentifierBody* body);
   void printData();
   int size();
 };
