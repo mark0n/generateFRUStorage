@@ -1,4 +1,4 @@
-#include "uTCAZone3InterfaceCompatibilityRecord.hpp"
+#include "zone3InterfaceCompatibilityRecord.hpp"
 #include "interfaceIdentifierBody.hpp"
 #include <stdexcept>
 #include <iostream>
@@ -6,10 +6,10 @@
 #include <functional>
 #include <sstream>
 
-const uint8_t uTCAZone3InterfaceCompatibilityRecordPICMGRecordId = 0x30;
-const uint8_t uTCAZone3InterfaceCompatibilityRecordFormatVersion = 0x01;
+const uint8_t zone3InterfaceCompatibilityRecordPICMGRecordId = 0x30;
+const uint8_t zone3InterfaceCompatibilityRecordFormatVersion = 0x01;
 
-uTCAZone3InterfaceCompatibilityRecord::uTCAZone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody* body) :
+zone3InterfaceCompatibilityRecord::zone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody* body) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())
 {
   bodySize = body->size();
@@ -23,8 +23,8 @@ uTCAZone3InterfaceCompatibilityRecord::uTCAZone3InterfaceCompatibilityRecord(uin
   m_interfaceHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   m_interfaceHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
   m_interfaceHeader.manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
-  m_interfaceHeader.picmgRecordId = uTCAZone3InterfaceCompatibilityRecordPICMGRecordId;
-  m_interfaceHeader.recordFormatVersion = uTCAZone3InterfaceCompatibilityRecordFormatVersion;
+  m_interfaceHeader.picmgRecordId = zone3InterfaceCompatibilityRecordPICMGRecordId;
+  m_interfaceHeader.recordFormatVersion = zone3InterfaceCompatibilityRecordFormatVersion;
   m_interfaceHeader.interfaceIdentifier = interface;
 
   updateRecordLength();
@@ -36,7 +36,7 @@ uTCAZone3InterfaceCompatibilityRecord::uTCAZone3InterfaceCompatibilityRecord(uin
   std::copy(interfaceBody.begin(), interfaceBody.end(), std::back_inserter(m_payload));
 }
 
-void uTCAZone3InterfaceCompatibilityRecord::updateRecordLength()
+void zone3InterfaceCompatibilityRecord::updateRecordLength()
 {
   int payloadSize = sizeof(m_interfaceHeader);
   payloadSize += bodySize; // interface identifier
@@ -49,12 +49,12 @@ void uTCAZone3InterfaceCompatibilityRecord::updateRecordLength()
   m_header.recordLength = payloadSize;
 }
 
-std::vector<uint8_t> uTCAZone3InterfaceCompatibilityRecord::getBinaryData() 
+std::vector<uint8_t> zone3InterfaceCompatibilityRecord::getBinaryData() 
 {
   return multiRecord::getBinaryData();
 }
 
-void uTCAZone3InterfaceCompatibilityRecord::printData() 
+void zone3InterfaceCompatibilityRecord::printData() 
 {
   updateRecordLength();
   updateRecordChecksum();
@@ -73,7 +73,7 @@ void uTCAZone3InterfaceCompatibilityRecord::printData()
   m_interfaceIdentifierBody->printData();
 };
 
-int uTCAZone3InterfaceCompatibilityRecord::size()
+int zone3InterfaceCompatibilityRecord::size()
 {
   updateRecordLength();
   return sizeof(m_header) + m_header.recordLength;

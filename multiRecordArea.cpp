@@ -24,9 +24,9 @@ void multiRecordArea::addModuleCurrentRequirementsRecord(double currentDraw) {
   addRecord(newRecord);
 };
 
-void multiRecordArea::adduTCAZone3InterfaceCompatibilityRecord(uint8_t identifier, interfaceIdentifierBody* body)
+void multiRecordArea::addZone3InterfaceCompatibilityRecord(uint8_t identifier, interfaceIdentifierBody* body)
 {
-  uTCAZone3InterfaceCompatibilityRecord newRecord(identifier, body);
+  zone3InterfaceCompatibilityRecord newRecord(identifier, body);
   addRecord(newRecord);
 };
 

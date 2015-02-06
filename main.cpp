@@ -18,17 +18,17 @@
 #include "amcChannelDescriptor.hpp"
 #include "amcLinkDescriptor.hpp"
 #include "interfaceIdentifierBody.hpp"
-#include "uTCAZone3InterfaceCompatibilityRecord.hpp"
+#include "zone3InterfaceCompatibilityRecord.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
 #include <cassert>
-#include "boost/date_time/posix_time/posix_time.hpp"
+#include <boost/date_time/posix_time/posix_time.hpp>
 #include "config.h"
 #include <getopt.h>
-#include "boost/property_tree/ptree.hpp"
-#include "boost/property_tree/json_parser.hpp"
-#include "boost/foreach.hpp"
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/foreach.hpp>
 #include <boost/optional.hpp>
 #include <string>
 
@@ -36,17 +36,14 @@
 
 int main(int argc, char **argv) {
   int opt;
-  ///int boardType;
-  bool debugMode = true;
-  std::string inFileName; 
-  ///= "FRU_data_FGPDB2.json";
-  std::string outFileName; 
-  ///= "test.bin";
+  bool debugMode;
+  std::string inFileName;
+  std::string outFileName;
   while((opt = getopt(argc, argv, "Vdi:o:")) != EOF) {
     switch (opt)
     {
       case 'V':
-        std::cout << argv[1] << " " << VERSION_STRING << std::endl;
+        std::cout << argv[0] << " " << VERSION_STRING << std::endl;
         exit(0);
       case 'd':
         debugMode = true;
@@ -123,60 +120,60 @@ int main(int argc, char **argv) {
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  boost::optional<double> currentRecord = pt.get_optional<double>("MultiRecordArea.CurrentRequirementsRecord.Current");
-  if(currentRecord)
+  boost::optional<double> current = pt.get_optional<double>("MultiRecordArea.CurrentRequirementsRecord.Current");
+  if(current)
   {
-      uint8_t current = currentRecord.get();
-      mra.addModuleCurrentRequirementsRecord(current);
+      mra.addModuleCurrentRequirementsRecord(*current);
   }
   
   
   boost::optional<ptree&> ptpTest = pt.get_child_optional("MultiRecordArea.AMCPtPConnectivityRecord");
-  if(ptpTest){
-  std::list<amcChannelDescriptor> chDescrs;
-  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
+  if(ptpTest)
   {
-    std::vector<int> ports;
-    for(int i = 0; i < 4; i++)
+    std::list<amcChannelDescriptor> chDescrs;
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
     {
-      ports.push_back(v.second.get<int>("Lane" + std::to_string(i) + "PortNumber"));
+      std::vector<int> ports;
+      for(int i = 0; i < 4; i++)
+      {
+        ports.push_back(v.second.get<int>("Lane" + std::to_string(i) + "PortNumber"));
+      }
+      chDescrs.push_back(amcChannelDescriptor(ports));
     }
-    chDescrs.push_back(amcChannelDescriptor(ports));
-  }
-
-  std::list<amcLinkDescriptor> lnkDescrs;
-  uint8_t amcChannelId = 0;
-  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCLinkDescriptors"))
-  {
-    std::bitset<4> lanesIncluded;
-    for(int lane = 0; lane < 4; lane++)
+    
+    std::list<amcLinkDescriptor> lnkDescrs;
+    uint8_t amcChannelId = 0;
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCLinkDescriptors"))
     {
-      lanesIncluded[lane] = v.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+      std::bitset<4> lanesIncluded;
+      for(int lane = 0; lane < 4; lane++)
+      {
+        lanesIncluded[lane] = v.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+      }
+      struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
+
+      amcLinkTypeMap lnkTypeMap;
+      amcLinkType lnkType = lnkTypeMap[v.second.get<std::string>("AMCLinkType")];
+
+      amcLinkTypeExtensionMap lnkTypeExtensionMap;
+      amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[v.second.get<std::string>("AMCLinkTypeExtension")];
+
+      asymmetricMatchMap asymMatchMap;
+      asymmetricMatch asymMatch = asymMatchMap[v.second.get<std::string>("AsymmetricMatch")];
+
+      int lnkGroupingId = v.second.get<int>("LinkGroupingID");
+      lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
+
+      amcChannelId++;
     }
-    struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
-
-    amcLinkTypeMap lnkTypeMap;
-    amcLinkType lnkType = lnkTypeMap[v.second.get<std::string>("AMCLinkType")];
-
-    amcLinkTypeExtensionMap lnkTypeExtensionMap;
-    amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[v.second.get<std::string>("AMCLinkTypeExtension")];
-
-    asymmetricMatchMap asymMatchMap;
-    asymmetricMatch asymMatch = asymMatchMap[v.second.get<std::string>("AsymmetricMatch")];
-
-    int lnkGroupingId = v.second.get<int>("LinkGroupingID");
-    lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
-
-    amcChannelId++;
+  
+    mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
   }
   
-  mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
-  }
-  
-  boost::optional<ptree&> zone3Test = pt.get_child_optional("MultiRecordArea.uTCAZone3Records");
+  boost::optional<ptree&> zone3Test = pt.get_child_optional("MultiRecordArea.Zone3Records");
   if(zone3Test)
   {
-    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.uTCAZone3Records"))
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.Zone3Records"))
     {
       std::vector<std::string> interfaceBody;
       uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier.IdentifierNumber");
@@ -218,7 +215,7 @@ int main(int argc, char **argv) {
         interfaceIdentifierBody *iib = &interface;
         if(interfaceBody.size() > 0)
         {
-          mra.adduTCAZone3InterfaceCompatibilityRecord(interfaceIdentifier, iib);
+          mra.addZone3InterfaceCompatibilityRecord(interfaceIdentifier, iib);
         }
       }
     }
