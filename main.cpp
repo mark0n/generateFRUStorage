@@ -22,7 +22,7 @@
 #include <stdexcept>
 #include <cassert>
 #include <boost/date_time/posix_time/posix_time.hpp>
-#include <config.h>
+#include "config.h"
 #include <getopt.h>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
