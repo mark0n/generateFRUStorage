@@ -26,6 +26,6 @@ public :
 private :
   interfaceIdentifierBody* m_interfaceIdentifierBody;
   zone3InterfaceCompatibilityRecordHeader m_interfaceHeader;
-  int bodySize;
+  int m_bodySize = 0;
 };
 #endif /* ZONE3INTERFACECOMPATIBILITYRECORD_HPP */

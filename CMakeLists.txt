@@ -97,6 +97,7 @@ set(TEST_COMPONENTS
   amcLinkDescriptorTests.cpp
   varLengthLangCodeFieldTests.cpp
   interfaceIdentifierBodyTests.cpp
+  zone3InterfaceCompatibilityRecordTests.cpp
   commonHeader.cpp
   boardInfoArea.cpp
   productInfoArea.cpp

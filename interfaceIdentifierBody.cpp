@@ -45,16 +45,16 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
                 opa.push_back(localBody2[j-1]);
                 opa.push_back(localBody2[j]);
                 j--;
-                opaque.push_back((uint8_t)std::stoi(opa, NULL, 16));
+                m_opaque.push_back((uint8_t)std::stoi(opa, NULL, 16));
               }
         }
         else
-          throw std::out_of_range("too large");
-        interfaceIdentifierBodyDataSize = picmgSpecificationInterfaceIdentifierLeadingLength + opaque.size();
+          throw std::out_of_range("II 1h byte length out of range");
+        m_interfaceIdentifierBodyDataSize = picmgSpecificationInterfaceIdentifierLeadingLength + m_opaque.size();
         
       }
       else
-        throw std::out_of_range("number of record entries out of valid range");
+        throw std::out_of_range("picmgSIIL lines out of range");
     }
       break;
     case 2:
@@ -76,11 +76,11 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           }
         }
         else
-          throw std::out_of_range("too large");
-        interfaceIdentifierBodyDataSize = interfaceIdentifierGUIDLength;
+          throw std::out_of_range("II 2h byte length out of range");
+        m_interfaceIdentifierBodyDataSize = interfaceIdentifierGUIDLength;
       }
       else
-        throw std::out_of_range("number of record entries out of valid range");
+        throw std::out_of_range("IIGUID lines out of range");
     }
       break;
     case 3:
@@ -111,13 +111,13 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
             m_data3.designator[desiQuant] = (uint8_t)std::stoul(desi, NULL, 16);
             desiQuant++;
           }
-          interfaceIdentifierBodyDataSize = interfaceIdentifierOEMLength;
+          m_interfaceIdentifierBodyDataSize = interfaceIdentifierOEMLength;
         }
         else
-          throw std::out_of_range("too large");
+          throw std::out_of_range("II 3h byte length out of range");
       }
       else
-        throw std::out_of_range("number of record entries out of valid range");
+        throw std::out_of_range("IIOEM lines out of range");
     }
       break;
     case 4:
@@ -139,13 +139,13 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
           }
         }
         else
-          throw std::out_of_range("too large");
-        interfaceIdentifierBodyDataSize = picmgMTCAREPNumberLength;
+          throw std::out_of_range("II 4h byte length out of range");
+        m_interfaceIdentifierBodyDataSize = picmgMTCAREPNumberLength;
       }
     }
       break;
     default:
-      throw std::out_of_range("Interface Identifier out of valid range");
+      throw std::out_of_range("PICMGMTCA4 lines out of range");
       break;
   }
 }
@@ -160,7 +160,7 @@ std::vector<uint8_t> interfaceIdentifierBody::getBinaryData() const
     case 1:
     {
       std::vector<uint8_t>binary( ( uint8_t * )&m_data1, ( ( uint8_t * )&m_data1 ) + picmgSpecificationInterfaceIdentifierLeadingLength);
-      binary.insert(binary.end(), opaque.begin(), opaque.end());
+      binary.insert(binary.end(), m_opaque.begin(), m_opaque.end());
       return binary;
     }
       break;
@@ -199,8 +199,8 @@ void interfaceIdentifierBody::printData()
       std::cout << "The PICMG specification major revision number: " << m_data1.major << std::endl;
       std::cout << "The PICMG specification minor revision number: " << m_data1.minor << std::endl;
       std::cout << "The opaque interface identifier body: ";
-      for(int i = 0; i < (int)opaque.size(); i++)
-        std::cout << opaque[i];
+      for(int i = 0; i < (int)m_opaque.size(); i++)
+        std::cout << m_opaque[i];
       std::cout << std::endl;
     }
       break;
@@ -241,5 +241,5 @@ void interfaceIdentifierBody::printData()
 }
 
 int interfaceIdentifierBody::size() const {
-  return interfaceIdentifierBodyDataSize;
+  return m_interfaceIdentifierBodyDataSize;
 }

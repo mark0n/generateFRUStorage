@@ -32,6 +32,24 @@ BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
   }
 }
 
+BOOST_AUTO_TEST_CASE( binarySize )
+{
+  uint8_t interface = 1;
+  std::string ident = "12345678";
+  std::string major = "01";
+  std::string minor = "05";
+  std::string opaque = "1234567890";
+  std::vector<std::string> interfaceBody;
+  interfaceBody.push_back(ident);
+  interfaceBody.push_back(major);
+  interfaceBody.push_back(minor);
+  interfaceBody.push_back(opaque);
+  interfaceIdentifierBody bodyObject(interface, interfaceBody); 
+  interfaceIdentifierBody* body = &bodyObject;
+  zone3InterfaceCompatibilityRecord zone(interface, body);
+  BOOST_CHECK_EQUAL(zone.getBinaryData().size(), 22);
+}
+
 BOOST_AUTO_TEST_CASE( size )
 {
   uint8_t interface = 1;
@@ -47,7 +65,7 @@ BOOST_AUTO_TEST_CASE( size )
   interfaceIdentifierBody bodyObject(interface, interfaceBody); 
   interfaceIdentifierBody* body = &bodyObject;
   zone3InterfaceCompatibilityRecord zone(interface, body);
-  BOOST_CHECK_EQUAL(zone.size(), 17+5);
+  BOOST_CHECK_EQUAL(zone.size(), 22);
 }
 
 

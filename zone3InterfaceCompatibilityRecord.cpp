@@ -12,8 +12,8 @@ const uint8_t zone3InterfaceCompatibilityRecordFormatVersion = 0x01;
 zone3InterfaceCompatibilityRecord::zone3InterfaceCompatibilityRecord(uint8_t interface, interfaceIdentifierBody* body) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())
 {
-  bodySize = body->size();
-  if(bodySize > UINT8_MAX)
+  m_bodySize = body->size();
+  if(m_bodySize > UINT8_MAX)
   {
     std::stringstream ss;
     ss << "Record length exceeds maximum allowed length of " << UINT8_MAX << " bytes!";
@@ -39,7 +39,7 @@ zone3InterfaceCompatibilityRecord::zone3InterfaceCompatibilityRecord(uint8_t int
 void zone3InterfaceCompatibilityRecord::updateRecordLength()
 {
   int payloadSize = sizeof(m_interfaceHeader);
-  payloadSize += bodySize; // interface identifier
+  payloadSize += m_bodySize; // interface identifier
 
   if(payloadSize > UINT8_MAX) {
     std::stringstream ss;
