@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+#include <sstream>
+#include <cassert>
 
 const uint8_t picmgSpecificationInterfaceIdentifierLeadingLength = 6;
 const uint8_t picmgSpecificationInterfaceIdentifierLines = 4;
@@ -18,7 +20,6 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
   switch(interfaceIdentifier)
   {
     case 1:
-    {
       if(body.size() == picmgSpecificationInterfaceIdentifierLines)
       {
         if(body[0].size() + body[1].size() + body[2].size() == picmgSpecificationInterfaceIdentifierLeadingLength*2)
@@ -53,9 +54,9 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
         m_interfaceIdentifierBodyDataSize = picmgSpecificationInterfaceIdentifierLeadingLength + m_opaque.size();
         
       }
-      else
+      else {
         throw std::out_of_range("picmgSIIL lines out of range");
-    }
+      }
       break;
     case 2:
     {
@@ -145,7 +146,9 @@ interfaceIdentifierBody::interfaceIdentifierBody(uint8_t interfaceIdentifier, st
     }
       break;
     default:
-      throw std::out_of_range("PICMGMTCA4 lines out of range");
+      std::stringstream msg;
+      msg << "Interface Identifier 0x" << std::hex << interfaceIdentifier << " not supported";
+      throw std::out_of_range(msg.str());
       break;
   }
 }
@@ -180,8 +183,8 @@ std::vector<uint8_t> interfaceIdentifierBody::getBinaryData() const
     }
       break;
     default:
-      throw std::out_of_range("Interface Identifier out of valid range");
-      break;
+      std::cerr << "Invalid Interface Identifier 0x" << std::hex << m_identifier << std::endl;
+      assert(false);
   }
 }
 
@@ -235,8 +238,8 @@ void interfaceIdentifierBody::printData()
     }
       break;
     default:
-      throw std::out_of_range("Interface Identifier out of valid range");
-      break;
+      std::cerr << "Invalid Interface Identifier 0x" << std::hex << m_identifier << std::endl;
+      assert(false);
   }
 }
 
