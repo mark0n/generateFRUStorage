@@ -127,8 +127,8 @@ int main(int argc, char **argv) {
   }
   
   
-  boost::optional<ptree&> ptpTest = pt.get_child_optional("MultiRecordArea.AMCPtPConnectivityRecord");
-  if(ptpTest)
+  boost::optional<ptree&> ptpRecord = pt.get_child_optional("MultiRecordArea.AMCPtPConnectivityRecord");
+  if(ptpRecord)
   {
     std::list<amcChannelDescriptor> chDescrs;
     for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
@@ -170,8 +170,8 @@ int main(int argc, char **argv) {
     mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
   }
   
-  boost::optional<ptree&> zone3Test = pt.get_child_optional("MultiRecordArea.Zone3Records");
-  if(zone3Test)
+  boost::optional<ptree&> zone3Records = pt.get_child_optional("MultiRecordArea.Zone3Records");
+  if(zone3Records)
   {
     for(const ptree::value_type &v: pt.get_child("MultiRecordArea.Zone3Records"))
     {
@@ -179,31 +179,21 @@ int main(int argc, char **argv) {
       uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier.IdentifierNumber");
       switch(interfaceIdentifier)
       {
-        case 0:
-          break;
         case 1:
-        {
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationUniqueIdentifier"));
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OpaqueInterfaceIdentifierBody"));
-        }
           break;
         case 2:
-        {
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.InterfaceIdentifierGUID"));
-        }
           break;
         case 3:
-        {
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.ManufacturerIDIANA"));
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OEMDefinedInterfaceDesignator"));
-        }
           break;
         case 4:
-        {
           interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGMTCARepNumber"));
-        }
           break;
         default:
           throw std::out_of_range("Interface Identifier out of valid range");
