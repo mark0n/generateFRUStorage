@@ -10,6 +10,7 @@
 #include "zone3InterfaceCompatibilityRecord.hpp"
 #include <cstdint>
 #include <vector>
+#include <list>
 #include <cstring>
 
 typedef int channelDescriptorHandle;
