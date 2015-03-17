@@ -24,6 +24,12 @@ void multiRecordArea::addModuleCurrentRequirementsRecord(double currentDraw) {
   addRecord(newRecord);
 };
 
+void multiRecordArea::addZone3InterfaceCompatibilityRecord(uint8_t identifier, interfaceIdentifierBody* body)
+{
+  zone3InterfaceCompatibilityRecord newRecord(identifier, body);
+  addRecord(newRecord);
+};
+
 std::vector<uint8_t> multiRecordArea::getBinaryData() {
   std::list<multiRecord>::iterator li;
   std::vector<uint8_t> rawData;

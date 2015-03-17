@@ -1,0 +1,72 @@
+{
+  "BoardInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "SerialNumber": "testBoardSerialNumber",
+    "PartNumber": "testBoardPartNumber",
+    "FRUFileId": "testFRUFileId"
+  },
+  "ProductInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "PartNumber": "testProductPartNumber",
+    "Version": "testProductVersion",
+    "SerialNumber": "testProductSerialNumber",
+    "AssetTag": "testAssetTag",
+    "FRUFileId": "testFRUFileId"
+  },
+  "MultiRecordArea":
+  { 
+   "Zone3Records":
+    [
+      {
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 1
+        },
+          "IdentifierBody":
+        {
+          "PICMGSpecificationUniqueIdentifier": "12345678",
+          "PICMGSpecificationMajorRevisionNumber": "01",
+          "PICMGSpecificationMinorRevisionNumber": "05",
+          "OpaqueInterfaceIdentifierBody": "1234567890"
+        }
+      },
+      {
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 2
+        },
+          "IdentifierBody":
+        {
+          "InterfaceIdentifierGUID": "0123456789ABCDEF0000000000000000"
+        }
+      },
+      {
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 3
+        },
+          "IdentifierBody":
+        {
+          "ManufacturerIDIANA": "123456",
+          "OEMDefinedInterfaceDesignator": "12345678"
+        }
+      },
+      {
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 4
+        },
+          "IdentifierBody":
+        {
+          "PICMGMTCARepNumber": "12345678"
+        } 
+      }
+    ]
+  }
+}

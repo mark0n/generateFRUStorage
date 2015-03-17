@@ -17,6 +17,8 @@
 #include "multiRecordArea.hpp"
 #include "amcChannelDescriptor.hpp"
 #include "amcLinkDescriptor.hpp"
+#include "interfaceIdentifierBody.hpp"
+#include "zone3InterfaceCompatibilityRecord.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -27,6 +29,8 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
+#include <boost/optional.hpp>
+#include <string>
 
 #define EEPROM_SIZE 2048
 
@@ -101,6 +105,7 @@ int main(int argc, char **argv) {
   assert(bia.size() % 8 == 0);
   ch.setProductInfoAreaOffset((ch.size() + bia.size()) / 8);
 
+
   pia.setLanguageCode(pt.get<int>("ProductInfoArea.LanguageCode"));
   pia.setManufacturer(pt.get<std::string>("ProductInfoArea.Manufacturer"));
   pia.setProductName(pt.get<std::string>("ProductInfoArea.ProductName"));
@@ -115,47 +120,96 @@ int main(int argc, char **argv) {
   assert(pia.size() % 8 == 0);
   ch.setMultiRecordAreaOffset((ch.size() + bia.size() + pia.size()) / 8);
   
-  mra.addModuleCurrentRequirementsRecord(pt.get<double>("MultiRecordArea.CurrentRequirementsRecord.Current"));
+  boost::optional<double> current = pt.get_optional<double>("MultiRecordArea.CurrentRequirementsRecord.Current");
+  if(current)
+  {
+      mra.addModuleCurrentRequirementsRecord(*current);
+  }
   
-  std::list<amcChannelDescriptor> chDescrs;
-  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
+  
+  boost::optional<ptree&> ptpRecord = pt.get_child_optional("MultiRecordArea.AMCPtPConnectivityRecord");
+  if(ptpRecord)
   {
-    std::vector<int> ports;
-    for(int i = 0; i < 4; i++)
+    std::list<amcChannelDescriptor> chDescrs;
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
     {
-      ports.push_back(v.second.get<int>("Lane" + std::to_string(i) + "PortNumber"));
+      std::vector<int> ports;
+      for(int i = 0; i < 4; i++)
+      {
+        ports.push_back(v.second.get<int>("Lane" + std::to_string(i) + "PortNumber"));
+      }
+      chDescrs.push_back(amcChannelDescriptor(ports));
     }
-    chDescrs.push_back(amcChannelDescriptor(ports));
-  }
+    
+    std::list<amcLinkDescriptor> lnkDescrs;
+    uint8_t amcChannelId = 0;
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCLinkDescriptors"))
+    {
+      std::bitset<4> lanesIncluded;
+      for(int lane = 0; lane < 4; lane++)
+      {
+        lanesIncluded[lane] = v.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+      }
+      struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
 
-  std::list<amcLinkDescriptor> lnkDescrs;
-  uint8_t amcChannelId = 0;
-  for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCLinkDescriptors"))
+      amcLinkTypeMap lnkTypeMap;
+      amcLinkType lnkType = lnkTypeMap[v.second.get<std::string>("AMCLinkType")];
+
+      amcLinkTypeExtensionMap lnkTypeExtensionMap;
+      amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[v.second.get<std::string>("AMCLinkTypeExtension")];
+
+      asymmetricMatchMap asymMatchMap;
+      asymmetricMatch asymMatch = asymMatchMap[v.second.get<std::string>("AsymmetricMatch")];
+
+      int lnkGroupingId = v.second.get<int>("LinkGroupingID");
+      lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
+
+      amcChannelId++;
+    }
+  
+    mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
+  }
+  
+  boost::optional<ptree&> zone3Records = pt.get_child_optional("MultiRecordArea.Zone3Records");
+  if(zone3Records)
   {
-    std::bitset<4> lanesIncluded;
-    for(int lane = 0; lane < 4; lane++)
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.Zone3Records"))
     {
-      lanesIncluded[lane] = v.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+      std::vector<std::string> interfaceBody;
+      uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier.IdentifierNumber");
+      switch(interfaceIdentifier)
+      {
+        case 1:
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationUniqueIdentifier"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMajorRevisionNumber"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGSpecificationMinorRevisionNumber"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OpaqueInterfaceIdentifierBody"));
+          break;
+        case 2:
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.InterfaceIdentifierGUID"));
+          break;
+        case 3:
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.ManufacturerIDIANA"));
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.OEMDefinedInterfaceDesignator"));
+          break;
+        case 4:
+          interfaceBody.push_back(v.second.get<std::string>("IdentifierBody.PICMGMTCARepNumber"));
+          break;
+        default:
+          throw std::out_of_range("Interface Identifier out of valid range");
+          break;
+      }
+      if(interfaceIdentifier>0)
+      {
+        interfaceIdentifierBody interface(interfaceIdentifier, interfaceBody);
+        interfaceIdentifierBody *iib = &interface;
+        if(interfaceBody.size() > 0)
+        {
+          mra.addZone3InterfaceCompatibilityRecord(interfaceIdentifier, iib);
+        }
+      }
     }
-    struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
-
-    amcLinkTypeMap lnkTypeMap;
-    amcLinkType lnkType = lnkTypeMap[v.second.get<std::string>("AMCLinkType")];
-
-    amcLinkTypeExtensionMap lnkTypeExtensionMap;
-    amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[v.second.get<std::string>("AMCLinkTypeExtension")];
-
-    asymmetricMatchMap asymMatchMap;
-    asymmetricMatch asymMatch = asymMatchMap[v.second.get<std::string>("AsymmetricMatch")];
-
-    int lnkGroupingId = v.second.get<int>("LinkGroupingID");
-    lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
-
-    amcChannelId++;
   }
-
-  mra.addAMCPtPConnectivityRecord(chDescrs, lnkDescrs);
-
   if(debugMode)
   {
     std::cout << "COMMON-HEADER AREA:" << std::endl;

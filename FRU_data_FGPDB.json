@@ -71,6 +71,20 @@
           "LinkGroupingID": 0
         }
       ]
-    }
+    },
+    "Zone3Records":
+    [
+      {
+        "InterfaceIdentifier":
+        {
+          "IdentifierNumber": 3
+        },
+        "IdentifierBody":
+        {
+          "ManufacturerIDIANA": "123456",
+          "OEMDefinedInterfaceDesignator": "12345678"
+        }
+      }
+    ]
   }
 }
