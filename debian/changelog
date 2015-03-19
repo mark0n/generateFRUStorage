@@ -2,4 +2,4 @@ generate-fru-storage (0.1.0) unstable; urgency=low
 
   * Initial Release.
 
- -- Vagrant User <konrad@frib.msu.edu>  Thu, 19 Mar 2015 13:24:09 +0000
+ -- Martin Konrad <konrad@frib.msu.edu>  Thu, 19 Mar 2015 13:24:09 +0000

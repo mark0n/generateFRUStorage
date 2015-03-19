@@ -1,15 +1,25 @@
 Source: generate-fru-storage
-Section: unknown
+Section: devel
 Priority: extra
-Maintainer: Vagrant User <konrad@frib.msu.edu>
-Build-Depends: debhelper (>= 8.0.0), cmake
+Maintainer: Martin Konrad <konrad@frib.msu.edu>
+Build-Depends: debhelper (>= 8.0.0), cmake, libboost-date-time-dev,
+               libboost-test-dev, libboost-dev (>= 1.49.0~), clang (>=3.0~)
 Standards-Version: 3.9.3
-Homepage: <insert the upstream URL, if relevant>
-#Vcs-Git: git://git.debian.org/collab-maint/generate-fru-storage.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/generate-fru-storage.git;a=summary
+Vcs-Git: https://stash.nscl.msu.edu/scm/utca/generatefrustorage.git
+Vcs-Browser: https://stash.nscl.msu.edu/projects/UTCA/repos/generatefrustorage/browse
 
 Package: generate-fru-storage
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Description: Generates the binary content of the IPMI FRU storage area
+ This program generates the binary content of the IPMI FRU storage area
+ according to
+     - IPMI Platform Management FRU Information Storage Definition v1.0
+     - PICMG AMC.0 R2.0. Advanced Mezzanine Card Base Specification
+     - PICMG MicroTCA.4 R1.0 MicroTCA Enhancements for Rear I/O and Precision
+       Timing
+ .
+ So far only a subset of the above specifications is supported.
+ .
+ generate-fru-storage is a pure command-line tool which can easily be integrated
+ into an automatic build/deployment process.
