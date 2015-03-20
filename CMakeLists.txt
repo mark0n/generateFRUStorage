@@ -12,7 +12,9 @@ if(EXISTS "${PROJECT_SOURCE_DIR}/.git")
 endif(EXISTS "${PROJECT_SOURCE_DIR}/.git")
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
-# set(CMAKE_CXX_COMPILER "clang++")
+# We use clang by default because g++ on wheezy seems to have problems
+# including some Boost property tree classes.
+set(CMAKE_CXX_COMPILER "clang++")
 
 enable_testing()
 
