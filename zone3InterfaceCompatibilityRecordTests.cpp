@@ -1,6 +1,7 @@
 #include "zone3InterfaceCompatibilityRecord.hpp"
 #include "testUtils.hpp"
 #include <boost/test/unit_test.hpp>
+#include <boost/assign/list_of.hpp>
 
 BOOST_AUTO_TEST_SUITE( zone3InterfaceCompatibilityTests )
         
@@ -18,7 +19,7 @@ BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
   interfaceIdentifierBody bodyObject(interface, interfaceBody); 
   interfaceIdentifierBody* body = &bodyObject;
   zone3InterfaceCompatibilityRecord zone(interface, body);
-  std::vector<uint8_t> manResult = { 0xc0, 0x02, 0x0a, 0x40, 0xf4, 0x5a, 0x31, 0x00, 0x30, 0x01, 0x04, 0x00, 0x00, 0x00, 0x00 };
+  std::vector<uint8_t> manResult = boost::assign::list_of(0xc0)(0x02)(0x0a)(0x40)(0xf4)(0x5a)(0x31)(0x00)(0x30)(0x01)(0x04)(0x00)(0x00)(0x00)(0x00);
   std::vector<uint8_t> autoResult = zone.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )

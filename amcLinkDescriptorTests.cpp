@@ -1,6 +1,7 @@
 #include "amcLinkDescriptor.hpp"
 #include "testUtils.hpp"
 #include <boost/test/unit_test.hpp>
+#include <boost/assign/list_of.hpp>
 
 BOOST_AUTO_TEST_SUITE( amcLinkDescriptorTests )
 
@@ -14,7 +15,7 @@ BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 {
   struct amcLinkDesignator lnkDesignator = { 0x5a, std::bitset<4>( "1010" ) };
   amcLinkDescriptor ald(lnkDesignator, AMC1PCIe, 2, 0xac, 1);
-  std::vector<uint8_t> manResult = { 0x5a, 0x2a, 0x20, 0xac, 0xfd };
+  std::vector<uint8_t> manResult = boost::assign::list_of(0x5a)(0x2a)(0x20)(0xac)(0xfd);
   std::vector<uint8_t> autoResult = ald.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )

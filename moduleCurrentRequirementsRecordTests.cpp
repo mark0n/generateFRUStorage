@@ -1,6 +1,7 @@
 #include "moduleCurrentRequirementsRecord.hpp"
 #include "testUtils.hpp"
 #include <boost/test/unit_test.hpp>
+#include <boost/assign/list_of.hpp>
 
 BOOST_AUTO_TEST_SUITE( moduleCurrentRequirementsRecordTests )
 
@@ -22,7 +23,7 @@ BOOST_AUTO_TEST_CASE( currentTooHigh )
 BOOST_AUTO_TEST_CASE( constructorGetBinaryData )
 {
   moduleCurrentRequirementsRecord mcrr(1);
-  std::vector<uint8_t> manResult = { 0xc0, 0x02, 0x06, 0x55, 0xe3, 0x5a, 0x31, 0x00, 0x16, 0x00, 0x0a };
+  std::vector<uint8_t> manResult = boost::assign::list_of(0xc0)(0x02)(0x06)(0x55)(0xe3)(0x5a)(0x31)(0x00)(0x16)(0x00)(0x0a);
   std::vector<uint8_t> autoResult = mcrr.getBinaryData();
   BOOST_CHECK_EQUAL_COLLECTIONS( autoResult.cbegin(), autoResult.cend(), manResult.cbegin(), manResult.cend() );
   if( autoResult != manResult )
