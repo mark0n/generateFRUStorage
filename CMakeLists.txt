@@ -87,6 +87,8 @@ set(TEST_COMPONENTS
 add_executable(testGenerateFRUStorage ${TEST_COMPONENTS})
 target_link_libraries(testGenerateFRUStorage ${Boost_LIBRARIES})
 
+install(TARGETS generateFRUStorage DESTINATION bin)
+
 function(get_tests parent_tests target)
   get_target_property(sourceFiles ${target} SOURCES)
   set(tests "")
