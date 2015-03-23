@@ -22,7 +22,6 @@ find_package(Boost COMPONENTS date_time unit_test_framework REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_SOURCE_DIR})
-find_package(Sreccat)
 
 # configure a header file to pass some of the CMake settings to the source code
 configure_file (
@@ -53,36 +52,6 @@ set(GENERATEFRUSTORAGE_SRC
 
 add_executable(generateFRUStorage ${GENERATEFRUSTORAGE_SRC})
 target_link_libraries(generateFRUStorage ${Boost_LIBRARIES})
-
-add_custom_command(
-  OUTPUT ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
-  COMMAND ./generateFRUStorage -i ${PROJECT_SOURCE_DIR}/FRU_data_FGPDB.json -o ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
-  DEPENDS generateFRUStorage
-  COMMENT "Generating binary FRU data file"
-  VERBATIM
-)
-
-add_custom_target(
-  binFile ALL
-  DEPENDS ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
-)
-
-if(SRECCAT_FOUND)
-  add_custom_command(
-    DEPENDS ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin
-    OUTPUT ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.hex
-    COMMAND srec_cat ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.bin -binary -output ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.hex -intel
-    COMMENT "Converting FRU data file to Intel hex format"
-    VERBATIM
-  )
-
-  add_custom_target(
-    hexFile ALL
-    DEPENDS ${PROJECT_BINARY_DIR}/FRU_data_FGPDB.hex
-  )
-else(SRECCAT_FOUND)
-  message(WARNING "srec_cat not found, skipping generation of hex file")
-endif(SRECCAT_FOUND)
 
 set(TEST_COMPONENTS
   testGenerateFRUStorage.cpp
