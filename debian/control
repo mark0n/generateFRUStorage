@@ -2,7 +2,7 @@ Source: generate-fru-storage
 Section: devel
 Priority: extra
 Maintainer: Martin Konrad <konrad@frib.msu.edu>
-Build-Depends: debhelper (>= 8.0.0), cmake, libboost-date-time-dev,
+Build-Depends: debhelper (>= 9.20120417~), cmake, libboost-date-time-dev,
                libboost-test-dev, libboost-dev (>= 1.49.0~), clang (>=3.0~)
 Standards-Version: 3.9.3
 Vcs-Git: https://stash.nscl.msu.edu/scm/utca/generatefrustorage.git
