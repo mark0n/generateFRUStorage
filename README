@@ -2,6 +2,8 @@
   according to
     - IPMI Platform Management FRU Information Storage Definition v1.0 [1]
     - PICMG AMC.0 R2.0. Advanced Mezzanine Card Base Specification
+    - PICMG MicroTCA.4 R1.0 MicroTCA Enhancements for Rear I/O and Precision
+      Timing
 
   Note: Only a subset of the above specifications is supported. Sending patches
   is greatly appreciated.
@@ -12,32 +14,32 @@
 Software requirements:
   - CMake
   - C++ compiler (e.g. g++ or clang++)
+    Note: generateFRUStorage makes use of C++11 features. Make sure you are
+    using a recent compiler (e.g. clang >= 3.0).
   - gcov (optional, only needed to extract code covarage information)
   - lcov (optional, generates nice code coverage reports)
-  - srecord (optional, only needed if data file needs to be converted into
-    a different format for use with a programmer)
 
-Compiling:
-  Run the following commands to compile the software:
+Installation:
+  Run the following commands to compile and install the software:
 
   > mkdir build
   > cd build
   > cmake ..
   > make
+  > sudo make install
 
 Using the tool:
   The program is automatically executed after the build is finished. This
   generates the binary FRU data file. Of course you can run it manually as
   well:
 
-  > ./generateFRUStorage
+  > generateFRUStorage -i FRU_data_FGPDB.json -o FRU_data_FGPDB.bin
 
   In some cases the resulting file can not be flashed into the EEPROM directly.
-  With my Atmel processors I have to convert it into a hex file first:
+  E.g. with my Atmel JTAGICE3 programmer I have to convert it into a hex file
+  first using SRecord [2]:
 
   > srec_cat fru_data.bin -binary -output fru_data.hex -intel
-
-  For convenience this command is also executed automatically during "make".
 
 Unit tests:
   All relevant parts of the tool are covered by unit tests which can be run by
@@ -64,3 +66,4 @@ Contact:
 References:
   [1] http://www.intel.com/content/www/us/en/servers/ipmi/information-storage-
       definition.html
+  [2] http://srecord.sourceforge.net/
