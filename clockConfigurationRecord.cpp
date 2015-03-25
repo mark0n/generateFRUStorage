@@ -7,8 +7,9 @@
 
 const uint8_t clockConfigurationRecordPICMGRecordId = 0x2D;
 const uint8_t clockConfigurationRecordFormatVersion = 0x00;
+const uint8_t reserved = 0x00;
 
-clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rType, uint8_t resourceIDDeviceID, std::list<clockConfigurationDescriptor> clockDescriptors) :
+clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescriptors) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())
 {
   if(clockDescriptors.size() > UINT8_MAX) {
@@ -17,7 +18,9 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rType,
     throw std::length_error( ss.str() );
   }
   
-  m_resourceIDDefinition = rType + resourceIDDeviceID;
+  m_resourceIDDefinition.idType = rID;
+  m_resourceIDDefinition.reserved = reserved;
+  m_resourceIDDefinition.deviceID = dID;
 
   m_clockConfigurationHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   m_clockConfigurationHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
@@ -42,7 +45,7 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rType,
 void clockConfigurationRecord::updateRecordLength()
 {
   int payloadSize = sizeof(m_clockConfigurationHeader);
-  payloadSize += 2; // recordType and amcChannelDescriptorCount
+  payloadSize += 2;
   for(std::list<clockConfigurationDescriptor>::const_iterator li = m_clockDescriptors.cbegin(); li != m_clockDescriptors.cend(); li++) {
     payloadSize += li->size();
   }

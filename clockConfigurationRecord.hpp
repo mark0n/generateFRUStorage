@@ -12,6 +12,12 @@ struct clockConfigurationRecordHeader {
   uint8_t recordFormatVersion;
 };
 
+struct resourceIDDefinition {
+  uint8_t idType;
+  unit8_t reserved;
+  uint8_t deviceID;
+};
+
 enum resourceIDResourceType {
   On-CarrierDevice = 0x00;
   AMCModule = 0x40;
@@ -31,7 +37,7 @@ struct resourceIDResourceTypeMap : public std::map<std::string, resourceIDResour
 
 class clockConfigurationRecord : public multiRecord {
 public :
-  clockConfigurationRecord(resourceIDResourceType rType, uint8_t resourceIDDeviceID, std::list<clockConfigurationDescriptor> clockDescriptors);
+  clockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescriptors);
   void updateRecordLength();
   std::vector<uint8_t> getBinaryData();
   void printData();
@@ -40,7 +46,7 @@ private:
   clockConfigurationRecordHeader m_clockConfigurationHeader;
   std::list<clockConfigurationDescriptor> m_clockDescriptors;
   uint8_t m_deviceIdentification = 0x0;
-  uint8_t m_resourceIDDefinition = 0x00;
+  resourceIDDefinition m_resourceIDDefinition;
 };
 
 #endif	/* CLOCKCONFIGURATIONRECORD_HPP */

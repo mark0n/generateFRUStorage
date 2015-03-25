@@ -75,9 +75,7 @@
     "Zone3Records":
     [
       {
-        "InterfaceIdentifier":
-        {
-          "IdentifierNumber": 3
+        "InterfaceIdentifier": 3
         },
         "IdentifierBody":
         {

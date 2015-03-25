@@ -30,6 +30,12 @@ void multiRecordArea::addZone3InterfaceCompatibilityRecord(uint8_t identifier, i
   addRecord(newRecord);
 };
 
+void multiRecordArea::addClockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescrs)
+{
+  clockConfigurationRecord newRecord();
+  addRecord(newRecord);
+}
+
 std::vector<uint8_t> multiRecordArea::getBinaryData() {
   std::list<multiRecord>::iterator li;
   std::vector<uint8_t> rawData;

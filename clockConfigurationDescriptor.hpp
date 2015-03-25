@@ -5,6 +5,8 @@
 #include <vector>
 #include <bitset>
 #include <map>
+#include "indirectClockDescriptor.hpp"
+#include "directClockDescriptor.hpp"
 
 struct clockConfigurationData {
   uint32_t clockID : 8;
@@ -50,14 +52,35 @@ struct clockIDMap : public std::map<std::string, clockID>
   ~clockIDMap() {}
 };
 
+enum clockActivationControl {
+  ABCarrierIPMC = 0x00,
+  ABApp = 0x01
+};
+
+struct clockActivationControlMap : public std::map<std::string, clockActivationControl>
+{
+  clockActivationControlMap()
+  {
+    this->operator[]("ActivatedbyCarrierIPMC") = ABCarrierIPMC;
+    this->operator[]("ActivatedbyApplication") = ABApp;
+  };
+  ~clockActivationControlMap() {}
+};
+
+
 class clockConfigurationDescriptor {
-  struct clockConfigurationData m_data;
 public :
-  clockConfigurationDescriptor(clockID ID, uint8_t control, std::list<indirectClockDescriptors> indirect, std::list<directClockDescriptors> direct);
+  clockConfigurationDescriptor(clockID ID, clockActivationControl control, std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct);
   std::vector<uint8_t> getBinaryData() const;
   void printData() const;
   int size() const;
+private :
+  struct clockConfigurationData m_data;
   int clockLnkDescrDataSize;
+  struct clockConfigurationData m_configurationData;
+  std::list<indirectClockDescriptor> m_indirect;
+  std::list<directClockDescriptor> m_direct;
+  std::vector<uint8_t> m_payload;
 };
 
 #endif	/* CLOCKCONFIGURATIONDESCRIPTOR_HPP */
