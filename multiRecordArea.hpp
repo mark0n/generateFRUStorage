@@ -8,6 +8,10 @@
 #include "amcLinkDescriptor.hpp"
 #include "interfaceIdentifierBody.hpp"
 #include "zone3InterfaceCompatibilityRecord.hpp"
+#include "clockConfigurationRecord.hpp"
+#include "clockConfigurationDescriptor.hpp"
+#include "directClockDescriptor.hpp"
+#include "indirectClockDescriptor.hpp"
 #include <cstdint>
 #include <vector>
 #include <list>

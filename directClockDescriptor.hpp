@@ -1,40 +1,46 @@
 #ifndef DIRECTCLOCKDESCRIPTOR_HPP
 #define	DIRECTCLOCKDESCRIPTOR_HPP
 
-struct clockFeatures {
+#include <list>
+#include <cstdint>
+#include <map>
+#include <vector>
+#include <bitset>
+
+struct directClockFeatures {
   uint8_t reserved : 6;
   uint8_t pllConnection : 1;
   uint8_t asymmetricMatch : 1;
 };
 
-enum pllConnection {
-  Connected = 1,
-  NotConnected = 0
+enum directPllConnection {
+  DirectConnected = 1,
+  DirectNotConnected = 0
 };
 
-struct pllConnectionMap : public std::map<std::string, pllConnectionID>
+struct directPllConnectionMap : public std::map<std::string, directPllConnection>
 {
-  pllConnectionMap()
+  directPllConnectionMap()
   {
-    this->operator[]("ConnectedThroughPLL") = Connected;
-    this->operator[]("NotConnectedThroughPLL") = NotConnected;
+    this->operator[]("ConnectedThroughPLL") = DirectConnected;
+    this->operator[]("NotConnectedThroughPLL") = DirectNotConnected;
   };
-  ~pllConnectionMap() {}
+  ~directPllConnectionMap() {}
 };
 
-enum clockAsymmetricMatch {
-  Source = 1,
-  Reciever = 0
+enum directClockAsymmetricMatch {
+  DirectSource = 1,
+  DirectReciever = 0
 };
 
-struct clockAsymmetricMatchMap : public std::map<std::string, clockAsymmetricMatch>
+struct directClockAsymmetricMatchMap : public std::map<std::string, directClockAsymmetricMatch>
 {
-  clockAsymmetricMatchMap()
+  directClockAsymmetricMatchMap()
   {
-    this->operator[]("ClockSource") = Source;
-    this->operator[]("ClockReciever") = Reciever;
+    this->operator[]("ClockSource") = DirectSource;
+    this->operator[]("ClockReciever") = DirectReciever;
   };
-  ~clockAsymmetricMatchMap() {}
+  ~directClockAsymmetricMatchMap() {}
 };
 
 enum clockAccuracyLevelAcronym {
@@ -49,7 +55,7 @@ enum clockAccuracyLevelAcronym {
   DUS = 0x5a
 };
 
-struct clockAccuracyLevelAcronym : public std::map<std::string, clockAccuracyLevelAcronym>
+struct clockAccuracyLevelAcronymMap : public std::map<std::string, clockAccuracyLevelAcronym>
 {
   clockAccuracyLevelAcronymMap()
   {
@@ -68,15 +74,16 @@ struct clockAccuracyLevelAcronym : public std::map<std::string, clockAccuracyLev
 
 class directClockDescriptor {
 public :
-  directClockDescriptor(pllConnection pll, clockAsymmetricMatch match, uint8_t fam, clockAccuracyLevelAcronym acc, uint32_t freq, uint32_t min, uint32_t max);
+  directClockDescriptor(directPllConnection pll, directClockAsymmetricMatch match, uint8_t fam, clockAccuracyLevelAcronym acc, uint32_t freq, uint32_t min, uint32_t max);
   std::vector<uint8_t> getBinaryData() const;
   void printData() const;
   int size() const;
 private :
-  struct pllConnection m_pll;
-  struct clockAsymmetricMatch m_match;
+  directClockFeatures m_features;
+  directPllConnection m_pll;
+  directClockAsymmetricMatch m_match;
   uint8_t m_fam;
-  struct clockAccuracyLevelAcronym m_acc;
+  clockAccuracyLevelAcronym m_acc;
   uint32_t m_freq;
   uint32_t m_min;
   uint32_t m_max;

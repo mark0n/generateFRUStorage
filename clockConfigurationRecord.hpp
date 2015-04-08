@@ -5,6 +5,9 @@
 #include "clockConfigurationDescriptor.hpp"
 #include <list>
 #include <cstdint>
+#include <map>
+#include <vector>
+#include <bitset>
 
 struct clockConfigurationRecordHeader {
   uint8_t manufacturerId[3];
@@ -13,22 +16,22 @@ struct clockConfigurationRecordHeader {
 };
 
 struct resourceIDDefinition {
-  uint8_t idType;
-  unit8_t reserved;
-  uint8_t deviceID;
+  uint8_t idType : 2;
+  uint8_t reserved : 2;
+  uint8_t deviceID : 4;
 };
 
 enum resourceIDResourceType {
-  On-CarrierDevice = 0x00;
-  AMCModule = 0x40;
-  Backplane = 0x80;
+  OnCarrierDevice = 0x00,
+  AMCModule = 0x40,
+  Backplane = 0x80
 };
 
 struct resourceIDResourceTypeMap : public std::map<std::string, resourceIDResourceType>
 {
   resourceIDResourceTypeMap()
   {
-    this->operator[]("On-Carrier Device") = On-CarrierDevice;
+    this->operator[]("On-Carrier Device") = OnCarrierDevice;
     this->operator[]("AMC Module") = AMCModule;
     this->operator[]("Backplane") = Backplane;
   };

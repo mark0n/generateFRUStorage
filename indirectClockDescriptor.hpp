@@ -1,50 +1,56 @@
 #ifndef INDIRECTCLOCKDESCRIPTOR_HPP
 #define	INDIRECTCLOCKDESCRIPTOR_HPP
 
-struct clockFeatures {
+#include <list>
+#include <cstdint>
+#include <map>
+#include <vector>
+#include <bitset>
+
+struct indirectClockFeatures {
   uint8_t reserved : 6;
   uint8_t pllConnection : 1;
   uint8_t asymmetricMatch : 1;
 };
 
-enum pllConnection {
-  Connected = 1,
-  NotConnected = 0
+enum indirectPllConnection {
+  IndirectConnected = 1,
+  IndirectNotConnected = 0
 };
 
-struct pllConnectionMap : public std::map<std::string, pllConnectionID>
+struct indirectPllConnectionMap : public std::map<std::string, indirectPllConnection>
 {
-  pllConnectionMap()
+  indirectPllConnectionMap()
   {
-    this->operator[]("ConnectedThroughPLL") = Connected;
-    this->operator[]("NotConnectedThroughPLL") = NotConnected;
+    this->operator[]("ConnectedThroughPLL") = IndirectConnected;
+    this->operator[]("NotConnectedThroughPLL") = IndirectNotConnected;
   };
-  ~pllConnectionMap() {}
+  ~indirectPllConnectionMap() {}
 };
 
-enum clockAsymmetricMatch {
-  Source = 1,
-  Reciever = 0
+enum indirectClockAsymmetricMatch {
+  IndirectSource = 1,
+  IndirectReciever = 0
 };
 
-struct clockAsymmetricMatchMap : public std::map<std::string, clockAsymmetricMatch>
+struct indirectClockAsymmetricMatchMap : public std::map<std::string, indirectClockAsymmetricMatch>
 {
-  clockAsymmetricMatchMap()
+  indirectClockAsymmetricMatchMap()
   {
-    this->operator[]("ClockSource") = Source;
-    this->operator[]("ClockReciever") = Reciever;
+    this->operator[]("ClockSource") = IndirectSource;
+    this->operator[]("ClockReciever") = IndirectReciever;
   };
-  ~clockAsymmetricMatchMap() {}
+  ~indirectClockAsymmetricMatchMap() {}
 };
 
 class indirectClockDescriptor {
 public :
-  indirectClockDescriptor(pllConnection pll, clockAsymmetricMatch match, uint8_t dClockID);
+  indirectClockDescriptor(indirectPllConnection pll, indirectClockAsymmetricMatch match, uint8_t dClockID);
   std::vector<uint8_t> getBinaryData() const;
   void printData() const;
   int size() const;
 private :
-  struct clockFeatures m_features;
+  indirectClockFeatures m_features;
   uint8_t m_dClockID;
   std::vector<uint8_t> m_payload;
 };

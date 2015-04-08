@@ -32,7 +32,7 @@ void multiRecordArea::addZone3InterfaceCompatibilityRecord(uint8_t identifier, i
 
 void multiRecordArea::addClockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescrs)
 {
-  clockConfigurationRecord newRecord();
+  clockConfigurationRecord newRecord(rID, dID, clockDescrs);
   addRecord(newRecord);
 }
 

@@ -220,21 +220,26 @@ int main(int argc, char **argv) {
   {
     for(const ptree::value_type &v: pt.get_child("MultiRecordArea.ClockConfigurationRecord"))
     {
-      resourceIDResourceType rID = v.second.get<uint8_t>("ClockResourceID");
-      uint8_t dID = v.second.get<unit8_t>("DeviceIdentification");
+      resourceIDResourceTypeMap rMap;
+      resourceIDResourceType rID = rMap[v.second.get<std::string>("ClockResourceID")];
+      uint8_t dID = v.second.get<uint8_t>("DeviceIdentification");
       
       std::list<clockConfigurationDescriptor> clockDescrs;
       for(const ptree::value_type &w: pt.get_child("ClockConfigurationDescriptor"))
       {
-        clockID ID = v.second.get<std::string>("ClockID");
-        clockActivationControl control = v.second.get<std::string>("ClockControl");
+        clockIDMap clockMap;
+        clockID ID = clockMap[w.second.get<std::string>("ClockID")];
+        clockActivationControlMap controlMap;
+        clockActivationControl control = controlMap[w.second.get<std::string>("ClockControl")];
         
         std::list<indirectClockDescriptor> indirectDescrs;
         for(const ptree::value_type &x: pt.get_child("DirectClockDescriptor"))
         {
-          pllConnection pll = v.second.get<std::string>("PLLConnection");
-          clockAsymmetricMatch match = v.second.get<std::string>("ClockAsymmetricMatch");
-          uint8_t dClockID = v.second.get<uint8_t>("DependentClockID");
+          indirectPllConnectionMap indirectConnMap;
+          indirectPllConnection pll = indirectConnMap[x.second.get<std::string>("PLLConnection")];
+          indirectClockAsymmetricMatchMap indirectAsymMap;
+          indirectClockAsymmetricMatch match = indirectAsymMap[x.second.get<std::string>("ClockAsymmetricMatch")];
+          uint8_t dClockID = x.second.get<uint8_t>("DependentClockID");
           
           indirectClockDescriptor ind(pll, match, dClockID);
           indirectDescrs.push_back(ind);
@@ -242,15 +247,19 @@ int main(int argc, char **argv) {
         std::list<directClockDescriptor> directDescrs;
         for(const ptree::value_type &x: pt.get_child("IndirectClockDescriptor"))
         {
-          pllConnection pll = v.second.get<std::string>("PLLConnection");
-          clockAsymmetricMatch match = v.second.get<std::string>("ClockAsymmetricMatch");
-          uint8_t fam = v.second.get<uint8_t>("ClockFamily");
-          clockAccuracyLevelAcronym acc = v.second.get<uint8_t>("ClockAccuracyLevelAcronym");
-          uint32_t freq = v.second.get<uint8_t>("ClockFrequency");
-          uint32_t min = v.second.get<uint8_t>("MinimumClockFrequency");
-          uint32_t max = v.second.get<uint8_t>("MaximumClockFrequency");
+          directPllConnectionMap directConnMap;
+          directPllConnection pll = directConnMap[x.second.get<std::string>("PLLConnection")];
+          directClockAsymmetricMatchMap directAsymMap;
+          directClockAsymmetricMatch match = directAsymMap[x.second.get<std::string>("ClockAsymmetricMatch")];
+          uint8_t fam = x.second.get<uint8_t>("ClockFamily");
+          clockAccuracyLevelAcronymMap acronymMap;
+          clockAccuracyLevelAcronym acc = acronymMap[x.second.get<std::string>("ClockAccuracyLevelAcronym")];
+          uint32_t freq = x.second.get<uint32_t>("ClockFrequency");
+          uint32_t min = x.second.get<uint32_t>("MinimumClockFrequency");
+          uint32_t max = x.second.get<uint32_t>("MaximumClockFrequency");
           
-          directDescrs.push_back(pll, match, fam, acc, freq, min, max);
+          directClockDescriptor dir(pll, match, fam, acc, freq, min, max);
+          directDescrs.push_back (dir);
         }
         clockConfigurationDescriptor desc(ID, control, indirectDescrs, directDescrs);
         clockDescrs.push_back(desc);

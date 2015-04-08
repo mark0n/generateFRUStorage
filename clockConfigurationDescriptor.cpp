@@ -1,15 +1,15 @@
 #include "clockConfigurationDescriptor.hpp"
 #include <iostream>
 
-clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID, clockConfigurationControl control, std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct) {
-  m_configurationData.clockID = ID;
-  m_configurationData.clockControl = control;
+clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID, clockActivationControl control, std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct) {
+  m_data.clockID = ID;
+  m_data.clockControl = control;
+  m_data.indirectCount = indirect.size();
+  m_data.directCount = direct.size();
   m_indirect = indirect;
   m_direct = direct;
   
-  m_payload.push_back( m_configurationData );
-  m_payload.push_back( m_indirect.size() );
-  m_payload.push_back( m_direct.size() );
+  m_payload = std::vector<uint8_t>( (uint8_t *)&m_data, (uint8_t *)(&m_data + 1) );
   
   for(std::list<indirectClockDescriptor>::const_iterator li = m_indirect.begin(); li != m_indirect.end(); li++) {
     std::vector<uint8_t> ind = li->getBinaryData();
@@ -29,6 +29,7 @@ std::vector<uint8_t> clockConfigurationDescriptor::getBinaryData() const {
 void clockConfigurationDescriptor::printData() const {
 }
 
-int clockConfigurationDescripto::size() const {
+int clockConfigurationDescriptor::size() const {
   return m_payload.size();
 }
+

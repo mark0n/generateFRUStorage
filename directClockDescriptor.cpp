@@ -2,12 +2,13 @@
 
 const uint8_t reserved = 0;
 
-directClockDescriptor::directClockDescriptor(pllConnection pll, clockAsymmetricMatch match, uint8_t fam, clockAccuracyLevelAcronym acc, uint32_t freq, uint32_t min, uint32_t max)
+directClockDescriptor::directClockDescriptor(directPllConnection pll, directClockAsymmetricMatch match, uint8_t fam, clockAccuracyLevelAcronym acc, uint32_t freq, uint32_t min, uint32_t max)
 {
   m_features.reserved = reserved;
   m_features.pllConnection = pll;
   m_features.asymmetricMatch = match;
-  m_payload.push_back(m_features);
+  m_payload = std::vector<uint8_t>( (uint8_t *)&m_features, (uint8_t *)(&m_features + 1) );
+  
   m_fam = fam;
   m_payload.push_back(m_fam);
   m_acc = acc;
@@ -33,11 +34,6 @@ directClockDescriptor::directClockDescriptor(pllConnection pll, clockAsymmetricM
     m_payload.push_back(byte);
     max /= 0x100;
   }
-}
-
-directClockDescriptor::~directClockDescriptor()
-{
-  
 }
 
 std::vector<uint8_t> directClockDescriptor::getBinaryData() const

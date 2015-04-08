@@ -2,20 +2,15 @@
 
 const uint8_t reserved = 0;
 
-indirectClockDescriptor::indirectClockDescriptor(pllConnection pll, clockAsymmetricMatch match, uint8_t dClockID)
+indirectClockDescriptor::indirectClockDescriptor(indirectPllConnection pll, indirectClockAsymmetricMatch match, uint8_t dClockID)
 {
   m_features.reserved = reserved;
   m_features.pllConnection = pll;
   m_features.asymmetricMatch = match;
   m_dClockID = dClockID;
   
-  m_payload.push_back( m_features );
+  m_payload = std::vector<uint8_t>( (uint8_t *)&m_features, (uint8_t *)(&m_features + 1) );
   m_payload.push_back( m_dClockID );
-}
-
-indirectClockDescriptor::~indirectClockDescriptor()
-{
-  
 }
 
 std::vector<uint8_t> indirectClockDescriptor::getBinaryData() const

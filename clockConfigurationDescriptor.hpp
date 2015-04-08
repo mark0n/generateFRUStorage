@@ -5,12 +5,15 @@
 #include <vector>
 #include <bitset>
 #include <map>
+#include <list>
 #include "indirectClockDescriptor.hpp"
 #include "directClockDescriptor.hpp"
 
 struct clockConfigurationData {
-  uint32_t clockID : 8;
-  uint32_t clockControl : 8;
+  uint8_t clockID : 8;
+  uint8_t clockControl : 8;
+  uint8_t indirectCount : 8;
+  uint8_t directCount : 8;
 };
 
 enum clockID {
@@ -75,9 +78,8 @@ public :
   void printData() const;
   int size() const;
 private :
-  struct clockConfigurationData m_data;
+  clockConfigurationData m_data;
   int clockLnkDescrDataSize;
-  struct clockConfigurationData m_configurationData;
   std::list<indirectClockDescriptor> m_indirect;
   std::list<directClockDescriptor> m_direct;
   std::vector<uint8_t> m_payload;

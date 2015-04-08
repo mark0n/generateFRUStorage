@@ -17,10 +17,6 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, u
     ss << "list clockDescriptors exceeds maximum allowed length of " << UINT8_MAX << " entries";
     throw std::length_error( ss.str() );
   }
-  
-  m_resourceIDDefinition.idType = rID;
-  m_resourceIDDefinition.reserved = reserved;
-  m_resourceIDDefinition.deviceID = dID;
 
   m_clockConfigurationHeader.manufacturerId[2] = PICMG_MANUFACTURER_ID_MSB;
   m_clockConfigurationHeader.manufacturerId[1] = PICMG_MANUFACTURER_ID_MID;
@@ -32,7 +28,11 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, u
   
   updateRecordLength();
   m_payload = std::vector<uint8_t>( (uint8_t *)&m_clockConfigurationHeader, (uint8_t *)(&m_clockConfigurationHeader + 1) );
-  m_payload.push_back( m_resourceIDDefinition );
+  m_resourceIDDefinition.idType = rID;
+  m_resourceIDDefinition.reserved = reserved;
+  m_resourceIDDefinition.deviceID = dID;
+  std::vector<uint8_t> resource = std::vector<uint8_t>( (uint8_t *)&m_resourceIDDefinition, (uint8_t *)(&m_resourceIDDefinition + 1) );
+  m_payload.insert(m_payload.end(), resource.begin(), resource.end());
   m_payload.push_back( m_clockDescriptors.size() );
   
   for(std::list<clockConfigurationDescriptor>::const_iterator li = m_clockDescriptors.begin(); li != m_clockDescriptors.end(); li++) {
@@ -71,10 +71,10 @@ void clockConfigurationRecord::printData() {
   std::cout << "Record length: " << std::dec << (unsigned int)m_header.recordLength << std::endl;
   std::cout << "Record checksum: 0x" << std::hex << (unsigned int)m_header.recordChecksum << std::endl;
   std::cout << "Header checksum: 0x" << std::hex << (unsigned int)m_header.headerChecksum << std::endl;
-  const unsigned int manId = m_clockPtPConnRecHeader.manufacturerId[2] << 16 | m_clockPtPConnRecHeader.manufacturerId[1] << 8 | m_clockPtPConnRecHeader.manufacturerId[0];
+  const unsigned int manId = m_clockConfigurationHeader.manufacturerId[2] << 16 | m_clockConfigurationHeader.manufacturerId[1] << 8 | m_clockConfigurationHeader.manufacturerId[0];
   std::cout << "Manufacturer ID: 0x" << std::hex << manId << std::endl;
-  std::cout << "PICMG Record ID: 0x" << std::hex << (unsigned int)m_clockPtPConnRecHeader.picmgRecordId << std::endl;
-  std::cout << "Record Format Version: " << std::dec << (unsigned int)m_clockPtPConnRecHeader.recordFormatVersion << std::endl;
+  std::cout << "PICMG Record ID: 0x" << std::hex << (unsigned int)m_clockConfigurationHeader.picmgRecordId << std::endl;
+  std::cout << "Record Format Version: " << std::dec << (unsigned int)m_clockConfigurationHeader.recordFormatVersion << std::endl;
   std::cout << "Clock configuration descriptors: { " << std::endl;
   std::list<clockConfigurationDescriptor>::iterator cdli;
   int i;
