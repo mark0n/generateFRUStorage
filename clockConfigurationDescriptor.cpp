@@ -23,7 +23,7 @@ clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID, clockActi
 }
 
 std::vector<uint8_t> clockConfigurationDescriptor::getBinaryData() const {
-  return std::vector<uint8_t>( ( uint8_t * )&m_payload, ( ( uint8_t * )&m_payload ));
+  return m_payload;
 }
 
 void clockConfigurationDescriptor::printData() const {

@@ -8,9 +8,9 @@
 #include <bitset>
 
 struct indirectClockFeatures {
-  uint8_t reserved : 6;
-  uint8_t pllConnection : 1;
   uint8_t asymmetricMatch : 1;
+  uint8_t pllConnection : 1;
+  uint8_t reserved : 6;
 };
 
 enum indirectPllConnection {
@@ -38,7 +38,7 @@ struct indirectClockAsymmetricMatchMap : public std::map<std::string, indirectCl
   indirectClockAsymmetricMatchMap()
   {
     this->operator[]("ClockSource") = IndirectSource;
-    this->operator[]("ClockReciever") = IndirectReciever;
+    this->operator[]("ClockReceiver") = IndirectReciever;
   };
   ~indirectClockAsymmetricMatchMap() {}
 };

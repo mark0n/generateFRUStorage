@@ -215,17 +215,17 @@ int main(int argc, char **argv) {
     }
   }
   
-  boost::optional<ptree&> clockRecord = pt.get_child_optional("MultiRecordArea.ClockConfigurationRecord");
-  if(clockRecord)
+  boost::optional<ptree&> clockRecords = pt.get_child_optional("MultiRecordArea.ClockConfigurationRecords");
+  if(clockRecords)
   {
-    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.ClockConfigurationRecord"))
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.ClockConfigurationRecords"))
     {
       resourceIDResourceTypeMap rMap;
-      resourceIDResourceType rID = rMap[v.second.get<std::string>("ClockResourceID")];
-      uint8_t dID = v.second.get<uint8_t>("DeviceIdentification");
+      resourceIDResourceType rID = rMap[v.second.get<std::string>("ClockResourceIDResourceType")];
+      uint8_t dID = v.second.get<uint8_t>("ClockResourceIDDeviceIdentification");
       
       std::list<clockConfigurationDescriptor> clockDescrs;
-      for(const ptree::value_type &w: pt.get_child("ClockConfigurationDescriptor"))
+      for(const ptree::value_type &w: v.second.get_child("ClockConfigurationDescriptors"))
       {
         clockIDMap clockMap;
         clockID ID = clockMap[w.second.get<std::string>("ClockID")];
@@ -233,7 +233,7 @@ int main(int argc, char **argv) {
         clockActivationControl control = controlMap[w.second.get<std::string>("ClockControl")];
         
         std::list<indirectClockDescriptor> indirectDescrs;
-        for(const ptree::value_type &x: pt.get_child("DirectClockDescriptor"))
+        for(const ptree::value_type &x: w.second.get_child("IndirectClockDescriptors"))
         {
           indirectPllConnectionMap indirectConnMap;
           indirectPllConnection pll = indirectConnMap[x.second.get<std::string>("PLLConnection")];
@@ -244,8 +244,9 @@ int main(int argc, char **argv) {
           indirectClockDescriptor ind(pll, match, dClockID);
           indirectDescrs.push_back(ind);
         }
+        
         std::list<directClockDescriptor> directDescrs;
-        for(const ptree::value_type &x: pt.get_child("IndirectClockDescriptor"))
+        for(const ptree::value_type &x: w.second.get_child("DirectClockDescriptors"))
         {
           directPllConnectionMap directConnMap;
           directPllConnection pll = directConnMap[x.second.get<std::string>("PLLConnection")];

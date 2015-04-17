@@ -16,23 +16,22 @@ struct clockConfigurationRecordHeader {
 };
 
 struct resourceIDDefinition {
-  uint8_t idType : 2;
-  uint8_t reserved : 2;
   uint8_t deviceID : 4;
+  uint8_t idType : 4;
 };
 
 enum resourceIDResourceType {
-  OnCarrierDevice = 0x00,
-  AMCModule = 0x40,
-  Backplane = 0x80
+  OnCarrierDevice = 0,
+  AMCModule = 4,
+  Backplane = 8
 };
 
 struct resourceIDResourceTypeMap : public std::map<std::string, resourceIDResourceType>
 {
   resourceIDResourceTypeMap()
   {
-    this->operator[]("On-Carrier Device") = OnCarrierDevice;
-    this->operator[]("AMC Module") = AMCModule;
+    this->operator[]("On-CarrierDevice") = OnCarrierDevice;
+    this->operator[]("AMCModule") = AMCModule;
     this->operator[]("Backplane") = Backplane;
   };
   ~resourceIDResourceTypeMap() {}

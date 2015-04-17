@@ -15,7 +15,7 @@ indirectClockDescriptor::indirectClockDescriptor(indirectPllConnection pll, indi
 
 std::vector<uint8_t> indirectClockDescriptor::getBinaryData() const
 {
-  return std::vector<uint8_t>( ( uint8_t * )&m_payload, ( ( uint8_t * )&m_payload ));
+  return m_payload;
 }
 
 void indirectClockDescriptor::printData() const

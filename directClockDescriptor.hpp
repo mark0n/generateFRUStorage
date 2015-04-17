@@ -8,9 +8,9 @@
 #include <bitset>
 
 struct directClockFeatures {
-  uint8_t reserved : 6;
-  uint8_t pllConnection : 1;
   uint8_t asymmetricMatch : 1;
+  uint8_t pllConnection : 1;
+  uint8_t reserved : 6;
 };
 
 enum directPllConnection {
@@ -38,7 +38,7 @@ struct directClockAsymmetricMatchMap : public std::map<std::string, directClockA
   directClockAsymmetricMatchMap()
   {
     this->operator[]("ClockSource") = DirectSource;
-    this->operator[]("ClockReciever") = DirectReciever;
+    this->operator[]("ClockReceiver") = DirectReciever;
   };
   ~directClockAsymmetricMatchMap() {}
 };
@@ -80,8 +80,6 @@ public :
   int size() const;
 private :
   directClockFeatures m_features;
-  directPllConnection m_pll;
-  directClockAsymmetricMatch m_match;
   uint8_t m_fam;
   clockAccuracyLevelAcronym m_acc;
   uint32_t m_freq;

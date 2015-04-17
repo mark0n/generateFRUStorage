@@ -79,7 +79,6 @@ public :
   int size() const;
 private :
   clockConfigurationData m_data;
-  int clockLnkDescrDataSize;
   std::list<indirectClockDescriptor> m_indirect;
   std::list<directClockDescriptor> m_direct;
   std::vector<uint8_t> m_payload;

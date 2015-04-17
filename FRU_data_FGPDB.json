@@ -75,8 +75,7 @@
     "Zone3Records":
     [
       {
-        "InterfaceIdentifier": 3
-        },
+        "InterfaceIdentifier": 3,
         "IdentifierBody":
         {
           "ManufacturerIDIANA": "123456",

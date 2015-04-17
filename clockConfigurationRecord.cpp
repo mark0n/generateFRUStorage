@@ -29,7 +29,6 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, u
   updateRecordLength();
   m_payload = std::vector<uint8_t>( (uint8_t *)&m_clockConfigurationHeader, (uint8_t *)(&m_clockConfigurationHeader + 1) );
   m_resourceIDDefinition.idType = rID;
-  m_resourceIDDefinition.reserved = reserved;
   m_resourceIDDefinition.deviceID = dID;
   std::vector<uint8_t> resource = std::vector<uint8_t>( (uint8_t *)&m_resourceIDDefinition, (uint8_t *)(&m_resourceIDDefinition + 1) );
   m_payload.insert(m_payload.end(), resource.begin(), resource.end());

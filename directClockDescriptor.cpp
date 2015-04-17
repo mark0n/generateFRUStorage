@@ -38,7 +38,7 @@ directClockDescriptor::directClockDescriptor(directPllConnection pll, directCloc
 
 std::vector<uint8_t> directClockDescriptor::getBinaryData() const
 {
-  return std::vector<uint8_t>( ( uint8_t * )&m_payload, ( ( uint8_t * )&m_payload ));
+  return m_payload;
 }
 void directClockDescriptor::printData() const
 {

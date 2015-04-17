@@ -24,11 +24,8 @@
    "Zone3Records":
     [
       {
-        "InterfaceIdentifier":
-        {
-          "IdentifierNumber": 1
-        },
-          "IdentifierBody":
+        "InterfaceIdentifier": 1,
+        "IdentifierBody":
         {
           "PICMGSpecificationUniqueIdentifier": "12345678",
           "PICMGSpecificationMajorRevisionNumber": "01",
@@ -37,32 +34,23 @@
         }
       },
       {
-        "InterfaceIdentifier":
-        {
-          "IdentifierNumber": 2
-        },
-          "IdentifierBody":
+        "InterfaceIdentifier": 2,
+        "IdentifierBody":
         {
           "InterfaceIdentifierGUID": "0123456789ABCDEF0000000000000000"
         }
       },
       {
-        "InterfaceIdentifier":
-        {
-          "IdentifierNumber": 3
-        },
-          "IdentifierBody":
+        "InterfaceIdentifier": 3,
+        "IdentifierBody":
         {
           "ManufacturerIDIANA": "123456",
           "OEMDefinedInterfaceDesignator": "12345678"
         }
       },
       {
-        "InterfaceIdentifier":
-        {
-          "IdentifierNumber": 4
-        },
-          "IdentifierBody":
+        "InterfaceIdentifier": 4,
+        "IdentifierBody":
         {
           "PICMGMTCARepNumber": "12345678"
         } 

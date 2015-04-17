@@ -48,6 +48,10 @@ set(GENERATEFRUSTORAGE_SRC
   moduleCurrentRequirementsRecord.cpp
   interfaceIdentifierBody.cpp
   zone3InterfaceCompatibilityRecord.cpp
+  clockConfigurationDescriptor.cpp
+  clockConfigurationRecord.cpp
+  directClockDescriptor.cpp
+  indirectClockDescriptor.cpp
 )
 
 add_executable(generateFRUStorage ${GENERATEFRUSTORAGE_SRC})
@@ -82,6 +86,10 @@ set(TEST_COMPONENTS
   varLengthField.cpp
   interfaceIdentifierBody.cpp
   zone3InterfaceCompatibilityRecord.cpp
+  clockConfigurationDescriptor.cpp
+  clockConfigurationRecord.cpp
+  directClockDescriptor.cpp
+  indirectClockDescriptor.cpp
 )
 
 add_executable(testGenerateFRUStorage ${TEST_COMPONENTS})
