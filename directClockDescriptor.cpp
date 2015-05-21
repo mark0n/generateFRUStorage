@@ -1,9 +1,15 @@
 #include "directClockDescriptor.hpp"
+#include <stdexcept>
 
 const uint8_t reserved = 0;
 
 directClockDescriptor::directClockDescriptor(directPllConnection pll, directClockAsymmetricMatch match, uint8_t fam, clockAccuracyLevelAcronym acc, uint32_t freq, uint32_t min, uint32_t max)
 {
+  if(fam > 2 && fam < 201)
+  {
+    throw std::out_of_range("Clock Family definition out of valid range");
+  }
+  
   m_features.reserved = reserved;
   m_features.pllConnection = pll;
   m_features.asymmetricMatch = match;
@@ -14,21 +20,21 @@ directClockDescriptor::directClockDescriptor(directPllConnection pll, directCloc
   m_acc = acc;
   m_payload.push_back(m_acc);
   m_freq = freq;
-  while (freq > 0)
+  for (int i = 0; i < 4; i++)
   {
     uint8_t byte = freq % 0x100;
     m_payload.push_back(byte);
     freq /= 0x100;
   }
   m_min = min;
-  while (min > 0)
+  for (int i = 0; i < 4; i++)
   {
     uint8_t byte = min % 0x100;
     m_payload.push_back(byte);
     min /= 0x100;
   }
   m_max = max;
-  while (max > 0)
+  for (int i = 0; i < 4; i++)
   {
     uint8_t byte = max % 0x100;
     m_payload.push_back(byte);

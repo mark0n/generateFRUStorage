@@ -73,6 +73,10 @@ set(TEST_COMPONENTS
   varLengthLangCodeFieldTests.cpp
   interfaceIdentifierBodyTests.cpp
   zone3InterfaceCompatibilityRecordTests.cpp
+  indirectClockDescriptorTests.cpp
+  directClockDescriptorTests.cpp
+  clockConfigurationDescriptorTests.cpp
+  clockConfigurationRecordTests.cpp
   commonHeader.cpp
   boardInfoArea.cpp
   productInfoArea.cpp

@@ -7,7 +7,6 @@
 
 const uint8_t clockConfigurationRecordPICMGRecordId = 0x2D;
 const uint8_t clockConfigurationRecordFormatVersion = 0x00;
-const uint8_t reserved = 0x00;
 
 clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescriptors) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())

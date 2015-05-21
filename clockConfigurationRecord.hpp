@@ -47,7 +47,6 @@ public :
 private:
   clockConfigurationRecordHeader m_clockConfigurationHeader;
   std::list<clockConfigurationDescriptor> m_clockDescriptors;
-  uint8_t m_deviceIdentification = 0x0;
   resourceIDDefinition m_resourceIDDefinition;
 };
 
