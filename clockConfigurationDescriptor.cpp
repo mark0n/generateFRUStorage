@@ -1,5 +1,6 @@
 #include "clockConfigurationDescriptor.hpp"
 #include <iostream>
+#include <list>
 
 clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID, clockActivationControl control, std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct) {
   m_data.clockID = ID;
@@ -27,6 +28,18 @@ std::vector<uint8_t> clockConfigurationDescriptor::getBinaryData() const {
 }
 
 void clockConfigurationDescriptor::printData() const {
+  std::cout << "Clock Configuration Clock ID: " << (int)m_data.clockID << std::endl;
+  std::cout << "Clock Configuration Clock Control: " << m_data.clockControl << std::endl;
+  int i = 0;
+  for(std::list<indirectClockDescriptor>::const_iterator li = m_indirect.begin(); li != m_indirect.end(); li++, i++) {
+    std::cout << "Indirect Clock Descriptor #" << std::dec << i << ":" << std::endl;
+    li->printData();
+  }
+  i = 0;
+  for(std::list<directClockDescriptor>::const_iterator li = m_direct.begin(); li != m_direct.end(); li++, i++) {
+    std::cout << "Direct Clock Descriptor #" << std::dec << i << ":" << std::endl;
+    li->printData();
+  }
 }
 
 int clockConfigurationDescriptor::size() const {

@@ -1,5 +1,6 @@
 #include "directClockDescriptor.hpp"
 #include <stdexcept>
+#include <iostream>
 
 const uint8_t reserved = 0;
 
@@ -48,7 +49,13 @@ std::vector<uint8_t> directClockDescriptor::getBinaryData() const
 }
 void directClockDescriptor::printData() const
 {
-  
+  std::cout << "PLL Connection: " << std::dec << (int)m_features.pllConnection << std::endl;
+  std::cout << "Clock Asymmetric Match: " << std::dec << (int)m_features.asymmetricMatch << std::endl;
+  std::cout << "Clock Family: " << std::hex << m_fam << std::endl;
+  std::cout << "Clock Accuracy Level: " << std::dec << (int)m_acc << std::endl;
+  std::cout << "Clock Frequency: " << std::dec << (int)m_freq << std::endl;
+  std::cout << "Minimum Clock Frequency: " << std::dec << (int)m_min << std::endl;
+  std::cout << "Maximum Clock Frequency: " << std::dec << (int)m_max << std::endl;
 }
 int directClockDescriptor::size() const
 {

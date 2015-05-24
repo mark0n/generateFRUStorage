@@ -1,4 +1,5 @@
 #include "indirectClockDescriptor.hpp"
+#include <iostream>
 
 const uint8_t reserved = 0;
 
@@ -20,7 +21,9 @@ std::vector<uint8_t> indirectClockDescriptor::getBinaryData() const
 
 void indirectClockDescriptor::printData() const
 {
-  
+  std::cout << "PLL Connection: " << std::dec << (int)m_features.pllConnection << std::endl;
+  std::cout << "Clock Asymmetric Match: " << std::dec << (int)m_features.asymmetricMatch << std::endl;
+  std::cout << "Dependent Clock ID: " << std::dec << (int)m_dClockID << std::endl;
 }
 
 int indirectClockDescriptor::size() const
