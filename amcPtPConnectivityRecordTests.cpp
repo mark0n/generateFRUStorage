@@ -7,7 +7,7 @@ BOOST_AUTO_TEST_SUITE( amcPtPConnectivityRecordTests )
 
 BOOST_AUTO_TEST_CASE( constructorEmpty )
 {
-  amcPtPConnectivityRecord apcr( std::list<amcChannelDescriptor>(), std::list<amcLinkDescriptor>() );
+  amcPtPConnectivityRecord apcr( (std::list<amcChannelDescriptor>()), (std::list<amcLinkDescriptor>()) );
 }
 
 BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
