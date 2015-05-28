@@ -7,13 +7,15 @@
 #include <vector>
 #include <bitset>
 
-struct directClockFeatures {
+struct directClockFeatures
+{
   uint8_t asymmetricMatch : 1;
   uint8_t pllConnection : 1;
   uint8_t reserved : 6;
 };
 
-enum directPllConnection {
+enum directPllConnection
+{
   DirectConnected = 1,
   DirectNotConnected = 0
 };
@@ -28,7 +30,8 @@ struct directPllConnectionMap : public std::map<std::string, directPllConnection
   ~directPllConnectionMap() {}
 };
 
-enum directClockAsymmetricMatch {
+enum directClockAsymmetricMatch
+{
   DirectSource = 1,
   DirectReciever = 0
 };
@@ -43,7 +46,8 @@ struct directClockAsymmetricMatchMap : public std::map<std::string, directClockA
   ~directClockAsymmetricMatchMap() {}
 };
 
-enum clockAccuracyLevelAcronym {
+enum clockAccuracyLevelAcronym
+{
   PRS = 0x0A,
   STU = 0x14,
   ST2 = 0x1E,
@@ -72,7 +76,8 @@ struct clockAccuracyLevelAcronymMap : public std::map<std::string, clockAccuracy
   ~clockAccuracyLevelAcronymMap() {}
 };
 
-class directClockDescriptor {
+class directClockDescriptor
+{
 public :
   directClockDescriptor(directPllConnection pll, directClockAsymmetricMatch match, uint8_t fam, clockAccuracyLevelAcronym acc, uint32_t freq, uint32_t min, uint32_t max);
   std::vector<uint8_t> getBinaryData() const;
@@ -89,4 +94,3 @@ private :
 };
 
 #endif	/* DIRECTCLOCKDESCRIPTOR_HPP */
-

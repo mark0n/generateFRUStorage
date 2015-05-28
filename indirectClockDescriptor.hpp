@@ -7,13 +7,15 @@
 #include <vector>
 #include <bitset>
 
-struct indirectClockFeatures {
+struct indirectClockFeatures
+{
   uint8_t asymmetricMatch : 1;
   uint8_t pllConnection : 1;
   uint8_t reserved : 6;
 };
 
-enum indirectPllConnection {
+enum indirectPllConnection
+{
   IndirectConnected = 1,
   IndirectNotConnected = 0
 };
@@ -28,7 +30,8 @@ struct indirectPllConnectionMap : public std::map<std::string, indirectPllConnec
   ~indirectPllConnectionMap() {}
 };
 
-enum indirectClockAsymmetricMatch {
+enum indirectClockAsymmetricMatch
+{
   IndirectSource = 1,
   IndirectReciever = 0
 };
@@ -43,7 +46,8 @@ struct indirectClockAsymmetricMatchMap : public std::map<std::string, indirectCl
   ~indirectClockAsymmetricMatchMap() {}
 };
 
-class indirectClockDescriptor {
+class indirectClockDescriptor
+{
 public :
   indirectClockDescriptor(indirectPllConnection pll, indirectClockAsymmetricMatch match, uint8_t dClockID);
   std::vector<uint8_t> getBinaryData() const;
@@ -56,4 +60,3 @@ private :
 };
 
 #endif	/* INDIRECTCLOCKDESCRIPTOR_HPP */
-

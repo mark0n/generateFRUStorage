@@ -11,7 +11,8 @@ const uint8_t clockConfigurationRecordFormatVersion = 0x00;
 clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescriptors) :
   multiRecord::multiRecord(RECORD_TYPE_OEM, std::vector<uint8_t>())
 {
-  if(clockDescriptors.size() > UINT8_MAX) {
+  if(clockDescriptors.size() > UINT8_MAX)
+  {
     std::stringstream ss;
     ss << "list clockDescriptors exceeds maximum allowed length of " << UINT8_MAX << " entries";
     throw std::length_error( ss.str() );
@@ -22,7 +23,7 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, u
   m_clockConfigurationHeader.manufacturerId[0] = PICMG_MANUFACTURER_ID_LSB;
   m_clockConfigurationHeader.picmgRecordId = clockConfigurationRecordPICMGRecordId;
   m_clockConfigurationHeader.recordFormatVersion = clockConfigurationRecordFormatVersion;
-
+  
   m_clockDescriptors = clockDescriptors;
   
   updateRecordLength();
@@ -37,7 +38,6 @@ clockConfigurationRecord::clockConfigurationRecord(resourceIDResourceType rID, u
     std::vector<uint8_t> clockDescriptor = li->getBinaryData();
     std::copy(clockDescriptor.begin(), clockDescriptor.end(), std::back_inserter(m_payload));
   }
-  
 }
 
 void clockConfigurationRecord::updateRecordLength()
@@ -76,7 +76,8 @@ void clockConfigurationRecord::printData() {
   std::cout << "Clock configuration descriptors: { " << std::endl;
   std::list<clockConfigurationDescriptor>::iterator cdli;
   int i;
-  for(cdli = m_clockDescriptors.begin(), i = 0; cdli != m_clockDescriptors.end(); cdli++, i++) {
+  for(cdli = m_clockDescriptors.begin(), i = 0; cdli != m_clockDescriptors.end(); cdli++, i++)
+  {
     std::cout << "Clock configuration descriptor #" << std::dec << i << ":" << std::endl;
     cdli->printData();
   }

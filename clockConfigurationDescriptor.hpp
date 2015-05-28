@@ -1,22 +1,24 @@
 #ifndef CLOCKCONFIGURATIONDESCRIPTOR_HPP
 #define	CLOCKCONFIGURATIONDESCRIPTOR_HPP
 
+#include "indirectClockDescriptor.hpp"
+#include "directClockDescriptor.hpp"
 #include <cstdint>
 #include <vector>
 #include <bitset>
 #include <map>
 #include <list>
-#include "indirectClockDescriptor.hpp"
-#include "directClockDescriptor.hpp"
 
-struct clockConfigurationData {
+struct clockConfigurationData
+{
   uint8_t clockID : 8;
   uint8_t clockControl : 8;
   uint8_t indirectCount : 8;
   uint8_t directCount : 8;
 };
 
-enum clockID {
+enum clockID
+{
   TCLKA = 0x01,
   TCLKB = 0x02,
   TCLKC = 0x03,
@@ -55,7 +57,8 @@ struct clockIDMap : public std::map<std::string, clockID>
   ~clockIDMap() {}
 };
 
-enum clockActivationControl {
+enum clockActivationControl
+{
   ABCarrierIPMC = 0x00,
   ABApp = 0x01
 };
@@ -70,10 +73,10 @@ struct clockActivationControlMap : public std::map<std::string, clockActivationC
   ~clockActivationControlMap() {}
 };
 
-
-class clockConfigurationDescriptor {
+class clockConfigurationDescriptor
+{
 public :
-  clockConfigurationDescriptor(clockID ID, clockActivationControl control, std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct);
+  clockConfigurationDescriptor(clockID ID, clockActivationControl control,std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct);
   std::vector<uint8_t> getBinaryData() const;
   void printData() const;
   int size() const;
@@ -85,4 +88,3 @@ private :
 };
 
 #endif	/* CLOCKCONFIGURATIONDESCRIPTOR_HPP */
-

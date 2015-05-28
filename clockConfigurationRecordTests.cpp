@@ -5,8 +5,8 @@
 #include <boost/assign/std/vector.hpp>
 using namespace boost::assign; // bring 'operator+=()' into scope
 
-BOOST_AUTO_TEST_SUITE( clockConfigurationRecordTests )     
-        
+BOOST_AUTO_TEST_SUITE( clockConfigurationRecordTests )
+
 BOOST_AUTO_TEST_CASE( constructorEmpty )
 {
   resourceIDResourceTypeMap ridrtm;
@@ -140,5 +140,5 @@ BOOST_AUTO_TEST_CASE( size )
   clockConfigurationRecord ccr(type, 1, desc);
   BOOST_CHECK_EQUAL( ccr.size(), 33 );
 }
-        
+
 BOOST_AUTO_TEST_SUITE_END()

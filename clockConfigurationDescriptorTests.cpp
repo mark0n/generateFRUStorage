@@ -5,8 +5,8 @@
 #include <boost/assign/std/vector.hpp>
 using namespace boost::assign; // bring 'operator+=()' into scope
 
-BOOST_AUTO_TEST_SUITE( clockConfigurationDescriptorTests )     
-        
+BOOST_AUTO_TEST_SUITE( clockConfigurationDescriptorTests )
+
 BOOST_AUTO_TEST_CASE( constructorEmpty )
 {
   clockIDMap cidm;
@@ -120,5 +120,5 @@ BOOST_AUTO_TEST_CASE( size )
   clockConfigurationDescriptor ccd(cid, cac, indirect, direct);
   BOOST_CHECK_EQUAL( ccd.size(), 21 );
 }
-        
+
 BOOST_AUTO_TEST_SUITE_END()

@@ -7,20 +7,22 @@
 #include <cstdint>
 #include <map>
 #include <vector>
-#include <bitset>
 
-struct clockConfigurationRecordHeader {
+struct clockConfigurationRecordHeader
+{
   uint8_t manufacturerId[3];
   uint8_t picmgRecordId;
   uint8_t recordFormatVersion;
 };
 
-struct resourceIDDefinition {
+struct resourceIDDefinition
+{
   uint8_t deviceID : 4;
   uint8_t idType : 4;
 };
 
-enum resourceIDResourceType {
+enum resourceIDResourceType
+{
   OnCarrierDevice = 0,
   AMCModule = 4,
   Backplane = 8
@@ -37,7 +39,8 @@ struct resourceIDResourceTypeMap : public std::map<std::string, resourceIDResour
   ~resourceIDResourceTypeMap() {}
 };
 
-class clockConfigurationRecord : public multiRecord {
+class clockConfigurationRecord : public multiRecord
+{
 public :
   clockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescriptors);
   void updateRecordLength();
@@ -51,4 +54,3 @@ private:
 };
 
 #endif	/* CLOCKCONFIGURATIONRECORD_HPP */
-
