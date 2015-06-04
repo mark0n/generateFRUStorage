@@ -1,22 +1,37 @@
 #include "clockConfigurationDescriptor.hpp"
 #include <iostream>
 
-clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID,clockActivationControl control, std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct)
+clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID, clockActivationControl control, int inCount, int dCount)
 {
+  if(inCount != 0 && dCount != 0)
+  {
+    throw std::runtime_error("ERROR: Indirect and Direct Clock Descriptors Found!");
+    exit(1);
+  }else if(inCount ==0 && dCount == 0)
+  {
+    throw std::runtime_error("ERROR: No Indirect or Direct Clock Descriptors Found!");
+    exit(1);
+  }
+  m_data.indirectCount = inCount;
+  m_data.directCount = dCount;
   m_data.clockID = ID;
   m_data.clockControl = control;
-  m_data.indirectCount = indirect.size();
-  m_data.directCount = direct.size();
-  m_indirect = indirect;
-  m_direct = direct;
-  
   m_payload = std::vector<uint8_t>( (uint8_t *)&m_data, (uint8_t *)(&m_data + 1) );
-  
+}
+
+void clockConfigurationDescriptor:: addIndirectDescrs(std::list<indirectClockDescriptor> indirectDescrs)
+{
+  m_indirect = indirectDescrs;
   for(std::list<indirectClockDescriptor>::const_iterator li = m_indirect.begin(); li != m_indirect.end(); li++)
   {
     std::vector<uint8_t> ind = li->getBinaryData();
     std::copy(ind.begin(), ind.end(), std::back_inserter(m_payload));
   }
+}
+
+void clockConfigurationDescriptor:: addDirectDescrs(std::list<directClockDescriptor> directDescrs)
+{
+  m_direct = directDescrs;
   for(std::list<directClockDescriptor>::const_iterator li = m_direct.begin(); li != m_direct.end(); li++)
   {
     std::vector<uint8_t> dir = li->getBinaryData();

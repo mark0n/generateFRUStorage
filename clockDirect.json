@@ -31,14 +31,6 @@
           {
             "ClockID": "TCLKA",
             "ClockControl": "ActivatedbyCarrierIPMC",
-            "IndirectClockDescriptors":
-            [
-              {
-                "PLLConnection": "ConnectedThroughPLL",
-                "ClockAsymmetricMatch": "ClockReceiver",
-                "DependentClockID": 1
-              }
-            ],
             "DirectClockDescriptors":
             [
               {

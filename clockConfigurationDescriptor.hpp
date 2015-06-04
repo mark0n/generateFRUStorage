@@ -76,10 +76,12 @@ struct clockActivationControlMap : public std::map<std::string, clockActivationC
 class clockConfigurationDescriptor
 {
 public :
-  clockConfigurationDescriptor(clockID ID, clockActivationControl control,std::list<indirectClockDescriptor> indirect, std::list<directClockDescriptor> direct);
+  clockConfigurationDescriptor(clockID ID, clockActivationControl control, int inCount, int dCount);
   std::vector<uint8_t> getBinaryData() const;
   void printData() const;
   int size() const;
+  void addIndirectDescrs(std::list<indirectClockDescriptor> indirectDescrs);
+  void addDirectDescrs(std::list<directClockDescriptor> directDescrs);
 private :
   clockConfigurationData m_data;
   std::list<indirectClockDescriptor> m_indirect;
