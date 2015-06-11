@@ -1,5 +1,6 @@
 #include "clockConfigurationDescriptor.hpp"
 #include <iostream>
+#include <stdexcept>
 
 clockConfigurationDescriptor::clockConfigurationDescriptor(clockID ID, clockActivationControl control, int inCount, int dCount)
 {
