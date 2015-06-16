@@ -21,6 +21,10 @@
   },
   "MultiRecordArea":
   {
+    "CurrentRequirementsRecord":
+    {
+      "Current": 2.0
+    },
     "ClockConfigurationRecords":
     [
       {
