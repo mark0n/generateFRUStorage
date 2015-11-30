@@ -2,6 +2,7 @@
 #include "testUtils.hpp"
 #include <boost/test/unit_test.hpp>
 #include <boost/assign/list_of.hpp>
+#include <iostream>
 
 BOOST_AUTO_TEST_SUITE( productInfoAreaTests )
 
