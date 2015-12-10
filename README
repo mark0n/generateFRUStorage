@@ -60,6 +60,15 @@ Code coverage:
 
   Coverage data can be found in build/coverage/index.html
 
+Building Debian packages:
+  You can build Debian/Ubuntu packages by running
+
+  > gbp buildpackage -us -uc
+
+  For older versions of git-buildpackage (<0.6.24) the command is:
+
+  > git-buildpackage -us -uc
+
 Contact:
   Author: Martin Konrad <konrad at frib.msu.edu>
 
