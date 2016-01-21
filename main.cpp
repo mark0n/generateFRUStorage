@@ -19,6 +19,10 @@
 #include "amcLinkDescriptor.hpp"
 #include "interfaceIdentifierBody.hpp"
 #include "zone3InterfaceCompatibilityRecord.hpp"
+#include "clockConfigurationDescriptor.hpp"
+#include "clockConfigurationRecord.hpp"
+#include "indirectClockDescriptor.hpp"
+#include "directClockDescriptor.hpp"
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
@@ -176,7 +180,7 @@ int main(int argc, char **argv) {
     for(const ptree::value_type &v: pt.get_child("MultiRecordArea.Zone3Records"))
     {
       std::vector<std::string> interfaceBody;
-      uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier.IdentifierNumber");
+      uint8_t interfaceIdentifier = v.second.get<uint8_t>("InterfaceIdentifier");
       switch(interfaceIdentifier)
       {
         case 1:
@@ -210,6 +214,68 @@ int main(int argc, char **argv) {
       }
     }
   }
+  
+  boost::optional<ptree&> clockRecords = pt.get_child_optional("MultiRecordArea.ClockConfigurationRecords");
+  if(clockRecords)
+  {
+    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.ClockConfigurationRecords"))
+    {
+      resourceIDResourceTypeMap rMap;
+      resourceIDResourceType rID = rMap[v.second.get<std::string>("ClockResourceIDResourceType")];
+      uint8_t dID = v.second.get<uint8_t>("ClockResourceIDDeviceIdentification");
+      
+      std::list<clockConfigurationDescriptor> clockDescrs;
+      for(const ptree::value_type &w: v.second.get_child("ClockConfigurationDescriptors"))
+      {
+        clockIDMap clockMap;
+        clockID ID = clockMap[w.second.get<std::string>("ClockID")];
+        clockActivationControlMap controlMap;
+        clockActivationControl control = controlMap[w.second.get<std::string>("ClockControl")];
+        int inCount = w.second.count("IndirectClockDescriptors");
+        int dCount = w.second.count("DirectClockDescriptors");
+        clockConfigurationDescriptor desc(ID, control, inCount, dCount);
+        
+        if(inCount != 0)
+        {
+            std::list<indirectClockDescriptor> indirectDescrs;
+            for(const ptree::value_type &x: w.second.get_child("IndirectClockDescriptors"))
+            {
+                indirectPllConnectionMap indirectConnMap;
+                indirectPllConnection pll = indirectConnMap[x.second.get<std::string>("PLLConnection")];
+                indirectClockAsymmetricMatchMap indirectAsymMap;
+                indirectClockAsymmetricMatch match = indirectAsymMap[x.second.get<std::string>("ClockAsymmetricMatch")];
+                uint8_t dClockID = x.second.get<uint8_t>("DependentClockID");
+                indirectClockDescriptor ind(pll, match, dClockID);
+                indirectDescrs.push_back(ind);
+            }
+            desc.addIndirectDescrs(indirectDescrs);
+        }
+        else if(dCount != 0)
+        {
+            std::list<directClockDescriptor> directDescrs;
+            for(const ptree::value_type &x: w.second.get_child("DirectClockDescriptors"))
+            {
+                directPllConnectionMap directConnMap;
+                directPllConnection pll = directConnMap[x.second.get<std::string>("PLLConnection")];
+                directClockAsymmetricMatchMap directAsymMap;
+                directClockAsymmetricMatch match = directAsymMap[x.second.get<std::string>("ClockAsymmetricMatch")];
+                uint8_t fam = x.second.get<uint8_t>("ClockFamily");
+                clockAccuracyLevelAcronymMap acronymMap;
+                clockAccuracyLevelAcronym acc = acronymMap[x.second.get<std::string>("ClockAccuracyLevelAcronym")];
+                uint32_t freq = x.second.get<uint32_t>("ClockFrequency");
+                uint32_t min = x.second.get<uint32_t>("MinimumClockFrequency");
+                uint32_t max = x.second.get<uint32_t>("MaximumClockFrequency");
+                directClockDescriptor dir(pll, match, fam, acc, freq, min, max);
+                directDescrs.push_back (dir);
+            }
+            desc.addDirectDescrs(directDescrs);
+        }
+        clockDescrs.push_back(desc);
+      }
+      mra.addClockConfigurationRecord(rID, dID, clockDescrs);
+    }
+  }
+  
   if(debugMode)
   {
     std::cout << "COMMON-HEADER AREA:" << std::endl;

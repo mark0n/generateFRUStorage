@@ -1,0 +1,55 @@
+{
+  "BoardInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "SerialNumber": "testBoardSerialNumber",
+    "PartNumber": "testBoardPartNumber",
+    "FRUFileId": "testFRUFileId"
+  },
+  "ProductInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "PartNumber": "testProductPartNumber",
+    "Version": "testProductVersion",
+    "SerialNumber": "testProductSerialNumber",
+    "AssetTag": "testAssetTag",
+    "FRUFileId": "testFRUFileId"
+  },
+  "MultiRecordArea":
+  {
+    "CurrentRequirementsRecord":
+    {
+      "Current": 2.0
+    },
+    "ClockConfigurationRecords":
+    [
+      {
+        "ClockResourceIDResourceType": "AMCModule",
+        "ClockResourceIDDeviceIdentification": 1,
+        "ClockConfigurationDescriptors":
+        [
+          {
+            "ClockID": "TCLKA",
+            "ClockControl": "ActivatedbyCarrierIPMC",
+            "DirectClockDescriptors":
+            [
+              {
+                "PLLConnection": "NotConnectedThroughPLL",
+                "ClockAsymmetricMatch": "ClockSource",
+                "ClockFamily": 1,
+                "ClockAccuracyLevelAcronym": "PRS",
+                "ClockFrequency": 1544000,
+                "MinimumClockFrequency": 8000,
+                "MaximumClockFrequency": 19440000
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  } 
+}

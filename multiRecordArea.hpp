@@ -8,6 +8,10 @@
 #include "amcLinkDescriptor.hpp"
 #include "interfaceIdentifierBody.hpp"
 #include "zone3InterfaceCompatibilityRecord.hpp"
+#include "clockConfigurationRecord.hpp"
+#include "clockConfigurationDescriptor.hpp"
+#include "directClockDescriptor.hpp"
+#include "indirectClockDescriptor.hpp"
 #include <cstdint>
 #include <vector>
 #include <list>
@@ -24,6 +28,7 @@ public :
   void addAMCPtPConnectivityRecord(std::list<amcChannelDescriptor> chDescrs, std::list<amcLinkDescriptor> lnkDescrs);
   std::vector<uint8_t> getBinaryData();
   void addZone3InterfaceCompatibilityRecord(uint8_t interfaceIdentifier, interfaceIdentifierBody* body);
+  void addClockConfigurationRecord(resourceIDResourceType rID, uint8_t dID, std::list<clockConfigurationDescriptor> clockDescrs);
   void printData();
   int size();
 };

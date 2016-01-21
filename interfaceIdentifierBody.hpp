@@ -38,7 +38,6 @@ private:
   struct picmgMTCAREPNumber m_data4;
   uint8_t m_identifier = 0x00;
   int m_interfaceIdentifierBodyDataSize = 0;
-  int m_opaqueSize = 0;
   std::vector<uint8_t> m_opaque;
 };
 
