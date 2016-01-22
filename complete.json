@@ -1,0 +1,173 @@
+{
+  "BoardInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "SerialNumber": "testBoardSerialNumber",
+    "PartNumber": "testBoardPartNumber",
+    "FRUFileId": "testFRUFileId"
+  },
+  "ProductInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "PartNumber": "testProductPartNumber",
+    "Version": "testProductVersion",
+    "SerialNumber": "testProductSerialNumber",
+    "AssetTag": "testAssetTag",
+    "FRUFileId": "testFRUFileId"
+  },
+  "MultiRecordArea":
+  {
+    "CurrentRequirementsRecord":
+    {
+      "Current": 2.0
+    },
+    "AMCPtPConnectivityRecord":
+    {
+      "AMCChannelDescriptors":
+      [
+        {
+          "Lane0PortNumber": 0,
+          "Lane1PortNumber": 31,
+          "Lane2PortNumber": 31,
+          "Lane3PortNumber": 31,
+          "AMCLinkDescriptors":
+          [
+            {
+              "AMCLinkDesignator":
+              {
+                "Lane0Included": true,
+                "Lane1Included": false,
+                "Lane2Included": false,
+                "Lane3Included": false
+              },
+              "AMCLinkType": "AMC.2 Ethernet",
+              "AMCLinkTypeExtension": 0,
+              "AsymmetricMatch": "Matches with '00b' (exact match)",
+              "LinkGroupingID": 0
+            }
+          ]
+        },
+        {
+          "Lane0PortNumber": 4,
+          "Lane1PortNumber": 31,
+          "Lane2PortNumber": 31,
+          "Lane3PortNumber": 31,
+          "AMCLinkDescriptors":
+          [
+            {
+              "AMCLinkDesignator":
+              {
+                "Lane0Included": true,
+                "Lane1Included": false,
+                "Lane2Included": false,
+                "Lane3Included": false
+              },
+              "AMCLinkType": "AMC.1 PCI Express",
+              "AMCLinkTypeExtension": "Gen 1 non spread spectrum clock",
+              "AsymmetricMatch": "Matches with '10b'",
+              "LinkGroupingID": 0
+            }
+          ]
+        }
+      ]
+    },
+    "Zone3Records":
+    [
+      {
+        "InterfaceIdentifier": 1,
+        "IdentifierBody":
+        {
+          "PICMGSpecificationUniqueIdentifier": "12345678",
+          "PICMGSpecificationMajorRevisionNumber": "01",
+          "PICMGSpecificationMinorRevisionNumber": "05",
+          "OpaqueInterfaceIdentifierBody": "1234567890"
+        }
+      },
+      {
+        "InterfaceIdentifier": 2,
+        "IdentifierBody":
+        {
+          "InterfaceIdentifierGUID": "0123456789ABCDEF0000000000000000"
+        }
+      },
+      {
+        "InterfaceIdentifier": 3,
+        "IdentifierBody":
+        {
+          "ManufacturerIDIANA": "123456",
+          "OEMDefinedInterfaceDesignator": "12345678"
+        }
+      },
+      {
+        "InterfaceIdentifier": 4,
+        "IdentifierBody":
+        {
+          "PICMGMTCARepNumber": "12345678"
+        }
+      }
+    ],
+    "ClockConfigurationRecords":
+    [
+      {
+        "ClockResourceIDResourceType": "AMC Module",
+        "ClockResourceIDDeviceIdentification": 1,
+        "ClockConfigurationDescriptors":
+        [
+          {
+            "ClockID": "TCLKA",
+            "ClockControl": "Activated by Carrier IPMC",
+            "IndirectClockDescriptors":
+            [
+              {
+                "PLLConnection": "Connected through PLL",
+                "ClockAsymmetricMatch": "Clock receiver",
+                "DependentClockID": 1
+              },
+              {
+                "PLLConnection": "Connected through PLL",
+                "ClockAsymmetricMatch": "Clock receiver",
+                "DependentClockID": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "ClockResourceIDResourceType": "AMC Module",
+        "ClockResourceIDDeviceIdentification": 1,
+        "ClockConfigurationDescriptors":
+        [
+          {
+            "ClockID": "TCLKA",
+            "ClockControl": "Activated by Carrier IPMC",
+            "DirectClockDescriptors":
+            [
+              {
+                "PLLConnection": "Not connected through PLL",
+                "ClockAsymmetricMatch": "Clock source",
+                "ClockFamily": 1,
+                "ClockAccuracyLevelAcronym": "PRS",
+                "ClockFrequency": 1544000,
+                "MinimumClockFrequency": 8000,
+                "MaximumClockFrequency": 19440000
+              },
+              {
+                "PLLConnection": "Not connected through PLL",
+                "ClockAsymmetricMatch": "Clock source",
+                "ClockFamily": 1,
+                "ClockAccuracyLevelAcronym": "PRS",
+                "ClockFrequency": 1544000,
+                "MinimumClockFrequency": 8000,
+                "MaximumClockFrequency": 19440000
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

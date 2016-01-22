@@ -10,9 +10,9 @@ BOOST_AUTO_TEST_SUITE( directClockDescriptorTests )
 BOOST_AUTO_TEST_CASE( constructorEmpty )
 {
   directPllConnectionMap directConnMap;
-  directPllConnection pll = directConnMap["ConnectedThroughPLL"];
+  directPllConnection pll = directConnMap["Connected through PLL"];
   directClockAsymmetricMatchMap directAsymMap;
-  directClockAsymmetricMatch match = directAsymMap["ClockSource"];
+  directClockAsymmetricMatch match = directAsymMap["Clock source"];
   clockAccuracyLevelAcronymMap acronymMap;
   clockAccuracyLevelAcronym acc = acronymMap["ST4"];
   directClockDescriptor(pll, match, 0x00, acc, 0x00000000, 0x00000000, 0x00000000);
@@ -21,9 +21,9 @@ BOOST_AUTO_TEST_CASE( constructorEmpty )
 BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 {
   directPllConnectionMap directConnMap;
-  directPllConnection pll = directConnMap["ConnectedThroughPLL"];
+  directPllConnection pll = directConnMap["Connected through PLL"];
   directClockAsymmetricMatchMap directAsymMap;
-  directClockAsymmetricMatch match = directAsymMap["ClockSource"];
+  directClockAsymmetricMatch match = directAsymMap["Clock source"];
   clockAccuracyLevelAcronymMap acronymMap;
   clockAccuracyLevelAcronym acc = acronymMap["ST4"];
   directClockDescriptor cd(pll, match, 0x01, acc, 0x00178F40, 0x00001F40, 0x0128A180);
@@ -44,9 +44,9 @@ BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 BOOST_AUTO_TEST_CASE( clockFamilyReserved )
 {
   directPllConnectionMap directConnMap;
-  directPllConnection pll = directConnMap["ConnectedThroughPLL"];
+  directPllConnection pll = directConnMap["Connected through PLL"];
   directClockAsymmetricMatchMap directAsymMap;
-  directClockAsymmetricMatch match = directAsymMap["ClockSource"];
+  directClockAsymmetricMatch match = directAsymMap["Clock source"];
   clockAccuracyLevelAcronymMap acronymMap;
   clockAccuracyLevelAcronym acc = acronymMap["ST4"];
   BOOST_CHECK_THROW( directClockDescriptor cd(pll, match, 0x04, acc, 0x00000000, 0x00000000, 0x00000000), std::out_of_range );
@@ -55,9 +55,9 @@ BOOST_AUTO_TEST_CASE( clockFamilyReserved )
 BOOST_AUTO_TEST_CASE( binarySize )
 {
   directPllConnectionMap directConnMap;
-  directPllConnection pll = directConnMap["ConnectedThroughPLL"];
+  directPllConnection pll = directConnMap["Connected through PLL"];
   directClockAsymmetricMatchMap directAsymMap;
-  directClockAsymmetricMatch match = directAsymMap["ClockSource"];
+  directClockAsymmetricMatch match = directAsymMap["Clock source"];
   clockAccuracyLevelAcronymMap acronymMap;
   clockAccuracyLevelAcronym acc = acronymMap["ST4"];
   directClockDescriptor cd(pll, match, 0x01, acc, 0x00178F40, 0x00001F40, 0x0128A180);
@@ -67,9 +67,9 @@ BOOST_AUTO_TEST_CASE( binarySize )
 BOOST_AUTO_TEST_CASE( size )
 {
   directPllConnectionMap directConnMap;
-  directPllConnection pll = directConnMap["ConnectedThroughPLL"];
+  directPllConnection pll = directConnMap["Connected through PLL"];
   directClockAsymmetricMatchMap directAsymMap;
-  directClockAsymmetricMatch match = directAsymMap["ClockSource"];
+  directClockAsymmetricMatch match = directAsymMap["Clock source"];
   clockAccuracyLevelAcronymMap acronymMap;
   clockAccuracyLevelAcronym acc = acronymMap["ST4"];
   directClockDescriptor cd(pll, match, 0x00, acc, 0x00000000, 0x00000000, 0x00000000);

@@ -32,8 +32,8 @@ struct resourceIDResourceTypeMap : public std::map<std::string, resourceIDResour
 {
   resourceIDResourceTypeMap()
   {
-    this->operator[]("On-CarrierDevice") = OnCarrierDevice;
-    this->operator[]("AMCModule") = AMCModule;
+    this->operator[]("On-Carrier device") = OnCarrierDevice;
+    this->operator[]("AMC Module") = AMCModule;
     this->operator[]("Backplane") = Backplane;
   };
   ~resourceIDResourceTypeMap() {}

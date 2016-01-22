@@ -24,18 +24,18 @@
     "ClockConfigurationRecords":
     [
       {
-        "ClockResourceIDResourceType": "AMCModule",
+        "ClockResourceIDResourceType": "AMC Module",
         "ClockResourceIDDeviceIdentification": 1,
         "ClockConfigurationDescriptors":
         [
           {
             "ClockID": "TCLKA",
-            "ClockControl": "ActivatedbyCarrierIPMC",
+            "ClockControl": "Activated by Carrier IPMC",
             "IndirectClockDescriptors":
             [
               {
-                "PLLConnection": "ConnectedThroughPLL",
-                "ClockAsymmetricMatch": "ClockReceiver",
+                "PLLConnection": "Connected through PLL",
+                "ClockAsymmetricMatch": "Clock receiver",
                 "DependentClockID": 1
               }
             ]

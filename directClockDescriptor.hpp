@@ -24,8 +24,8 @@ struct directPllConnectionMap : public std::map<std::string, directPllConnection
 {
   directPllConnectionMap()
   {
-    this->operator[]("ConnectedThroughPLL") = DirectConnected;
-    this->operator[]("NotConnectedThroughPLL") = DirectNotConnected;
+    this->operator[]("Connected through PLL") = DirectConnected;
+    this->operator[]("Not connected through PLL") = DirectNotConnected;
   };
   ~directPllConnectionMap() {}
 };
@@ -40,8 +40,8 @@ struct directClockAsymmetricMatchMap : public std::map<std::string, directClockA
 {
   directClockAsymmetricMatchMap()
   {
-    this->operator[]("ClockSource") = DirectSource;
-    this->operator[]("ClockReceiver") = DirectReciever;
+    this->operator[]("Clock source") = DirectSource;
+    this->operator[]("Clock receiver") = DirectReciever;
   };
   ~directClockAsymmetricMatchMap() {}
 };

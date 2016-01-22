@@ -10,18 +10,18 @@ BOOST_AUTO_TEST_SUITE( indirectClockDescriptorTests )
 BOOST_AUTO_TEST_CASE( constructorEmpty )
 {
   indirectPllConnectionMap indirectConnMap;
-  indirectPllConnection pll = indirectConnMap["ConnectedThroughPLL"];
+  indirectPllConnection pll = indirectConnMap["Connected through PLL"];
   indirectClockAsymmetricMatchMap indirectAsymMap;
-  indirectClockAsymmetricMatch match = indirectAsymMap["ClockSource"];
+  indirectClockAsymmetricMatch match = indirectAsymMap["Clock source"];
   indirectClockDescriptor icd(pll, match, 0x0a);
 }
 
 BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 {
   indirectPllConnectionMap indirectConnMap;
-  indirectPllConnection pll = indirectConnMap["ConnectedThroughPLL"];
+  indirectPllConnection pll = indirectConnMap["Connected through PLL"];
   indirectClockAsymmetricMatchMap indirectAsymMap;
-  indirectClockAsymmetricMatch match = indirectAsymMap["ClockSource"];
+  indirectClockAsymmetricMatch match = indirectAsymMap["Clock source"];
   indirectClockDescriptor icd(pll, match, 0x0a);
   std::vector<uint8_t> manResult = boost::assign::list_of(0x03)(0x0a);
   std::vector<uint8_t> autoResult = icd.getBinaryData();
@@ -40,9 +40,9 @@ BOOST_AUTO_TEST_CASE( constructorEmptyGetBinaryData )
 BOOST_AUTO_TEST_CASE( binarySize )
 {
   indirectPllConnectionMap indirectConnMap;
-  indirectPllConnection pll = indirectConnMap["ConnectedThroughPLL"];
+  indirectPllConnection pll = indirectConnMap["Connected through PLL"];
   indirectClockAsymmetricMatchMap indirectAsymMap;
-  indirectClockAsymmetricMatch match = indirectAsymMap["ClockSource"];
+  indirectClockAsymmetricMatch match = indirectAsymMap["Clock source"];
   indirectClockDescriptor icd(pll, match, 0x0a);
   BOOST_CHECK_EQUAL( icd.getBinaryData().size(), 2 );
 }
@@ -50,9 +50,9 @@ BOOST_AUTO_TEST_CASE( binarySize )
 BOOST_AUTO_TEST_CASE( size )
 {
   indirectPllConnectionMap indirectConnMap;
-  indirectPllConnection pll = indirectConnMap["ConnectedThroughPLL"];
+  indirectPllConnection pll = indirectConnMap["Connected through PLL"];
   indirectClockAsymmetricMatchMap indirectAsymMap;
-  indirectClockAsymmetricMatch match = indirectAsymMap["ClockSource"];
+  indirectClockAsymmetricMatch match = indirectAsymMap["Clock source"];
   indirectClockDescriptor icd(pll, match, 0x0a);
   BOOST_CHECK_EQUAL( icd.size(), 2 );
 }

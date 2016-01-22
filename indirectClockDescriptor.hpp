@@ -24,8 +24,8 @@ struct indirectPllConnectionMap : public std::map<std::string, indirectPllConnec
 {
   indirectPllConnectionMap()
   {
-    this->operator[]("ConnectedThroughPLL") = IndirectConnected;
-    this->operator[]("NotConnectedThroughPLL") = IndirectNotConnected;
+    this->operator[]("Connected through PLL") = IndirectConnected;
+    this->operator[]("Not connected through PLL") = IndirectNotConnected;
   };
   ~indirectPllConnectionMap() {}
 };
@@ -40,8 +40,8 @@ struct indirectClockAsymmetricMatchMap : public std::map<std::string, indirectCl
 {
   indirectClockAsymmetricMatchMap()
   {
-    this->operator[]("ClockSource") = IndirectSource;
-    this->operator[]("ClockReceiver") = IndirectReciever;
+    this->operator[]("Clock source") = IndirectSource;
+    this->operator[]("Clock receiver") = IndirectReciever;
   };
   ~indirectClockAsymmetricMatchMap() {}
 };

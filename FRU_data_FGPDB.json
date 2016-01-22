@@ -33,42 +33,45 @@
           "Lane0PortNumber": 0,
           "Lane1PortNumber": 31,
           "Lane2PortNumber": 31,
-          "Lane3PortNumber": 31
+          "Lane3PortNumber": 31,
+          "AMCLinkDescriptors":
+          [
+            {
+              "AMCLinkDesignator":
+              {
+                "Lane0Included": true,
+                "Lane1Included": false,
+                "Lane2Included": false,
+                "Lane3Included": false
+              },
+              "AMCLinkType": "AMC.2 Ethernet",
+              "AMCLinkTypeExtension": 0,
+              "AsymmetricMatch": "Matches with '00b' (exact match)",
+              "LinkGroupingID": 0
+            }
+          ]
         },
         {
           "Lane0PortNumber": 4,
           "Lane1PortNumber": 31,
           "Lane2PortNumber": 31,
-          "Lane3PortNumber": 31
-        }
-      ],
-      "AMCLinkDescriptors":
-      [
-        {
-          "AMCLinkDesignator":
-          {
-            "Lane0Included": true,
-            "Lane1Included": false,
-            "Lane2Included": false,
-            "Lane3Included": false
-          },
-          "AMCLinkType": "AMC.2 Ethernet",
-          "AMCLinkTypeExtension": 0,
-          "AsymmetricMatch": "Matches with '00b' (exact match)",
-          "LinkGroupingID": 0
-        },
-        {
-          "AMCLinkDesignator":
-          {
-            "Lane0Included": true,
-            "Lane1Included": false,
-            "Lane2Included": false,
-            "Lane3Included": false
-          },
-          "AMCLinkType": "AMC.1 PCI Express",
-          "AMCLinkTypeExtension": "Gen 1 non spread spectrum clock",
-          "AsymmetricMatch": "Matches with '10b'",
-          "LinkGroupingID": 0
+          "Lane3PortNumber": 31,
+          "AMCLinkDescriptors":
+          [
+            {
+              "AMCLinkDesignator":
+              {
+                "Lane0Included": true,
+                "Lane1Included": false,
+                "Lane2Included": false,
+                "Lane3Included": false
+              },
+              "AMCLinkType": "AMC.1 PCI Express",
+              "AMCLinkTypeExtension": "Gen 1 non spread spectrum clock",
+              "AsymmetricMatch": "Matches with '10b'",
+              "LinkGroupingID": 0
+            }
+          ]
         }
       ]
     },

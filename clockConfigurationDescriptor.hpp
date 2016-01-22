@@ -67,8 +67,8 @@ struct clockActivationControlMap : public std::map<std::string, clockActivationC
 {
   clockActivationControlMap()
   {
-    this->operator[]("ActivatedbyCarrierIPMC") = ABCarrierIPMC;
-    this->operator[]("ActivatedbyApplication") = ABApp;
+    this->operator[]("Activated by Carrier IPMC") = ABCarrierIPMC;
+    this->operator[]("Activated by application") = ABApp;
   };
   ~clockActivationControlMap() {}
 };

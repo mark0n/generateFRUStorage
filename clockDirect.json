@@ -34,12 +34,12 @@
         [
           {
             "ClockID": "TCLKA",
-            "ClockControl": "ActivatedbyCarrierIPMC",
+            "ClockControl": "Activated by Carrier IPMC",
             "DirectClockDescriptors":
             [
               {
-                "PLLConnection": "NotConnectedThroughPLL",
-                "ClockAsymmetricMatch": "ClockSource",
+                "PLLConnection": "Not connected through PLL",
+                "ClockAsymmetricMatch": "Clock source",
                 "ClockFamily": 1,
                 "ClockAccuracyLevelAcronym": "PRS",
                 "ClockFrequency": 1544000,

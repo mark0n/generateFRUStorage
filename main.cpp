@@ -135,6 +135,8 @@ int main(int argc, char **argv) {
   if(ptpRecord)
   {
     std::list<amcChannelDescriptor> chDescrs;
+    std::list<amcLinkDescriptor> lnkDescrs;
+    uint8_t amcChannelId = 0;
     for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCChannelDescriptors"))
     {
       std::vector<int> ports;
@@ -142,32 +144,30 @@ int main(int argc, char **argv) {
       {
         ports.push_back(v.second.get<int>("Lane" + std::to_string(i) + "PortNumber"));
       }
-      chDescrs.push_back(amcChannelDescriptor(ports));
-    }
-    
-    std::list<amcLinkDescriptor> lnkDescrs;
-    uint8_t amcChannelId = 0;
-    for(const ptree::value_type &v: pt.get_child("MultiRecordArea.AMCPtPConnectivityRecord.AMCLinkDescriptors"))
-    {
-      std::bitset<4> lanesIncluded;
-      for(int lane = 0; lane < 4; lane++)
+      
+      for(const ptree::value_type &w: v.second.get_child("AMCLinkDescriptors"))
       {
-        lanesIncluded[lane] = v.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+        std::bitset<4> lanesIncluded;
+        for(int lane = 0; lane < 4; lane++)
+        {
+          lanesIncluded[lane] = w.second.get<bool>("AMCLinkDesignator.Lane" + std::to_string(lane) + "Included");
+        }
+        struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
+
+        amcLinkTypeMap lnkTypeMap;
+        amcLinkType lnkType = lnkTypeMap[w.second.get<std::string>("AMCLinkType")];
+
+        amcLinkTypeExtensionMap lnkTypeExtensionMap;
+        amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[w.second.get<std::string>("AMCLinkTypeExtension")];
+
+        asymmetricMatchMap asymMatchMap;
+        asymmetricMatch asymMatch = asymMatchMap[w.second.get<std::string>("AsymmetricMatch")];
+
+        int lnkGroupingId = w.second.get<int>("LinkGroupingID");
+        lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
       }
-      struct amcLinkDesignator lnkDesignator = { amcChannelId, lanesIncluded };
-
-      amcLinkTypeMap lnkTypeMap;
-      amcLinkType lnkType = lnkTypeMap[v.second.get<std::string>("AMCLinkType")];
-
-      amcLinkTypeExtensionMap lnkTypeExtensionMap;
-      amcLinkTypeExtension lnkTypeExtension = lnkTypeExtensionMap[v.second.get<std::string>("AMCLinkTypeExtension")];
-
-      asymmetricMatchMap asymMatchMap;
-      asymmetricMatch asymMatch = asymMatchMap[v.second.get<std::string>("AsymmetricMatch")];
-
-      int lnkGroupingId = v.second.get<int>("LinkGroupingID");
-      lnkDescrs.push_back(amcLinkDescriptor(lnkDesignator, lnkType, lnkTypeExtension, lnkGroupingId, asymMatch));
-
+      
+      chDescrs.push_back(amcChannelDescriptor(ports));
       amcChannelId++;
     }
   

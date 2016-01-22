@@ -1,0 +1,128 @@
+Reference file "complete.json" for an example of each section.
+
+Reference documents:
+PICMG AMC.0 R2.0
+PICMG Specification MTCA.4 Revision 1.0
+Platform Management FRU Information Storage Definition v1.0
+
+The definition or description of each value can be found within the tables for each section in the reference documents.
+
+BoardInfoArea:
+Platform Management FRU Information Storage Definition v1.0, section 11.
+
+  LanguageCode:
+  An integer value 0-136. Platform Management FRU Information Storage Definition v1.0, section 15.
+  Manufacturer: variable
+  ProductName: variable
+  SerialNumber: variable
+  PartNumber: variable
+  FRUFileId: variable
+
+ProductInfoArea
+Platform Management FRU Information Storage Definition v1.0, section 12.
+
+  LanguageCode:
+  An integer value 0-136. Platform Management FRU Information Storage Definition v1.0, section 15.
+  Manufacturer: variable
+  ProductName: variable
+  PartNumber: variable
+  Version: variable
+  SerialNumber: variable
+  AssetTag: variable
+  FRUFileId: variable
+
+MultiRecordArea:
+
+  CurrentRequirementsArea:
+
+    Current: 
+    A double value between 0 and 6.67 Ampere. PICMG AMC.0 R2.0 table 3-10.
+
+  AMCPtPConnectivityRecord:
+
+    AMCChannelDescriptors:
+    A list of 1 or more channel descriptors.
+    All 4 LanePortNumbers are integers, 0-31. PICMG AMC.0 R2.0 table 3-17.
+
+      AMCLinkDescriptors:
+      A list of 1 or more link descriptors.
+
+        AMCLinkDesignator:
+        All 4 LaneIncluded values are boolean values. PICMG AMC.0 R2.0 table 3-20.
+        AMCLinkType:
+        A string value from PICMG AMC.0 R2.0 table 3-21.
+        AMCLinkTypeExtension:
+        An integer value, 0-16.
+        AsymmetricMatch:
+        A string value from PICMG AMC.0 R2.0 table 3-18.
+        LinkGroupingID:
+        An integer value, 0-255.
+
+  Zone3Records:
+  A list of 1 or more Zone3 records.
+
+    InterfaceIdentifier:
+    An integer value, 1-4. PICMG Specification MTCA.4 Revision 1.0, table 3-3.
+
+    IdentifierBody:
+    The structure changes based on the value of InterfaceIdentifier.
+    The values taken by each are hexadecimal strings.
+    PICMG Specification MTCA.4 Revision 1.0, tables 3-5 through 3-8.
+
+      PICMGSpecificationUniqueIdentifier: 4 bytes.
+      PICMGSpecificationMajorRevisionNumber: 1 byte.
+      PICMGSpecificationMinorRevisionNumber: 1 byte.
+      OpaqueInterfaceIdentifierBody: M bytes.
+
+      InterfaceIdentifierGUID: 16 bytes.
+
+      ManufacturerIDIANA: 3 bytes.
+      OEMDefinedInterfaceDesignator: 4 bytes.
+
+      PICMGMTCARepNumber: 4 bytes.
+
+  ClockConfigurationRecords:
+  A list of 1 or more Clock Configuration Records.
+
+    ClockResourceIDResourceType: 
+    A string value from PICMG AMC.0 R2.0 table 3-31.
+    ClockResourceIDDeviceIdentification:
+    A string value from PICMG AMC.0 R2.0 table 3-31.
+
+    ClockConfigurationDescriptors:
+    A list of 1 or more Clock configuration Descriptors.
+
+      ClockID:
+      A string value from PICMG AMC.0 R2.0 tables 3-33 and 3-34.
+      ClockControl:
+      A string value from PICMG AMC.0 R2.0 table 3-36.
+
+      IndirectClockDescriptors:
+      A list of 1 or more Indirect Clock configuration Descriptors.
+      Indirect Clock descriptors OR Direct Clock Desriptors are allowed.
+
+        PLLConnection:
+        A string value from PICMG AMC.0 R2.0 table 3-37.
+        ClockAsymmetricMatch:
+        A string value from PICMG AMC.0 R2.0 table 3-37.
+        DependentClockID:
+        A string value from PICMG AMC.0 R2.0 table 3-37.
+
+      DirectClockDescriptors
+      A list of 1 or more Direct Clock configuration Descriptors.
+      Indirect Clock descriptors OR Direct Clock Desriptors are allowed.
+
+        PLLConnection:
+        A string value from PICMG AMC.0 R2.0 table 3-38.
+        ClockAsymmetricMatch:
+        A string value from PICMG AMC.0 R2.0 table 3-38.
+        ClockFamily:
+        An integer, 0-255. PICMG AMC.0 R2.0 table 3-39.
+        ClockAccuracyLevelAcronym
+        A string value from PICMG AMC.0 R2.0 table 3-41, "Acronym" column.
+        ClockFrequency:
+        An integer, 4 bytes.
+        MinimumClockFrequency
+        An integer, 4 bytes.
+        MaximumClockFrequency
+        An integer, 4 bytes.
