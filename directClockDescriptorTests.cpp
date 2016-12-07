@@ -3,6 +3,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/assign/list_of.hpp>
 #include <boost/assign/std/vector.hpp>
+#include <iostream>
 using namespace boost::assign; // bring 'operator+=()' into scope
 
 BOOST_AUTO_TEST_SUITE( directClockDescriptorTests )
