@@ -1,0 +1,35 @@
+{
+  "BoardInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB Beam Position Monitor RTM",
+    "SerialNumber": "testBoardSerialNumber",
+    "PartNumber": "testBoardPartNumber",
+    "FRUFileId": "FRIB_BPM_uRTM.json"
+  },
+  "ProductInfoArea":
+  {
+    "LanguageCode": 25,
+    "Manufacturer": "Facility for Rare Isotope Beams",
+    "ProductName": "FRIB General Purpose Digital Board",
+    "PartNumber": "testProductPartNumber",
+    "Version": "testProductVersion",
+    "SerialNumber": "testProductSerialNumber",
+    "AssetTag": "testAssetTag",
+    "FRUFileId": "FRIB_BPM_uRTM.json"
+  },
+  "MultiRecordArea":
+  { 
+   "Zone3Records":
+    [
+      {
+        "InterfaceIdentifier": 2,
+        "IdentifierBody":
+        {
+          "InterfaceIdentifierGUID": "3BC0D72938B843C99407606FDE93C2C3"
+        }
+      }
+    ]
+  }
+}
